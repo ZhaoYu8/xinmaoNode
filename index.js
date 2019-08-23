@@ -4,16 +4,16 @@ let url = require("url")
 let path = require("path")
 import hicky from './http/http'
 http.createServer((req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', '*')
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
-  res.setHeader('Content-Type', 'application/json')
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Content-Type', 'application/json;charset=utf-8');
+  res.setHeader("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
   let pathName = url.parse(req.url).pathname
   if (req.method === 'OPTIONS') {
     res.statusCode = 200;
     res.end()
   }
   if (req.method === 'POST') {
-    console.log(1)
     hicky(req, res)
   } else if (pathName === "/") {
     let extName = path.extname(pathName)
