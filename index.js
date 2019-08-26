@@ -5,7 +5,7 @@ let path = require("path")
 import hicky from './http/http'
 http.createServer((req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, token');
   res.setHeader('Content-Type', 'application/json;charset=utf-8');
   res.setHeader("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
   let pathName = url.parse(req.url).pathname
