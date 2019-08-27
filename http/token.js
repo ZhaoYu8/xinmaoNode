@@ -1,19 +1,19 @@
 import jwt from 'jsonwebtoken'
 const secret = 'zhaoyu';
 const obj = {
-  createToken(username, id, expires, strTimer){
+  createToken(username, id){
     let token = jwt.sign({
         User: username,
         id: id
     }, secret, {
-        expiresIn: expires + " " + strTimer
+        expiresIn: "2 days"
     });
     return token;
   },
   verifyToken(_token) {
     let verify = jwt.verify(_token, secret, (error, decoded) => {
         if(error) {
-            return "Token 过期了";
+            return false
         }
         return decoded;
     });
