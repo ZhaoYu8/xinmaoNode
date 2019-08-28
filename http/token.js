@@ -6,7 +6,7 @@ const obj = {
         User: username,
         id: id
     }, secret, {
-        expiresIn: "2 days"
+        expiresIn: "7 days"
     });
     return token;
   },
