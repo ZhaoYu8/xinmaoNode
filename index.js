@@ -61,7 +61,7 @@ http.createServer((req, res) => {
     res.end()
   }
 }).listen(8000, () => {
-  console.log('启动成功!8080')
+  console.log('http://localhost:8000')
 })
 // 获取后缀名
 function getExt(extName) {

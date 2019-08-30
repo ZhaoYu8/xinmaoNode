@@ -1,6 +1,8 @@
 import login from './login'
 import cust from './cust'
 import token from './token'
+import project from './project'
+import projectSort from './projectSort'
 let url = require("url")
 let arr = {
   '/login': [login, 'login'],
@@ -8,7 +10,9 @@ let arr = {
   '/addCust': [cust, 'addCust'],
   '/queryCust': [cust, 'queryCust'],
   '/deleteCust': [cust, 'deleteCust'],
-  '/editCust': [cust, 'editCust']
+  '/editCust': [cust, 'editCust'],
+  '/queryProject': [project, 'queryProject'],
+  '/addProjectSort': [projectSort, 'addProjectSort']
 }
 let needCurrent = ['/addCust'] // 需要接收当前人的接口
 let obj = (req, res) => {
