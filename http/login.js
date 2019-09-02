@@ -65,6 +65,7 @@ let obj = {
         connection.connect((err) => {
           connection.query(str, (err, results, fields) => {
             console.log(results)
+            console.log(results)
             return
             let obj = {
               message: "注册成功",
