@@ -2,15 +2,15 @@
 import moment from 'moment'
 let obj = {
   add(arr = [], table = '', param = {}) {
-    let [str, str1] = [`insert into ${table} (${arr.join(',')}) value (`, ``]
+    let [str, str1] = [`INSERT INTO ${table} (${arr.join(',')}) value (`, ``]
     arr.map(r => {
-      let paramData = `${param[r]}` || ''
+      let paramData = `${r.data ? r.data : param[r]}` || ''
       if (r === 'createDate') { // 创建时间单独处理
         paramData = moment(new Date()).format("YYYY-MM-DD HH:mm:ss");
-      } else if (r === 'createUser'){ // 创建人单独处理
+      } else if (r === 'createUser') { // 创建人单独处理
         paramData = param['currentId']
       }
-      str1 += paramData + ','
+      str1 += `"${paramData}"` + ','
     })
     return str + str1.slice(0, str1.length - 1) + ')'
   },
@@ -20,6 +20,6 @@ let obj = {
   delete(arr) {
 
   },
-  query(arr, table) {}
+  query(arr, table) { }
 }
 export default obj

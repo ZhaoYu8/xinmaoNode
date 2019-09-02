@@ -1,5 +1,5 @@
 import connection from './api'
-import global from '../global/gloabl'
+import global from '../global/global'
 import moment from 'moment'
 let obj = {
   addProject(param) { // 新增产品
@@ -26,11 +26,11 @@ let obj = {
   },
   queryProject(param) { // 查询产品
     return new Promise((resolve, reject) => {
-      let arr = [(param.pageIndex -1) * param.pageSize, param.pageSize]
+      let arr = [(param.pageIndex - 1) * param.pageSize, param.pageSize]
       let str = `select ta.*, date_format(ta.createDate, '%Y-%m-%d %H:%I:%S') as createDate1, tb.name as createName from customer ta left join user tb ON ta.createUser = tb.id where ta.name like '%${param.value}%' or ta.phone like '%${param.value}%' limit ${arr[0]},${arr[1]}`
       let str1 = `;select count(1) from customer ta left join user tb ON ta.createUser = tb.id where ta.name like '%${param.value}%' or ta.phone like '%${param.value}%'`
       connection.connect((err) => {
-        connection.query(str+str1, (err, results, fields) => {
+        connection.query(str + str1, (err, results, fields) => {
           let obj = {
             message: "成功！",
             success: true,
@@ -46,7 +46,7 @@ let obj = {
             reject(obj)
             return
           }
-          Object.assign(obj, {totalCount: results[1][0]['count(1)']})
+          Object.assign(obj, { totalCount: results[1][0]['count(1)'] })
           resolve(obj)
         })
       })

@@ -12,7 +12,8 @@ let arr = {
   '/deleteCust': [cust, 'deleteCust'],
   '/editCust': [cust, 'editCust'],
   '/queryProject': [project, 'queryProject'],
-  '/addProjectSort': [projectSort, 'addProjectSort']
+  '/addProjectSort': [projectSort, 'addProjectSort'],
+  '/queryProjectSort': [projectSort, 'queryProjectSort']
 }
 let needCurrent = ['/addCust'] // 需要接收当前人的接口
 let obj = (req, res) => {
@@ -25,7 +26,7 @@ let obj = (req, res) => {
   req.on('end', () => {
     if (req.headers.token) { // 如果token传过来了 过滤掉登录和注册二个接口
       let data = token.verifyToken(req.headers.token)
-      if (pathName === '/login' || pathName === '/register') {
+      if (['/login', '/register'].includes(pathName)) {
         item.currentId = !data ? '' : data.id
       } else {
         if (!data) { // 如果返回flase证明过期了
@@ -39,6 +40,13 @@ let obj = (req, res) => {
           item.currentId = data.id
         }
       }
+    } else if (!['/login', '/register'].includes(pathName)) {
+      res.statusCode = 401;
+      res.write(JSON.stringify({
+        message: '你已退出，请重新登录!'
+      }))
+      res.end()
+      return
     }
     if (!str) { // 防止后台未找到这个方法
       res.statusCode = 400;
@@ -54,6 +62,7 @@ let obj = (req, res) => {
       res.end()
     }).catch((data) => {
       data.success = false
+      data.message = data.message ? data.message : '失败了，请重试。如果依然失败请联系管理员！'
       res.statusCode = data.errorType ? data.errorType : 400;
       res.write(JSON.stringify(data))
       res.end()

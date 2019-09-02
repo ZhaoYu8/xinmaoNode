@@ -65,7 +65,7 @@ http.createServer((req, res) => {
 })
 // 获取后缀名
 function getExt(extName) {
-  switch(extName) {
+  switch (extName) {
     case '.html': return 'text/html';
     case '.css': return 'text/css';
     case '.js': return 'text/js';

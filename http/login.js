@@ -1,5 +1,7 @@
 import connection from './api'
 import token from './token'
+import global from '../global/global'
+import moment from 'moment'
 let obj = {
   login(param) {
     return new Promise((resolve, reject) => {
@@ -21,7 +23,7 @@ let obj = {
           }
           if (results && !results.length) { // 第一种情况，你还没有完全查不到这个人，就是未注册过
             Object.assign(obj, {
-              message: '你还未注册, 点击确定立即注册！',
+              message: '你还未注册, 请注册！',
               success: false,
               errorType: 2
             })
@@ -32,11 +34,7 @@ let obj = {
               errorType: 1
             })
           } else {
-            let _token = ''
-            if (!param.currentId) {
-              _token = token.createToken(param.username, results[0].id)
-            }
-            obj.token = _token
+            if (!param.currentId) obj.token = token.createToken(param.username, results[0].id) || ''
           }
           resolve(obj)
         })
@@ -45,16 +43,59 @@ let obj = {
   },
   register(param) {
     return new Promise((resolve, reject) => {
-      let str = `INSERT INTO user (phone, password) values (${param.username}, ${param.password})`
+      this.queryRegister(param).then((data) => {
+        if (data.length) {
+          reject({
+            message: '公司名称已存在，请修改名称再试！'
+          })
+          return
+        }
+        let str = global.add(
+          [{
+            str: 'name'
+          },
+          {
+            str: 'phone'
+          },
+          {
+            str: 'createDate',
+            data: moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
+          }
+          ], 'company', param)
+        connection.connect((err) => {
+          connection.query(str, (err, results, fields) => {
+            console.log(results)
+            return
+            let obj = {
+              message: "注册成功",
+              success: true,
+              item: str,
+              token: token.createToken(param.phone, results[1].insertId)
+            }
+            resolve(obj)
+          })
+        })
+      })
+    })
+  },
+  addUser(param) {
+    let str = global.add([{
+      str: 'name',
+      data: param.phone
+    }, {
+      str: 'phone'
+    }, {
+      str: 'password'
+    }, {
+      str: 'company'
+    }], 'user', param)
+  },
+  queryRegister(param) {
+    return new Promise((resolve, reject) => {
+      let str = `select * from company as ta where ta.name = '"${param.name}"'`
       connection.connect((err) => {
         connection.query(str, (err, results, fields) => {
-          let obj = {
-            message: "注册成功",
-            success: true,
-            item: str,
-            token: token.createToken(param.username, results.insertId)
-          }
-          resolve(obj)
+          resolve(results)
         })
       })
     })

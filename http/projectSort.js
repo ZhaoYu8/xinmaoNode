@@ -1,9 +1,9 @@
 import connection from './api'
-import global from '../global/gloabl'
+import global from '../global/global'
 let obj = {
   addProjectSort(param) { // 新增产品分类
     return new Promise((resolve, reject) => {
-      let str = global(['name', 'parent'], 'parentSort', param)
+      let str = global.add(['name', 'parent'], 'projectSort', param)
       connection.connect((err) => {
         connection.query(str, (err, results, fields) => {
           let obj = {
@@ -23,17 +23,15 @@ let obj = {
       })
     })
   },
-  queryProject(param) { // 查询产品
+  queryProjectSort(param) { // 查询产品
     return new Promise((resolve, reject) => {
-      let arr = [(param.pageIndex -1) * param.pageSize, param.pageSize]
-      let str = `select ta.*, date_format(ta.createDate, '%Y-%m-%d %H:%I:%S') as createDate1, tb.name as createName from customer ta left join user tb ON ta.createUser = tb.id where ta.name like '%${param.value}%' or ta.phone like '%${param.value}%' limit ${arr[0]},${arr[1]}`
-      let str1 = `;select count(1) from customer ta left join user tb ON ta.createUser = tb.id where ta.name like '%${param.value}%' or ta.phone like '%${param.value}%'`
+      let str = `select ta.* from projectSort ta`
       connection.connect((err) => {
-        connection.query(str+str1, (err, results, fields) => {
+        connection.query(str, (err, results, fields) => {
           let obj = {
             message: "成功！",
             success: true,
-            item: results[0]
+            item: results
           }
           if (err) {
             Object.assign(obj, {
@@ -45,7 +43,6 @@ let obj = {
             reject(obj)
             return
           }
-          Object.assign(obj, {totalCount: results[1][0]['count(1)']})
           resolve(obj)
         })
       })
