@@ -10,18 +10,19 @@ Target Server Type    : MYSQL
 Target Server Version : 80017
 File Encoding         : 65001
 
-Date: 2019-08-30 18:09:00
+Date: 2019-09-03 13:32:14
 */
 
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for parentsort
+-- Table structure for company
 -- ----------------------------
-DROP TABLE IF EXISTS `parentsort`;
-CREATE TABLE `parentsort` (
+DROP TABLE IF EXISTS `company`;
+CREATE TABLE `company` (
   `id` int(25) NOT NULL AUTO_INCREMENT,
   `name` varchar(25) NOT NULL,
-  `parent` int(25) DEFAULT NULL,
+  `createDate` datetime NOT NULL,
+  `phone` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;

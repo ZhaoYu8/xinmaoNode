@@ -1,10 +1,18 @@
 import connection from './api'
-import moment from 'moment'
+import global from '../global/global'
 let obj = {
   addCust(param) { // 新增客户
     return new Promise((resolve, reject) => {
-      let myDate = moment(new Date()).format("YYYY-MM-DD HH:mm:ss");
-      let str = `INSERT INTO customer (name, phone, address, detailAddress, photo, createDate, createUser) values ("${param.name}", "${param.phone}", "${param.address}", "${param.detailAddress}", "${param.photo}", "${myDate}", "${param.currentId}")`
+      let str = global.add([
+        { str: 'name' },
+        { str: 'phone' },
+        { str: 'address'},
+        { str: 'detailAddress'},
+        { str: 'photo'},
+        { str: 'createDate'},
+        { str: 'createUser'},
+        { str: 'company' }
+      ], 'customer', param)
       connection.connect((err) => {
         connection.query(str, (err, results, fields) => {
           let obj = {
@@ -14,7 +22,9 @@ let obj = {
           if (err) {
             Object.assign(obj, {
               message: '新增失败',
-              success: false
+              success: false,
+              err: err,
+              str: str
             })
             reject(obj)
             return
@@ -27,14 +37,15 @@ let obj = {
   queryCust(param) { // 查询客户
     return new Promise((resolve, reject) => {
       let arr = [(param.pageIndex - 1) * param.pageSize, param.pageSize]
-      let str = `select ta.*, date_format(ta.createDate, '%Y-%m-%d %H:%I:%S') as createDate1, tb.name as createName from customer ta left join user tb ON ta.createUser = tb.id where ta.name like '%${param.value}%' or ta.phone like '%${param.value}%' limit ${arr[0]},${arr[1]}`
-      let str1 = `;select count(1) from customer ta left join user tb ON ta.createUser = tb.id where ta.name like '%${param.value}%' or ta.phone like '%${param.value}%'`
+      let str = `select ta.*, date_format(ta.createDate, '%Y-%m-%d %H:%I:%S') as createDate1, tb.name as createName from customer ta left join user tb ON ta.createUser = tb.id where ta.company = '${param.company}' and (ta.name like '%${param.value}%' or ta.phone like '%${param.value}%') limit ${arr[0]},${arr[1]}`
+      let str1 = `;select count(1) from customer ta left join user tb ON ta.createUser = tb.id where ta.company = '${param.company}' and (ta.name like '%${param.value}%' or ta.phone like '%${param.value}%')`
       connection.connect((err) => {
         connection.query(str + str1, (err, results, fields) => {
           let obj = {
             message: "成功！",
             success: true,
-            item: results[0]
+            item: results[0],
+            str: str
           }
           if (err) {
             Object.assign(obj, {

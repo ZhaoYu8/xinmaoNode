@@ -15,7 +15,6 @@ let arr = {
   '/addProjectSort': [projectSort, 'addProjectSort'],
   '/queryProjectSort': [projectSort, 'queryProjectSort']
 }
-let needCurrent = ['/addCust'] // 需要接收当前人的接口
 let obj = (req, res) => {
   let pathName = url.parse(req.url).pathname
   let str = arr[pathName]
@@ -26,20 +25,16 @@ let obj = (req, res) => {
   req.on('end', () => {
     if (req.headers.token) { // 如果token传过来了 过滤掉登录和注册二个接口
       let data = token.verifyToken(req.headers.token)
-      if (['/login', '/register'].includes(pathName)) {
-        item.currentId = !data ? '' : data.id
-      } else {
-        if (!data) { // 如果返回flase证明过期了
-          res.statusCode = 401;
-          res.write(JSON.stringify({
-            message: 'token 失效了，请重新登录!'
-          }))
-          res.end()
-          return
-        } else if (needCurrent.includes(pathName)) {
-          item.currentId = data.id
-        }
+      if (!data) { // 如果返回flase证明过期了
+        res.statusCode = 401;
+        res.write(JSON.stringify({
+          message: 'token 失效了，请重新登录!'
+        }))
+        res.end()
+        return
       }
+      item.currentId = data.id || ''
+      item.company = data.company || ''
     } else if (!['/login', '/register'].includes(pathName)) {
       res.statusCode = 401;
       res.write(JSON.stringify({

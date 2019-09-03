@@ -1,10 +1,10 @@
 import jwt from 'jsonwebtoken'
 const secret = 'zhaoyu';
 const obj = {
-  createToken(username, id) {
+  createToken(id, company) {
     let token = jwt.sign({
-      User: username,
-      id: id
+      id: id,
+      company: company
     }, secret, {
         expiresIn: "7 days"
       });
