@@ -7,19 +7,11 @@ let obj = {
       let str = global(['name', 'sort', 'units', 'cost', 'price', 'photo', 'createDate', 'createUser'], 'project', param)
       connection.connect((err) => {
         connection.query(str, (err, results, fields) => {
-          let obj = {
-            message: "新增成功",
-            success: true
-          }
           if (err) {
-            Object.assign(obj, {
-              message: '新增失败',
-              success: false
-            })
-            reject(obj)
+            reject(global.createObj(false))
             return
           }
-          resolve(obj)
+          resolve(global.createObj())
         })
       })
     })

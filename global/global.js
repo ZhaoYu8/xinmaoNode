@@ -14,12 +14,8 @@ let obj = {
     })
     return str + str1.slice(0, str1.length - 1) + ')'
   },
-  edit(arr) {
-
-  },
-  delete(arr) {
-
-  },
-  query(arr, table) { }
+  createObj(type = true, obj = {}) {
+    return obj = type ? Object.assign(obj, { message: '成功', success: true }) : Object.assign(obj, { message: '失败, 请联系管理员', success: true })
+  }
 }
 export default obj

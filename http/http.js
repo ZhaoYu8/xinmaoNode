@@ -12,8 +12,9 @@ let arr = {
   '/deleteCust': [cust, 'deleteCust'],
   '/editCust': [cust, 'editCust'],
   '/queryProject': [project, 'queryProject'],
-  '/addProjectSort': [projectSort, 'addProjectSort'],
-  '/queryProjectSort': [projectSort, 'queryProjectSort']
+  '/addSort': [projectSort, 'addSort'],
+  '/querySort': [projectSort, 'querySort'],
+  '/delSort': [projectSort, 'delSort']
 }
 let obj = (req, res) => {
   let pathName = url.parse(req.url).pathname
