@@ -33,7 +33,7 @@ let obj = {
             reject(Object.assign(global.createObj(false), { str: str, err: err }))
             return
           }
-          resolve(Object.assign(global.createObj(), {item: results}))
+          resolve(Object.assign(global.createObj(), { item: results }))
         })
       })
     })
@@ -48,6 +48,20 @@ let obj = {
             return
           }
           resolve(Object.assign(global.createObj()))
+        })
+      })
+    })
+  },
+  editSort(param) { // 修改产品分类
+    return new Promise((resolve, reject) => {
+      let str = `update projectSort set name = "${param.name}", parent = "${param.parent}" where id = "${param.id}"`
+      connection.connect((err) => {
+        connection.query(str, (err, results, fields) => {
+          if (err) {
+            reject(Object.assign(global.createObj(false), { str: str, param: param }))
+            return
+          }
+          resolve(Object.assign(global.createObj(), { item: results }))
         })
       })
     })
