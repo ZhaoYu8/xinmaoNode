@@ -27,15 +27,14 @@ let obj = {
       if (param.name) {
         str += ` and ta.name = '${param.name}'`
       }
-      connection.connect((err) => {
         connection.query(str, (err, results, fields) => {
+          console.log(results)
           if (err) {
             reject(Object.assign(global.createObj(false), { str: str, err: err }))
             return
           }
           resolve(Object.assign(global.createObj(), { item: results }))
         })
-      })
     })
   },
   delSort(param) { // 删除产品分类

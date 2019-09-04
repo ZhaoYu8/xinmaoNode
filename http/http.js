@@ -3,6 +3,8 @@ import cust from './cust'
 import token from './token'
 import project from './project'
 import projectSort from './projectSort'
+import upload from './upload'
+
 let url = require("url")
 let arr = {
   '/login': [login, 'login'],
@@ -15,7 +17,8 @@ let arr = {
   '/addSort': [projectSort, 'addSort'],
   '/querySort': [projectSort, 'querySort'],
   '/delSort': [projectSort, 'delSort'],
-  '/editSort': [projectSort, 'editSort']
+  '/editSort': [projectSort, 'editSort'],
+  '/upload': [upload, 'upload']
 }
 let obj = (req, res) => {
   let pathName = url.parse(req.url).pathname

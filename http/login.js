@@ -5,7 +5,6 @@ let obj = {
   login(param) {
     return new Promise((resolve, reject) => {
       let str = `select * from user where phone = ${param.username}`
-      connection.connect((err) => {
         connection.query(str, (err, results, fields) => {
           let obj = global.createObj()
           if (!err) {
@@ -23,7 +22,6 @@ let obj = {
           }
           resolve(Object.assign(obj, { item: results }))
         })
-      })
     })
   },
   register(param) {

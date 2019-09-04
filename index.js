@@ -1,8 +1,31 @@
-let http = require("http")
-let fs = require("fs")
-let url = require("url")
-let path = require("path")
 import hicky from './http/http'
+import http from 'http'
+import fs from 'fs'
+import url from 'url'
+import path from 'path'
+import Koa from 'koa'
+import bodyParser from 'koa-bodyparser'
+import controller from './controller'
+const app = new Koa();
+app.use(async (ctx, next) => {
+  ctx.set('Access-Control-Allow-Origin', '*');
+  ctx.set('Access-Control-Allow-Headers', 'Content-Type, token');
+  ctx.set('Content-Type', 'application/json;charset=utf-8');
+  ctx.set("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
+  if (ctx.method == 'OPTIONS') {
+    ctx.body = 200;
+  } else {
+    await next();
+  }
+});
+app.use(bodyParser());
+
+app.use(controller());
+
+app.listen(8000);
+console.log('http://localhost:3000');
+
+
 http.createServer((req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, token');
@@ -60,7 +83,7 @@ http.createServer((req, res) => {
   } else {
     res.end()
   }
-}).listen(8000, () => {
+}).listen(3000, () => {
   console.log('http://localhost:8000')
 })
 // 获取后缀名
