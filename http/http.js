@@ -1,4 +1,3 @@
-import login from './login'
 import cust from './cust'
 import token from './token'
 import project from './project'
@@ -7,8 +6,6 @@ import upload from './upload'
 
 let url = require("url")
 let arr = {
-  '/login': [login, 'login'],
-  '/register': [login, 'register'],
   '/addCust': [cust, 'addCust'],
   '/queryCust': [cust, 'queryCust'],
   '/deleteCust': [cust, 'deleteCust'],
@@ -44,14 +41,6 @@ let obj = (req, res) => {
       res.statusCode = 401;
       res.write(JSON.stringify({
         message: '你已退出，请重新登录!'
-      }))
-      res.end()
-      return
-    }
-    if (!str) { // 防止后台未找到这个方法
-      res.statusCode = 400;
-      res.write(JSON.stringify({
-        message: '后台未定义该方法,请联系管理员!'
       }))
       res.end()
       return

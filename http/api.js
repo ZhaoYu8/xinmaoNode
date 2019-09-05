@@ -7,20 +7,18 @@ const pool = mysql.createPool({
   multipleStatements: true
 })
 // 封装
-async function fun(sql) {
-  await new Promise((resolve, reject) => {
-    setTimeout(resolve, 2800);
-    // pool.getConnection((err, connection) => {
-    //   connection.query(sql, (err, results) => {
-    //     if (err) {
-    //       reject(err)
-    //     } else {
-    //       resolve(results)
-    //     }
-    //     connection.release() // 释放连接资源 | 跟 connection.destroy() 不同，它是销毁
-    //   })
-    // })
-  })
+pool.query = (sql) => {
+  return new Promise((resolve, reject) => {
+    pool.getConnection((err, connection) => {
+      connection.query(sql, (err, results) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(results)
+        }
+        connection.release() // 释放连接资源 | 跟 connection.destroy() 不同，它是销毁
+      })
+    })
+  });
 }
-pool.query = fun
 export default pool

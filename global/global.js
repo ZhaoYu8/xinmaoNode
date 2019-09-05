@@ -15,7 +15,7 @@ let obj = {
     return str + str1.slice(0, str1.length - 1) + ')'
   },
   createObj(type = true, obj = {}) {
-    return obj = type ? Object.assign(obj, { message: '成功', success: true }) : Object.assign(obj, { message: '失败, 请联系管理员', success: false })
+    return obj = type ? Object.assign(obj, { message: '成功', success: true }) : Object.assign(obj, { message: '失败了，请重试。如果依然失败请联系管理员！', success: false })
   }
 }
 export default obj
