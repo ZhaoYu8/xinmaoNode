@@ -39,7 +39,9 @@ app.use(async (ctx, next) => {
 });
 app.use(controller());
 
-app.listen(8000);
+app.listen(8000, () => {
+  console.log('启动成功 8000');
+});
 
 
 // http.createServer((req, res) => {

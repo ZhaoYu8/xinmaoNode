@@ -2,7 +2,7 @@ import connection from '../http/api'
 import global from '../global/global'
 import token from '../http/token'
 let obj = {
-  'POST /login': async (ctx, next) => {
+  'POST /login': async (ctx, next) => { // 登陆
     let param = ctx.request.body,
     str = `select * from user where phone = ${param.username}`,
     data = await connection.query(str),
@@ -11,13 +11,12 @@ let obj = {
       Object.assign(obj, { message: '你还未注册, 请注册！', success: false, errorType: 2 })
     } else if (data[0].password !== param.password) { // 第二种，密码输错了.
       Object.assign(obj, { message: '密码输入有误，请检查!', success: false, errorType: 1 })
-    }
-    if (!param.currentId || data[0].company !== param.company) { // 当currentId为空的时候，或者 Token 传的公司和查的公司对不上的时候。重新创建 Token 给前台
+    } else if (!param.currentId || data[0].company !== param.company) { // 当currentId为空的时候，或者 Token 传的公司和查的公司对不上的时候。重新创建 Token 给前台
       obj.token = token.createToken(data[0].id, data[0].company) || ''
     }
     ctx.body = (Object.assign(obj, { item: data }))
   },
-  'POST /register': async (ctx, next) => {
+  'POST /register': async (ctx, next) => { // 注册
     let param = ctx.request.body
     let registerData = await connection.query(`select * from company as ta where ta.name = "${param.name}"`)
     if (registerData && registerData.length) {

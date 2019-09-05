@@ -1,6 +1,5 @@
 import connection from '../http/api'
 import global from '../global/global'
-import token from '../http/token'
 let obj = {
   'POST /addCust': async (ctx, next) => {
     let param = ctx.request.body
@@ -25,6 +24,18 @@ let obj = {
     let data = await connection.query(str)
     let data1 = await connection.query(str1)
     ctx.body = (Object.assign(global.createObj(), { item: data, str: str, totalCount: data1[0]['count(1)'] }))
+  },
+  'POST /deleteCust': async (ctx, next) => {
+    let param = ctx.request.body
+    let str = `delete from customer where id = ${param.id}`
+    let data = await connection.query(str)
+    ctx.body = (Object.assign(global.createObj(), { item: data }))
+  },
+  'POST /editCust': async (ctx, next) => {
+    let param = ctx.request.body
+    let str = `update customer set name = "${param.name}", phone = "${param.phone}", address = "${param.address}", detailAddress = "${param.detailAddress}", photo = "${param.photo}" where id = "${param.id}"`
+    let data = await connection.query(str)
+    ctx.body = (Object.assign(global.createObj(), { item: data }))
   }
 }
 module.exports = obj;
