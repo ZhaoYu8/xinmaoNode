@@ -1,13 +1,22 @@
 // import http from 'http'
 // import fs from 'fs'
 // import url from 'url'
-// import path from 'path'
+import path from 'path'
 import Koa from 'koa'
-import bodyParser from 'koa-bodyparser'
+// import bodyParser from 'koa-bodyparser'
+import koaBody from 'koa-body'
 import controller from './controller'
 import token from './http/token'
 const app = new Koa();
-app.use(bodyParser());
+// app.use(bodyParser());
+app.use(koaBody({
+  multipart: true, // 支持文件上传
+  formidable: {
+    uploadDir: path.join(__dirname, 'upload/'), // 设置文件上传目录
+    keepExtensions: true,    // 保持文件的后缀
+    maxFieldsSize: 2 * 1024 * 1024 // 文件上传大小
+  }
+}));
 app.use(async (ctx, next) => {
   ctx.set('Access-Control-Allow-Origin', '*');
   ctx.set('Access-Control-Allow-Headers', 'Content-Type, token');
@@ -28,7 +37,7 @@ app.use(async (ctx, next) => {
     }
     ctx.request.body.currentId = data.id || ''
     ctx.request.body.company = data.company || ''
-  } else if (!['/login', '/register'].includes(ctx.request.url)) {
+  } else if (!['/login', '/register', '/uploadfiles'].includes(ctx.request.url)) {
     ctx.response.status = 401
     ctx.body = (Object.assign({
       message: '你已退出，请重新登录!', success: false
