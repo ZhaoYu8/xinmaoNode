@@ -44,7 +44,14 @@ app.use(async (ctx, next) => {
     }))
     return
   }
-  await next();
+  try {
+    await next();
+  } catch (err) {
+    ctx.response.status = err.statusCode || err.status || 500;
+    ctx.response.body = {
+      message: '出错了，重试！如果依然报错，请联系管理员！', err: err, errmessage: err.message
+    };
+  }
 });
 app.use(controller());
 
