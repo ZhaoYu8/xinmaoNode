@@ -10,9 +10,11 @@ let obj = {
         { str: 'createDate' }, { str: 'createUser' }, { str: 'company' }
       ], 'project', param)
     let data = await connection.query(str)
+    let data1 = {}
     if (param.photo.length) {
-      let str1 = param.photo.map(r => `('${r.name}', '${r.address}', '${data.insertId}')`).join(',')
-      let data1 = await connection.query(`INSERT INTO projectPhoto (photoName, photoAddress, projectId) values ${str1}`)
+      let str1 = param.photo.map(r => `('${r.name}', '${r.address.replace(/\\/g, "\\\\")}', '${data.insertId}')`).join(',')
+      console.log(str1);
+      data1 = await connection.query(`INSERT INTO projectPhoto (photoName, photoAddress, projectId) values ${str1}`)
     }
     ctx.body = (Object.assign(global.createObj(), { item: data, item1: data1 }))
   },
@@ -23,13 +25,15 @@ let obj = {
     let str1 = `select count(1) from project ta left join user tb ON ta.createUser = tb.id where ta.company = '${param.company}' and (ta.name like '%${param.value}%')`
     let data = await connection.query(str)
     let data1 = await connection.query(str1)
-    let data2 = await connection.query(`select * from projectPhoto ta where ta.projectId in (${data.map(r => r.id + '').join()})`)
+    let data2 = []
+    if (data.length) {
+      data2 = await connection.query(`select * from projectPhoto ta where ta.projectId in (${data.map(r => r.id + '').join()})`)
+    }
     data.map(r => {
       r.photo = []
       data2.map(n => {
-        if (r.id === n.projectId) {
-          r.photo.push(n)
-        }
+        if (r.id !== n.projectId) return
+        r.photo.push(n)
       })
     })
     ctx.body = (Object.assign(global.createObj(), { item: data, str: str, totalCount: data1[0]['count(1)'] }))
