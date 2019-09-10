@@ -12,8 +12,8 @@ let obj = {
     let data = await connection.query(str)
     let data1 = {}
     if (param.photo && param.photo.length) {
-      let str1 = param.photo.map(r => `('${r.name}', '${r.address.replace(/\\/g, "\\\\")}', '${data.insertId}')`).join(',')
-      data1 = await connection.query(`INSERT INTO projectPhoto (photoName, photoAddress, projectId) values ${str1}`)
+      let str1 = param.photo.map(r => `('${r.name}', '${r.url.replace(/\\/g, "\\\\")}', '${data.insertId}')`).join(',')
+      data1 = await connection.query(`INSERT INTO projectPhoto (name, url, projectId) values ${str1}`)
     }
     ctx.body = (Object.assign(global.createObj(), { item: data, item1: data1 }))
   },
@@ -36,6 +36,12 @@ let obj = {
       })
     })
     ctx.body = (Object.assign(global.createObj(), { item: data, str: str, totalCount: data1[0]['count(1)'] }))
+  },
+  'POST /delProject': async (ctx, next) => {
+    let param = ctx.request.body
+    let str = `delete from project where id = ${param.id}`
+    let data = await connection.query(str)
+    ctx.body = (Object.assign(global.createObj(), { item: data }))
   }
 }
 module.exports = obj;
