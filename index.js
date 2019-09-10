@@ -12,7 +12,7 @@ const app = new Koa();
 app.use(koaBody({
   multipart: true, // 支持文件上传
   formidable: {
-    uploadDir: path.join(__dirname, 'upload/'), // 设置文件上传目录
+    // uploadDir: path.join(__dirname, 'upload/'), // 设置文件上传目录
     keepExtensions: true,    // 保持文件的后缀
     maxFieldsSize: 2 * 1024 * 1024 // 文件上传大小
   }
@@ -37,7 +37,7 @@ app.use(async (ctx, next) => {
     }
     ctx.request.body.currentId = data.id || ''
     ctx.request.body.company = data.company || ''
-  } else if (!['/login', '/register', '/uploadfiles'].includes(ctx.request.url)) {
+  } else if (!['/login', '/register', '/uploadfiles'].includes(ctx.request.url) && !ctx.request.url.includes('uploads')) {
     ctx.response.status = 401
     ctx.body = (Object.assign({
       message: '你已退出，请重新登录!', success: false

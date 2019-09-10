@@ -5,15 +5,14 @@ let obj = {
     let param = ctx.request.body
     let str = global.add(
       [
-        { str: 'name' }, { str: 'sort' }, { str: 'units' },
+        { str: 'name' }, { str: 'sort', data: param.sort.join(',') }, { str: 'units' },
         { str: 'cost' }, { str: 'price' },
         { str: 'createDate' }, { str: 'createUser' }, { str: 'company' }
       ], 'project', param)
     let data = await connection.query(str)
     let data1 = {}
-    if (param.photo.length) {
+    if (param.photo && param.photo.length) {
       let str1 = param.photo.map(r => `('${r.name}', '${r.address.replace(/\\/g, "\\\\")}', '${data.insertId}')`).join(',')
-      console.log(str1);
       data1 = await connection.query(`INSERT INTO projectPhoto (photoName, photoAddress, projectId) values ${str1}`)
     }
     ctx.body = (Object.assign(global.createObj(), { item: data, item1: data1 }))

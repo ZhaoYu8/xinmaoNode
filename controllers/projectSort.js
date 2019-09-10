@@ -3,7 +3,7 @@ import global from '../global/global'
 let obj = {
   'POST /addSort': async (ctx, next) => {
     let param = ctx.request.body
-    let str = `select ta.* from projectSort ta where 1 = 1 ta.company = '${param.company}' and ta.name = '${param.name}'`
+    let str = `select ta.* from projectSort ta where 1 = 1 and ta.company = '${param.company}' and ta.name = '${param.name}'`
     let sortData = await connection.query(str)
     if (sortData && sortData.length) {
       ctx.body = (Object.assign(global.createObj(false), { item: sortData, message: '名称已存在，请修改再试!' }))
