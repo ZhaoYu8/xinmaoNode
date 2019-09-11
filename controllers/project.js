@@ -39,9 +39,29 @@ let obj = {
   },
   'POST /delProject': async (ctx, next) => {
     let param = ctx.request.body
-    let str = `delete from project where id = ${param.id}`
+    let str = `delete from project where id = '${param.id}'`
     let data = await connection.query(str)
     ctx.body = (Object.assign(global.createObj(), { item: data }))
+  },
+  'POST /editProject': async (ctx, next) => {
+    let param = ctx.request.body
+    let str = global.edit(
+      [
+        { str: 'name' }, { str: 'sort', data: param.sort.join(',') }, { str: 'units' },
+        { str: 'cost' }, { str: 'price' }
+      ], 'project', param)
+    let data = await connection.query(str)
+    let [data1, data2] = [{}, {}]
+    if (!param.photo.length) { // 如果为空了，去删除图片库的产品图片数据 或者photo的老数据带id的都空了。那也全部删除
+      data1 = await connection.query(`delete from projectphoto where projectId = '${param.id}'`)
+    } else {
+      let [arr, arr1] = [param.photo.filter(r => r.id), param.photo.filter(r => !r.id)] // 筛选出id不为空的数据， id为空的就是修改的时候新增的图片
+      data1 = await connection.query(`delete from projectphoto where id not in(${arr.map(r => r.id).join(',')}) and projectId = '${param.id}'`)
+      if (arr1.length) {
+        data2 = await connection.query(`INSERT INTO projectPhoto (name, url, projectId) values ${arr1.map(r => `('${r.name}', '${r.url.replace(/\\/g, "\\\\")}', '${param.id}')`).join(',')}`)
+      }
+    }
+    ctx.body = (Object.assign(global.createObj(), { item: data, photoItem: [data1, data2] }))
   }
 }
 module.exports = obj;
