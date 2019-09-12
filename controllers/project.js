@@ -56,8 +56,12 @@ let obj = {
       data1 = await connection.query(`delete from projectphoto where projectId = '${param.id}'`)
     } else {
       let [arr, arr1] = [param.photo.filter(r => r.id), param.photo.filter(r => !r.id)] // 筛选出id不为空的数据， id为空的就是修改的时候新增的图片
-      data1 = await connection.query(`delete from projectphoto where id not in(${arr.map(r => r.id).join(',')}) and projectId = '${param.id}'`)
-      if (arr1.length) {
+      if (arr.length) { // 如果带id的还有，就not in删除
+        data1 = await connection.query(`delete from projectphoto where id not in(${arr.map(r => r.id).join(',')}) and projectId = '${param.id}'`)
+      } else { // 如果一个都没了。直接全部删除
+        data1 = await connection.query(`delete from projectphoto where projectId = '${param.id}'`)
+      }
+      if (arr1.length) { // 有新增的图片就插入新的
         data2 = await connection.query(`INSERT INTO projectPhoto (name, url, projectId) values ${arr1.map(r => `('${r.name}', '${r.url.replace(/\\/g, "\\\\")}', '${param.id}')`).join(',')}`)
       }
     }
