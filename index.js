@@ -28,7 +28,7 @@ app.use(async (ctx, next) => {
   }
   if (ctx.headers.token) { // 如果token传过来了
     let data = token.verifyToken(ctx.headers.token)
-    if (!data) { // 如果返回flase证明过期了
+    if (!data && !['/login', '/register'].includes(ctx.request.url)) { // 如果返回flase证明过期了， 但是登陆注册不用管
       ctx.response.status = 401
       ctx.body = (Object.assign({
         message: 'token 失效了，请重新登录!', success: false

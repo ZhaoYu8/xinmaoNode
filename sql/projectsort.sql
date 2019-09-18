@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80017
 File Encoding         : 65001
 
-Date: 2019-09-03 13:32:35
+Date: 2019-09-18 18:04:04
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -25,4 +25,4 @@ CREATE TABLE `projectsort` (
   `parent` int(25) DEFAULT NULL,
   `company` int(25) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;

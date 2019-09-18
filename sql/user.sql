@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80017
 File Encoding         : 65001
 
-Date: 2019-09-03 13:32:40
+Date: 2019-09-18 18:04:08
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -20,14 +20,16 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
-  `id` int(20) NOT NULL AUTO_INCREMENT COMMENT 'id主键',
-  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '姓名',
-  `phone` varchar(100) DEFAULT NULL COMMENT '手机号',
+  `id` int(99) NOT NULL AUTO_INCREMENT COMMENT 'id主键',
+  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '姓名',
+  `phone` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '手机号',
   `position` varchar(50) DEFAULT NULL COMMENT '职位',
-  `department` varchar(50) DEFAULT NULL COMMENT '部门',
-  `sex` varchar(50) DEFAULT NULL COMMENT '性别',
+  `branch` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '部门',
+  `sex` int(5) DEFAULT NULL COMMENT '性别（1是男的 0是女的）',
   `location` varchar(50) DEFAULT NULL COMMENT '地址',
-  `password` varchar(50) DEFAULT NULL COMMENT '密码',
+  `password` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '密码',
+  `dr` int(50) NOT NULL COMMENT '状态(1是正常 0是删除)',
+  `sales` int(5) DEFAULT NULL COMMENT '是否显示在销售列表下（1是显示 0是不显示）',
   `company` int(25) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;

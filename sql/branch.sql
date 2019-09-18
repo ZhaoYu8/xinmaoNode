@@ -10,19 +10,19 @@ Target Server Type    : MYSQL
 Target Server Version : 80017
 File Encoding         : 65001
 
-Date: 2019-09-18 18:03:59
+Date: 2019-09-18 18:03:24
 */
 
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for projectphoto
+-- Table structure for branch
 -- ----------------------------
-DROP TABLE IF EXISTS `projectphoto`;
-CREATE TABLE `projectphoto` (
+DROP TABLE IF EXISTS `branch`;
+CREATE TABLE `branch` (
   `id` int(25) NOT NULL AUTO_INCREMENT,
-  `name` varchar(888) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `url` varchar(888) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `projectId` int(25) DEFAULT NULL,
+  `name` varchar(25) NOT NULL,
+  `parent` int(25) NOT NULL,
+  `company` int(25) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;

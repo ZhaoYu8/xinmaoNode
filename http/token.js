@@ -6,7 +6,7 @@ const obj = {
       id: id,
       company: company
     }, secret, {
-        expiresIn: "7 days"
+        expiresIn: "1 days"
       });
     return token;
   },
