@@ -1,12 +1,8 @@
-// import http from 'http'
-// import fs from 'fs'
-// import url from 'url'
-import path from 'path'
+
 import Koa from 'koa'
-// import bodyParser from 'koa-bodyparser'
 import koaBody from 'koa-body'
 import controller from './controller'
-import token from './http/token'
+import token from './global/token'
 const app = new Koa();
 // app.use(bodyParser());
 app.use(koaBody({

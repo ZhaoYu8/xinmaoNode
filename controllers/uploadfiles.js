@@ -1,4 +1,4 @@
-import connection from '../http/api'
+import connection from '../global/api'
 import fs from 'fs'
 import path from 'path'
 import global from '../global/global'

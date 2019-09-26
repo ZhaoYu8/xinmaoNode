@@ -1,6 +1,6 @@
-import connection from '../http/api'
+import connection from '../global/api'
 import global from '../global/global'
-import token from '../http/token'
+import token from '../global/token'
 let obj = {
   'POST /login': async (ctx, next) => { // 登陆
     let param = ctx.request.body,

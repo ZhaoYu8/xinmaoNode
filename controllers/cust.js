@@ -1,4 +1,4 @@
-import connection from '../http/api'
+import connection from '../global/api'
 import global from '../global/global'
 let obj = {
   'POST /addCust': async (ctx, next) => {
