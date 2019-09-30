@@ -4,7 +4,7 @@ let obj = {
   add(arr = [], table = '', param = {}) {
     let [str, str1] = [`INSERT INTO ${table} (${arr.map(r => r.str).join(',')}) value (`, ``]
     arr.map(r => {
-      let paramData = `${r.data ? r.data : param[r.str] ? param[r.str] : '0' || ''}` // 这里是解决，和id对不上。而自己单独赋值的方法
+      let paramData = `${r.data !== undefined ? r.data : param[r.str] ? param[r.str] : ''}` // 这里是解决，和id对不上。而自己单独赋值的方法
       if (r.str === 'createDate') { // 创建时间单独处理
         paramData = moment(new Date()).format("YYYY-MM-DD HH:mm:ss");
       } else if (r.str === 'createUser') { // 创建人单独处理

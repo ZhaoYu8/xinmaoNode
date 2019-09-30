@@ -19,7 +19,7 @@ let obj = {
     
     return ctx.body = (Object.assign(global.createObj(), { file: {
       name: file.name,
-      url: 'http://106.13.198.174/uploads/' + newFilename // 这里我把ip写死了。以后换服务器这里要改
+      url: 'http://122.152.212.105//uploads/' + newFilename // 这里我把ip写死了。以后换服务器这里要改
     }}))
   }
 }
