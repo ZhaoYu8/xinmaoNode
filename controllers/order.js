@@ -25,13 +25,26 @@ let obj = {
   'POST /queryOrder': async (ctx, next) => {
     let param = ctx.request.body
     let arr = [(param.pageIndex - 1) * param.pageSize, param.pageSize]
-    let str = `select ta.*, date_format(ta.createDate, '%Y-%m-%d %H:%I:%S') as createDate1, tb.name as createName from _order ta left join user tb ON ta.createUser = tb.id where ta.company = '${param.company}' and (ta.name like '%${param.value}%' or ta.phone like '%${param.value}%') limit ${arr[0]},${arr[1]}`
+    let special = '1 = 1'
+    if (param.id) special = `id = ${param.id}`
+    let str = `
+      select ta.*, date_format(ta.createDate, '%Y-%m-%d %H:%I:%S') as createDate1, tb.name as createName , tc.name as custName  , td.name as salesName from _order ta
+      left join user tb ON ta.createUser = tb.id
+      left join customer tc ON ta.name = tc.id
+      left join user td ON ta.sales = td.id
+      where ${special} and ta.company = '${param.company}' and (ta.name like '%${param.value}%' or
+      ta.phone like '%${param.value}%') limit ${arr[0]},${arr[1]}
+    `
     let str1 = `select count(1) from _order ta left join user tb ON ta.createUser = tb.id where ta.company = '${param.company}' and (ta.name like '%${param.value}%' or ta.phone like '%${param.value}%')`
     let data = await connection.query(str)
     let data1 = await connection.query(str1)
     let data2 = '', data3 = ''
     if (data.length) {
-      data2 = await connection.query(`select * from orderProjectList ta where ta.orderId in (${data.map(r => r.id + '').join()})`)
+      data2 = await connection.query(`
+        select *, tb.name from orderProjectList ta 
+        left join project tb ON ta.projectID = tb.id
+        where ta.orderId in (${data.map(r => r.id + '').join()})
+      `)
       data3 = await connection.query(`select * from orderPremium ta where ta.orderId in (${data.map(r => r.id + '').join()})`)
     }
     data.map(r => {
