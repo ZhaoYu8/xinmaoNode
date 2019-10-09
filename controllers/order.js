@@ -12,7 +12,7 @@ let obj = {
       ], '_order', param)
     let data = await connection.query(str) // 先插入order表，主表
     // orderProjectList 订单产品表
-    let str1 = param.tableData.map(r => `('${r.id}', '${r.sort}', '${r.units}', '${r.cost}', '${r.price}', '${r.count}', '${data.insertId}')`).join(',')
+    let str1 = param.projectData.map(r => `('${r.id}', '${r.sort}', '${r.units}', '${r.cost}', '${r.price}', '${r.count}', '${data.insertId}')`).join(',')
     let data1 = await connection.query(`INSERT INTO orderProjectList (projectID, sort, units, cost, price, count, orderId) values ${str1}`)
     // orderPremium 订单额外费用表
     let str2 = '', data2 = ''
@@ -26,7 +26,7 @@ let obj = {
     let param = ctx.request.body
     let arr = [(param.pageIndex - 1) * param.pageSize, param.pageSize]
     let special = '1 = 1'
-    if (param.id) special = `id = ${param.id}`
+    if (param.id) special = `ta.id = ${param.id}`
     let str = `
       select ta.*, date_format(ta.createDate, '%Y-%m-%d %H:%I:%S') as createDate1, tb.name as createName , tc.name as custName  , td.name as salesName from _order ta
       left join user tb ON ta.createUser = tb.id
@@ -48,7 +48,7 @@ let obj = {
       data3 = await connection.query(`select * from orderPremium ta where ta.orderId in (${data.map(r => r.id + '').join()})`)
     }
     data.map(r => {
-      r.tableData = data2.filter(n => n.orderId === r.id) || []
+      r.projectData = data2.filter(n => n.orderId === r.id) || []
       r.premiumData = data3.filter(n => n.orderId === r.id) || []
     })
     ctx.body = (Object.assign(global.createObj(), { item: data, str: str, totalCount: data1[0]['count(1)'] }))
