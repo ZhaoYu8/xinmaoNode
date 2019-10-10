@@ -73,11 +73,11 @@ let obj = {
     `)
     let data3 = await connection.query(`delete from orderPremium where id not in(${param.premiumData.filter(r => r.id).map(r => r.id).join(',') || ''}) and orderId = '${param.id}'`)
     let data4 = await connection.query(`
-    INSERT INTO orderPremium (id, name, money, remark, orderId) VALUES 
-    ${param.premiumData.map(r => {
-      return `(${r.id || 0}, '${r.name}', '${r.money}', '${r.remark}', '${param.id}')`
-    }).join(',')}
-    ON DUPLICATE KEY UPDATE name = VALUES(name), money = VALUES(money), remark = VALUES(remark), orderId = VALUES(orderId);
+      INSERT INTO orderPremium (id, name, money, remark, orderId) VALUES 
+      ${param.premiumData.map(r => {
+        return `(${r.id || 0}, '${r.name}', '${r.money}', '${r.remark}', '${param.id}')`
+      }).join(',')}
+      ON DUPLICATE KEY UPDATE name = VALUES(name), money = VALUES(money), remark = VALUES(remark), orderId = VALUES(orderId);
   `)
     ctx.body = (Object.assign(global.createObj(), { item: data + ',' + data1 + ',' + data2 + ',' + data3 + ',' + data4 }))
   }
