@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80017
 File Encoding         : 65001
 
-Date: 2019-09-18 18:03:44
+Date: 2019-10-18 18:02:26
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -25,4 +25,4 @@ CREATE TABLE `company` (
   `createDate` datetime NOT NULL,
   `phone` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8;

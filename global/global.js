@@ -18,6 +18,11 @@ let obj = {
     let [str, str1] = [`update ${table} set `, ``]
     arr.map((r, i) => {
       let paramData = `${r.data !== undefined ? r.data : param[r.str] !== undefined ? param[r.str] : ''}` // 这里是解决，和id对不上。而自己单独赋值的方法
+      if (r.str === 'updateDate') { // 创建时间单独处理
+        paramData = moment(new Date()).format("YYYY-MM-DD HH:mm:ss");
+      } else if (r.str === 'updateUser') { // 创建人单独处理
+        paramData = param['currentId']
+      }
       str1 += `${r.str}= "${paramData}"` + ','
     })
     return str + str1.slice(0, str1.length - 1) + ` where id = "${param.id}"`

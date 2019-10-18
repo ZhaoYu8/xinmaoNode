@@ -25,6 +25,13 @@ let obj = {
     let data1 = await connection.query(str1)
     ctx.body = (Object.assign(global.createObj(), { item: data, str: str, totalCount: data1[0]['count(1)'] }))
   },
+  'GET /queryCust': async (ctx, next) => {
+    let param = ctx.request.body
+    let arr = [0, 5]
+    let str = `select ta.*, date_format(ta.createDate, '%Y-%m-%d %H:%I:%S') as createDate1, tb.name as createName from customer ta left join user tb ON ta.createUser = tb.id limit ${arr[0]},${arr[1]}`
+    let data = await connection.query(str)
+    ctx.body = (Object.assign(global.createObj(), { item: data, str: str, totalCount: 5}))
+  },
   'POST /deleteCust': async (ctx, next) => {
     let param = ctx.request.body
     let str = `delete from customer where id = ${param.id}`

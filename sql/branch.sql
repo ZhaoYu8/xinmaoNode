@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80017
 File Encoding         : 65001
 
-Date: 2019-09-18 18:03:24
+Date: 2019-10-18 18:02:19
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -25,4 +25,4 @@ CREATE TABLE `branch` (
   `parent` int(25) NOT NULL,
   `company` int(25) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80017
 File Encoding         : 65001
 
-Date: 2019-09-27 14:48:16
+Date: 2019-10-18 18:02:49
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -26,4 +26,4 @@ CREATE TABLE `orderpremium` (
   `remark` varchar(25) DEFAULT NULL,
   `orderId` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8;

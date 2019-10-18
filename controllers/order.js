@@ -31,11 +31,14 @@ let obj = {
       select ta.id, ta.name, ta.phone, ta.custAddress, ta.sales, ta.deliveryType, 
         ta.address, ta.shipping, ta.courier, ta.downPayment, ta.remark, ta.createUser, ta.company, 
         date_format(ta.createDate, '%Y-%m-%d %H:%I:%S') as createDate, date_format(ta.orderDate, '%Y-%m-%d') as orderDate,
-        tb.name as createName , tc.name as custName , td.name as salesName from _order ta
+        tb.name as createName , tc.name as custName , td.name as salesName,
+        te.name as updateName, date_format(ta.updateDate, '%Y-%m-%d %H:%I:%S') as updateDate
+        from _order ta
         left join user tb ON ta.createUser = tb.id
         left join customer tc ON ta.name = tc.id
         left join user td ON ta.sales = td.id
-        where ${special} and ta.company = '${param.company}' and (ta.name like '%${param.value}%' or
+        left join user te ON ta.updateUser = te.id
+        where ${special} and ta.company = '${param.company}' and (tc.name like '%${param.value}%' or
         ta.phone like '%${param.value}%') limit ${arr[0]},${arr[1]}
     `
     let str1 = `select count(1) from _order ta left join user tb ON ta.createUser = tb.id where ta.company = '${param.company}' and (ta.name like '%${param.value}%' or ta.phone like '%${param.value}%')`
@@ -63,7 +66,7 @@ let obj = {
         { str: 'phone' }, { str: 'custAddress' },
         { str: 'sales' }, { str: 'address', data: param.address.join(',') }, { str: 'deliveryType' },
         { str: 'shipping' }, { str: 'courier' }, { str: 'orderDate' }, { str: 'downPayment' }, { str: 'remark' },
-        { str: 'company' }
+        { str: 'updateDate' }, { str: 'updateUser' }, { str: 'company' }
       ], '_order', param)
     let data = await connection.query(str) // 先更新order表，主表
     let data1 = await connection.query(`delete from orderProjectList where id not in(${param.projectData.filter(r => r.id).map(r => r.id).join(',') || ''}) and orderId = '${param.id}'`)

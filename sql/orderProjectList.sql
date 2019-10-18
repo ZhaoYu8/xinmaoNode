@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80017
 File Encoding         : 65001
 
-Date: 2019-09-27 14:48:22
+Date: 2019-10-18 18:02:54
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -21,7 +21,7 @@ SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `orderprojectlist`;
 CREATE TABLE `orderprojectlist` (
   `id` int(25) NOT NULL AUTO_INCREMENT,
-  `projectID` int(25) DEFAULT NULL COMMENT '产品id',
+  `projectId` int(25) DEFAULT NULL COMMENT '产品id',
   `sort` varchar(25) DEFAULT NULL COMMENT '产品分类',
   `units` varchar(25) DEFAULT NULL COMMENT '单位',
   `cost` varchar(25) DEFAULT NULL COMMENT '成本',
@@ -29,4 +29,4 @@ CREATE TABLE `orderprojectlist` (
   `count` varchar(25) DEFAULT NULL COMMENT '数量',
   `orderId` int(25) NOT NULL COMMENT '订单id',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8;
