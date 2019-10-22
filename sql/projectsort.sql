@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80017
 File Encoding         : 65001
 
-Date: 2019-10-18 18:03:13
+Date: 2019-10-22 17:33:54
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -26,3 +26,11 @@ CREATE TABLE `projectsort` (
   `company` int(25) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of projectsort
+-- ----------------------------
+INSERT INTO `projectsort` VALUES ('34', '杯子', '0', '20');
+INSERT INTO `projectsort` VALUES ('38', '尚浩亚', '34', '20');
+INSERT INTO `projectsort` VALUES ('39', '精品1', '38', '20');
+INSERT INTO `projectsort` VALUES ('40', '123', '39', '20');

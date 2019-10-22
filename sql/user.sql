@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80017
 File Encoding         : 65001
 
-Date: 2019-10-18 18:03:19
+Date: 2019-10-22 17:34:00
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -33,4 +33,11 @@ CREATE TABLE `user` (
   `sales` int(5) DEFAULT '1' COMMENT '是否显示在销售列表下（1是显示 0是不显示）',
   `company` int(25) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of user
+-- ----------------------------
+INSERT INTO `user` VALUES ('17', '小赵', '13370229059', null, '1', '1', '340000,340200,340225', '测试', '123456', '1', '1', '20');
+INSERT INTO `user` VALUES ('23', '小绿叶', '13370229059', null, '1,2', '0', '340000,340200,340225', '泥汊镇赵小自然村', '654321', '1', '1', '20');
+INSERT INTO `user` VALUES ('25', '13370229052', '13370229052', null, '15', '1', null, null, '123456', '1', '1', '38');

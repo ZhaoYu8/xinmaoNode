@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80017
 File Encoding         : 65001
 
-Date: 2019-10-18 18:03:00
+Date: 2019-10-22 17:33:43
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -31,3 +31,13 @@ CREATE TABLE `project` (
   `company` int(25) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of project
+-- ----------------------------
+INSERT INTO `project` VALUES ('32', '茶杯', '34,38', '个', '20', '30', '2019-09-10 14:03:46', '17', '20');
+INSERT INTO `project` VALUES ('33', '精品杯子23', '34,38,39', '个', '20', '25', '2019-09-10 14:18:13', '17', '20');
+INSERT INTO `project` VALUES ('36', '测试', '34,38,39', '个', '23', '35', '2019-10-08 15:28:19', '17', '20');
+INSERT INTO `project` VALUES ('37', '测试2', '34,38,39', '个', '23', '32', '2019-10-08 15:28:32', '17', '20');
+INSERT INTO `project` VALUES ('38', '差一点的', '34,38,39', '个', '12', '15', '2019-10-08 15:28:44', '17', '20');
+INSERT INTO `project` VALUES ('39', '差很多的', '34,38,39', '个', '5', '8', '2019-10-08 15:28:59', '17', '20');
