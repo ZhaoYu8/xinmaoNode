@@ -27,7 +27,7 @@ let obj = {
     let companyData = await connection.query(global.add([{ str: 'name' }, { str: 'phone' }, { str: 'createDate' }], 'company', param)) // 往公司表里面插入数据
     let branch = await connection.query(global.add([{ str: 'name' }, { str: 'parent', data: 0 }, { str: 'company', data: companyData.insertId }], 'branch', param)) // 往部门表插入数据
     let userData = await connection.query(global.add([{ str: 'name', data: param.phone }, { str: 'phone' }, { str: 'password' }, { str: 'sex', data: 1 }, { str: 'branch', data: branch.insertId }, { str: 'company', data: companyData.insertId }, { str: 'dr', data: 1 }, { str: 'sales', data: 1 }], 'user', param)) // 往员工表插入数据
-    await connection.query(global.add([{ str: 'CurrentIndex', data: 1 }, { str: 'updateDate', data: moment(new Date()).format("YYYY-MM-DD") }, { str: 'company', data: companyData.insertId }], '_orderId', param)) // 往订单id表里面插入一条数据
+    await connection.query(global.add([{ str: 'currentIndex', data: 0 }, { str: 'updateDate', data: moment(new Date()).format("YYYY-MM-DD") }, { str: 'company', data: companyData.insertId }], '_orderId', param)) // 往订单id表里面插入一条数据
     ctx.body = (Object.assign(global.createObj(), { item: userData, token: token.createToken(userData.insertId, companyData.insertId) || '' }))
   }
 }

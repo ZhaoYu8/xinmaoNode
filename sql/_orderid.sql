@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80017
 File Encoding         : 65001
 
-Date: 2019-10-22 17:33:04
+Date: 2019-10-23 10:58:11
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -21,7 +21,7 @@ SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `_orderid`;
 CREATE TABLE `_orderid` (
   `id` int(25) NOT NULL AUTO_INCREMENT,
-  `CurrentIndex` int(25) NOT NULL,
+  `currentIndex` int(25) NOT NULL,
   `updateDate` date DEFAULT NULL COMMENT '创建日期',
   `company` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`id`)
@@ -30,5 +30,5 @@ CREATE TABLE `_orderid` (
 -- ----------------------------
 -- Records of _orderid
 -- ----------------------------
-INSERT INTO `_orderid` VALUES ('2', '4', '2019-10-22', '20');
+INSERT INTO `_orderid` VALUES ('2', '2', '2019-10-23', '20');
 INSERT INTO `_orderid` VALUES ('4', '1', '2019-10-21', '38');

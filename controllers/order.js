@@ -5,18 +5,22 @@ let obj = {
   'POST /addOrder': async (ctx, next) => {
     let param = ctx.request.body
     let orderId = await connection.query(`select * from _orderId t where t.company = '${param.company}'`) // 先查询订单id表
+    let num = 0;
     if (moment(orderId[0].updateDate).format("YYYY-MM-DD") !== moment(new Date()).format("YYYY-MM-DD")) { // 如果日期不对，证明是新的一天了
-      await connection.query(`update _orderId t set CurrentIndex = 1, updateDate = '${moment(new Date()).format("YYYY-MM-DD")}' where t.company = '${param.company}'`) // 先查询订单id表
+      num = 0
+      await connection.query(`update _orderId t set t.updateDate = '${moment(new Date()).format("YYYY-MM-DD")}' where t.company = '${param.company}'`) // 先查询订单id表
+    } else {
+      num = orderId[0].currentIndex
     }
     let str = global.add(
       [
-        { str: 'name' }, { str: 'phone' }, { str: 'custAddress' }, { str: 'orderId', data: 'DD' + moment(new Date()).format("YYYYMMDD") + '00' + orderId[0].CurrentIndex },
+        { str: 'name' }, { str: 'phone' }, { str: 'custAddress' }, { str: 'orderId', data: 'DD' + moment(new Date()).format("YYYYMMDD") + '00' + (num + 1) },
         { str: 'sales' }, { str: 'address', data: param.address.join(',') }, { str: 'deliveryType' },
         { str: 'shipping' }, { str: 'courier' }, { str: 'orderDate' }, { str: 'downPayment' }, { str: 'remark' },
         { str: 'createDate' }, { str: 'createUser' }, { str: 'company' }
       ], '_order', param)
     let data = await connection.query(str) // 先插入order表，主表
-    let orderAwait = await connection.query(`update _orderId set CurrentIndex = "${Number(orderId[0].CurrentIndex) + 1}" where company = "${param.company}"`) // 再更新订单id表
+    let orderAwait = await connection.query(`update _orderId set currentIndex = "${num + 1}" where company = "${param.company}"`) // 再更新订单id表
     // orderProjectList 订单产品表
     let str1 = param.projectData.map(r => `('${r.id}', '${r.sort}', '${r.units}', '${r.cost}', '${r.price}', '${r.count}', '${data.insertId}')`).join(',')
     let data1 = await connection.query(`INSERT INTO orderProjectList (projectId, sort, units, cost, price, count, orderId) values ${str1}`)

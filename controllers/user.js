@@ -48,5 +48,39 @@ let obj = {
     let data = await connection.query(str)
     ctx.body = (Object.assign(global.createObj(), { item: data, str: str }))
   },
+  'POST /commonInfo': async (ctx, next) => {
+    let param = ctx.request.body
+    let str = `select ta.* from user ta where 1=1 and ta.id = '${param.currentId}' and ta.company = '${param.company}'`
+    let data = await connection.query(str)
+    let str1 = `
+      select ta.id, ta.name, ta.phone, ta.custAddress, ta.sales, ta.deliveryType, ta.orderId, 
+        ta.address, ta.shipping, ta.courier, ta.downPayment, ta.remark, ta.createUser, ta.company, 
+        date_format(ta.createDate, '%Y-%m-%d %H:%I:%S') as createDate, date_format(ta.orderDate, '%Y-%m-%d') as orderDate,
+        tb.name as createName , tc.name as custName , td.name as salesName,
+        te.name as updateName, date_format(ta.updateDate, '%Y-%m-%d %H:%I:%S') as updateDate
+        from _order ta
+        left join user tb ON ta.createUser = tb.id
+        left join customer tc ON ta.name = tc.id
+        left join user td ON ta.sales = td.id
+        left join user te ON ta.updateUser = te.id
+        where 1=1 and ta.company = '${param.company}' ORDER BY ta.createDate DESC limit 0,6
+    `
+    let data1 = await connection.query(str1)
+    let data2 = '', data3 = ''
+    if (data1.length) {
+      data2 = await connection.query(`
+        select ta.*, tb.name from orderProjectList ta 
+        left join project tb ON ta.projectId = tb.id
+        where ta.orderId in (${data1.map(r => r.id + '').join()})
+      `)
+      data3 = await connection.query(`select * from orderPremium ta where ta.orderId in (${data1.map(r => r.id + '').join()})`)
+    }
+    data1.map(r => {
+      r.projectData = data2.filter(n => n.orderId === r.id) || []
+      r.premiumData = data3.filter(n => n.orderId === r.id) || []
+    })
+    data[0].orderInfo = data1
+    ctx.body = (Object.assign(global.createObj(), { item: data, str: str }))
+  },
 }
 module.exports = obj;
