@@ -10,20 +10,18 @@ Target Server Type    : MYSQL
 Target Server Version : 80017
 File Encoding         : 65001
 
-Date: 2019-10-24 18:20:50
+Date: 2019-10-24 18:20:23
 */
 
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for orderpremium
+-- Table structure for _projectid
 -- ----------------------------
-DROP TABLE IF EXISTS `orderpremium`;
-CREATE TABLE `orderpremium` (
+DROP TABLE IF EXISTS `_projectid`;
+CREATE TABLE `_projectid` (
   `id` int(25) NOT NULL AUTO_INCREMENT,
-  `name` varchar(25) DEFAULT NULL,
-  `money` varchar(25) DEFAULT NULL,
-  `remark` varchar(25) DEFAULT NULL,
-  `orderId` int(11) DEFAULT NULL,
+  `currentIndex` int(25) NOT NULL,
+  `company` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;

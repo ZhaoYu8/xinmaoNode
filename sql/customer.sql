@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80017
 File Encoding         : 65001
 
-Date: 2019-10-22 17:33:22
+Date: 2019-10-24 18:20:45
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -31,9 +31,3 @@ CREATE TABLE `customer` (
   `company` int(25) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of customer
--- ----------------------------
-INSERT INTO `customer` VALUES ('43', '赵宇', '13370229012', '340000,340200,340225', '泥汊镇赵小自然村02501', '', '2019-09-03 11:30:04', '17', '20');
-INSERT INTO `customer` VALUES ('44', '胡绿叶', '15821836343', '340000,340200,340225', '泥汊镇赵小自然村025', '', '2019-09-03 18:01:40', '17', '20');

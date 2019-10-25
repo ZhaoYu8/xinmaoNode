@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80017
 File Encoding         : 65001
 
-Date: 2019-10-23 10:58:11
+Date: 2019-10-24 18:20:17
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -26,9 +26,3 @@ CREATE TABLE `_orderid` (
   `company` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of _orderid
--- ----------------------------
-INSERT INTO `_orderid` VALUES ('2', '2', '2019-10-23', '20');
-INSERT INTO `_orderid` VALUES ('4', '1', '2019-10-21', '38');

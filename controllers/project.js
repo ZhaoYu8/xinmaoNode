@@ -3,10 +3,24 @@ import global from '../global/global'
 let obj = {
   'POST /addProject': async (ctx, next) => {
     let param = ctx.request.body
+    let data3 = await connection.query(`select * from project t where t.name = '${param.name}' and t.company = '${param.company}'`)
+    if (data3.length) {
+      ctx.body = (Object.assign(global.createObj(false), { item: data, item1: data1, message: `已经存在名称为 ${param.name} 的产品，请修改产品名称后，再提交！` }))
+      return
+    }
+    let data2 = await connection.query(`select * from _projectid t where t.company = '${param.company}'`)
+    let num = 0;
+    if (!data2.length) { // 证明新企业第一次添加产品
+      num = num + 1
+      await connection.query(`INSERT INTO _projectid(currentIndex, company) VALUES ('${num}', '${param.company}') `)
+    } else {
+      num = data2[0].currentIndex + 1
+      await connection.query(`update _projectid t set t.currentIndex = '${num}' where t.company = '${param.company}'`)
+    }
     let str = global.add(
       [
-        { str: 'name' }, { str: 'sort', data: param.sort.join(',') }, { str: 'units' },
-        { str: 'cost' }, { str: 'price' },
+        { str: 'proNumber', data: [...new Array(6 - (num + '').length)].map(r => 0).join('') + num }, { str: 'name' }, { str: 'sort', data: param.sort.join(',') },
+        { str: 'units' },{ str: 'cost' }, { str: 'price' },
         { str: 'createDate' }, { str: 'createUser' }, { str: 'company' }
       ], 'project', param)
     let data = await connection.query(str)

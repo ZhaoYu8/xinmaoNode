@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80017
 File Encoding         : 65001
 
-Date: 2019-10-22 17:33:48
+Date: 2019-10-24 18:21:04
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -26,8 +26,3 @@ CREATE TABLE `projectphoto` (
   `projectId` int(25) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of projectphoto
--- ----------------------------
-INSERT INTO `projectphoto` VALUES ('51', 'tianmao (1).jpg', '\\upload_6e727f5db7a28a168e8e30fefa8f4557.jpg', '49');
