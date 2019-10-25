@@ -14,7 +14,7 @@ let obj = {
     }
     let str = global.add(
       [
-        { str: 'name' }, { str: 'phone' }, { str: 'custAddress' }, { str: 'orderId', data: 'DD' + moment(new Date()).format("YYYYMMDD") + '00' + (num + 1) },
+        { str: 'name' }, { str: 'phone' }, { str: 'custAddress' }, { str: 'orderId', data: 'DD-' + moment(new Date()).format("YYYY-MM-DD") + '-00' + (num + 1) },
         { str: 'sales' }, { str: 'address', data: param.address.join(',') }, { str: 'deliveryType' },
         { str: 'shipping' }, { str: 'courier' }, { str: 'orderDate' }, { str: 'downPayment' }, { str: 'remark' },
         { str: 'createDate' }, { str: 'createUser' }, { str: 'company' }
@@ -22,8 +22,8 @@ let obj = {
     let data = await connection.query(str) // 先插入order表，主表
     let orderAwait = await connection.query(`update _orderId set currentIndex = "${num + 1}" where company = "${param.company}"`) // 再更新订单id表
     // orderProjectList 订单产品表
-    let str1 = param.projectData.map(r => `('${r.id}', '${r.sort}', '${r.units}', '${r.cost}', '${r.price}', '${r.count}', '${data.insertId}')`).join(',')
-    let data1 = await connection.query(`INSERT INTO orderProjectList (projectId, sort, units, cost, price, count, orderId) values ${str1}`)
+    let str1 = param.projectData.map(r => `('${r.id}', '${r.sort}', '${r.units}', '${r.cost}', '${r.price}', '${r.count}', '${r.proRemark}', '${data.insertId}')`).join(',')
+    let data1 = await connection.query(`INSERT INTO orderProjectList (projectId, sort, units, cost, price, count, proRemark, orderId) values ${str1}`)
     // orderPremium 订单额外费用表
     let str2 = '', data2 = ''
     if (param.premiumData.length) {
@@ -81,19 +81,19 @@ let obj = {
     let data = await connection.query(str) // 先更新order表，主表
     let data1 = await connection.query(`delete from orderProjectList where id not in(${param.projectData.filter(r => r.id).map(r => r.id).join(',') || 0}) and orderId = '${param.id}'`)
     let data2 = await connection.query(`
-      INSERT INTO orderProjectList (id, projectId, sort, units, cost, price, count, orderId) VALUES 
+      INSERT INTO orderProjectList (id, projectId, sort, units, cost, price, count, proRemark, orderId) VALUES 
       ${param.projectData.map(r => {
-      return `(${r.projectId ? r.id : 0}, '${r.projectId || r.id}', '${r.sort}', '${r.units}', '${r.cost}', '${r.price}', '${r.count}', '${param.id}')`
+      return `(${r.projectId ? r.id : 0}, '${r.projectId || r.id}', '${r.sort}', '${r.units}', '${r.cost}', '${r.price}', '${r.count}', '${r.proRemark}', '${param.id}')`
     }).join(',')}
-      ON DUPLICATE KEY UPDATE units = VALUES(units), sort = VALUES(sort), cost = VALUES(cost), price = VALUES(price), count = VALUES(count), orderId = VALUES(orderId);
+      ON DUPLICATE KEY UPDATE units = VALUES(units), sort = VALUES(sort), cost = VALUES(cost), price = VALUES(price), count = VALUES(count), proRemark = VALUES(proRemark), orderId = VALUES(orderId);
     `)
     await connection.query(`delete from orderPremium where id not in(${param.premiumData.filter(r => r.id).map(r => r.id).join(',') || 0}) and orderId = '${param.id}'`)
     if (param.premiumData.length) {
       await connection.query(`
         INSERT INTO orderPremium (id, name, money, remark, orderId) VALUES 
           ${param.premiumData.map(r => {
-          return `(${r.id || 0}, '${r.name}', '${r.money}', '${r.remark}', '${param.id}')`
-        }).join(',')}
+        return `(${r.id || 0}, '${r.name}', '${r.money}', '${r.remark}', '${param.id}')`
+      }).join(',')}
           ON DUPLICATE KEY UPDATE name = VALUES(name), money = VALUES(money), remark = VALUES(remark), orderId = VALUES(orderId);
       `)
     }
