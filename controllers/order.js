@@ -226,13 +226,36 @@ let obj = {
     from orderoperation t 
     left join user tb ON t.operationUser = tb.id
     where 1= 1 and t.orderId ='${param.id}' and t.company = '${param.company}' order by t.operationDate desc`;
-    let data = await connection.query(str); // 先更新order表，主表
-    ctx.body = Object.assign(global.createObj(), { item: data });
+    let data = await connection.query(str);
+    let data1 = await connection.query(
+      `select t.*,tb.operationType, tc.name from orderdelivery t 
+      left join orderoperation tb on t.orderOperationId = tb.id
+      left join project tc on t.projectId = tc.id
+      where t.orderId = '${param.id}' ORDER BY tb.operationDate desc`
+    );
+    ctx.body = Object.assign(global.createObj(), { item: data, list: data1 });
   },
   'POST /addOrderDelivery': async (ctx, next) => {
     let param = ctx.request.body;
-    let str = param.data.map((r) => `('${param.id}', '${r.projectId}', '${r.num}', '${r.node}'')`).join(',');
-    let data = await connection.query(`INSERT INTO orderdelivery (orderId, projectId, num, node) values ${str}`); // 先更新order表，主表
+    let str1 = global.add(
+      [
+        { str: 'orderId', data: param.id },
+        { str: 'operationUser', data: param.currentId },
+        { str: 'operationDate', data: moment(new Date()).format('YYYY-MM-DD HH:mm:ss') },
+        { str: 'operationType', data: 3 }, // [0: 新增，1：修改，2：删除，3：发货，4：收款，5：完成]
+        { str: 'company' }
+      ],
+      'orderoperation',
+      param
+    );
+    let data1 = await connection.query(str1);
+
+    let str = param.data
+      .map((r) => `('${param.id}', '${r.projectId}', '${r.num}', '${r.remark}', '${data1.insertId}')`)
+      .join(',');
+    let data = await connection.query(
+      `INSERT INTO orderdelivery (orderId, projectId, num, remark, orderOperationId) values ${str}`
+    ); // 先更新order表，主表
     ctx.body = Object.assign(global.createObj(), { item: data });
   },
   'POST /addOrderMoney': async (ctx, next) => {
