@@ -260,13 +260,23 @@ let obj = {
   },
   'POST /addOrderMoney': async (ctx, next) => {
     let param = ctx.request.body;
-    let str = `select 
-    date_format(t.operationDate, '%Y-%m-%d %H:%i:%S') as operationDate,
-    t.operationType, t.id, t.orderId, t.operationUser, tb.name as operationUserName
-    from orderoperation t 
-    left join user tb ON t.operationUser = tb.id
-    where 1= 1 and t.orderId ='${param.id}' and t.company = '${param.company}' order by t.operationDate desc`;
-    let data = await connection.query(str); // 先更新order表，主表
+    let str1 = global.add(
+      [
+        { str: 'orderId', data: param.id },
+        { str: 'operationUser', data: param.currentId },
+        { str: 'operationDate', data: moment(new Date()).format('YYYY-MM-DD HH:mm:ss') },
+        { str: 'operationType', data: 4 }, // [0: 新增，1：修改，2：删除，3：发货，4：收款，5：完成]
+        { str: 'company' }
+      ],
+      'orderoperation',
+      param
+    );
+    let data1 = await connection.query(str1);
+
+    let str = param.data.map((r) => `('${param.id}', '${r.num}', '${r.remark}', '${data1.insertId}')`).join(',');
+    let data = await connection.query(
+      `INSERT INTO ordercollectmoney (orderId,  num, remark, orderOperationId) values ${str}`
+    ); // 先更新order表，主表
     ctx.body = Object.assign(global.createObj(), { item: data });
   }
 };
