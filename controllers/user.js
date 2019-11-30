@@ -85,8 +85,8 @@ let obj = {
         left join user te ON ta.updateUser = te.id
         where 1=1 and ta.company = '${param.company}' ORDER BY ta.createDate DESC limit 0,6
     `;
-    let data1 = await connection.query(str1);
-    let data2 = '',
+    let data1 = await connection.query(str1),
+      data2 = '',
       data3 = '';
     if (data1.length) {
       data2 = await connection.query(`

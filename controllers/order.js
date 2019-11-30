@@ -1,8 +1,8 @@
 import connection from '../global/api';
 import global from '../global/global';
 import moment from 'moment';
-// ['addOrder', 'queryOrder', 'editOrder', 'queryPrint', 'editPrint','queryOrderOperations']
-// ['新增订单', '查询订单', '修改订单', '查询打印', '修改打印设置', '查询订单操作记录']
+// ['addOrder', 'queryOrder', 'editOrder', 'queryPrint', 'editPrint','queryOrderOperations', 'addOrderDelivery', 'addOrderMoney']
+// ['新增订单', '查询订单', '修改订单', '查询打印', '修改打印设置', '查询订单操作记录', '新增发货记录', '新增收款记录']
 let obj = {
   'POST /addOrder': async (ctx, next) => {
     let param = ctx.request.body;
@@ -222,18 +222,22 @@ let obj = {
     let param = ctx.request.body;
     let str = `select 
     date_format(t.operationDate, '%Y-%m-%d %H:%i:%S') as operationDate,
-    t.operationType, t.id, t.orderId, t.operationUser, tb.name as operationUserName
+    t.operationType, t.id, t.orderId, t.operationUser, tb.name as operationUserName,
+    tc.num, tc.remark, td.num as moneyNum,tc.projectId, td.remark as moneyRemark, te.name
     from orderoperation t 
     left join user tb ON t.operationUser = tb.id
+    left join orderdelivery tc ON tc.orderOperationId = t.id
+    left join ordercollectmoney td ON td.orderOperationId = t.id
+    left join project te on tc.projectId = te.id
     where 1= 1 and t.orderId ='${param.id}' and t.company = '${param.company}' order by t.operationDate desc`;
     let data = await connection.query(str);
-    let data1 = await connection.query(
-      `select t.*,tb.operationType, tc.name from orderdelivery t 
-      left join orderoperation tb on t.orderOperationId = tb.id
-      left join project tc on t.projectId = tc.id
-      where t.orderId = '${param.id}' ORDER BY tb.operationDate desc`
-    );
-    ctx.body = Object.assign(global.createObj(), { item: data, list: data1 });
+    // let data1 = await connection.query(
+    //   `select t.*,tb.operationType, tc.name from orderdelivery t
+    //   left join orderoperation tb on t.orderOperationId = tb.id
+    //   left join project tc on t.projectId = tc.id
+    //   where t.orderId = '${param.id}' ORDER BY tb.operationDate desc`
+    // );
+    ctx.body = Object.assign(global.createObj(), { item: data, str: str });
   },
   'POST /addOrderDelivery': async (ctx, next) => {
     let param = ctx.request.body;
@@ -259,8 +263,9 @@ let obj = {
     ctx.body = Object.assign(global.createObj(), { item: data });
   },
   'POST /addOrderMoney': async (ctx, next) => {
+    // 首先都是往订单操作表里面塞入数据，主要是记录时间啊，什么类型啊。
     let param = ctx.request.body;
-    let str1 = global.add(
+    let str = global.add(
       [
         { str: 'orderId', data: param.id },
         { str: 'operationUser', data: param.currentId },
@@ -271,11 +276,9 @@ let obj = {
       'orderoperation',
       param
     );
-    let data1 = await connection.query(str1);
-
-    let str = param.data.map((r) => `('${param.id}', '${r.num}', '${r.remark}', '${data1.insertId}')`).join(',');
+    let data1 = await connection.query(str);
     let data = await connection.query(
-      `INSERT INTO ordercollectmoney (orderId,  num, remark, orderOperationId) values ${str}`
+      `INSERT INTO ordercollectmoney (orderId, num, remark, orderOperationId) values ('${param.id}', '${param.num}', '${param.remark}', '${data1.insertId}')`
     ); // 先更新order表，主表
     ctx.body = Object.assign(global.createObj(), { item: data });
   }
