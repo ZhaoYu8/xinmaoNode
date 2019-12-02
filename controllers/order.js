@@ -102,23 +102,37 @@ let obj = {
         ta.phone like '%${param.value}%')  ORDER BY ta.createDate DESC limit ${arr[0]},${arr[1]}
     `;
     let str1 = `select count(1) from _order ta left join user tb ON ta.createUser = tb.id where ta.company = '${param.company}' and (ta.name like '%${param.value}%' or ta.phone like '%${param.value}%')`;
-    let data = await connection.query(str);
-    let data1 = await connection.query(str1);
+    let data = await connection.query(str); // 先查出订单主表
+    let data1 = await connection.query(str1); // 查出总数
     let data2 = '',
-      data3 = '';
+      data3 = '',
+      data4 = '';
     if (data.length) {
+      // 如果主表查出数据了
       data2 = await connection.query(`
         select ta.*, tb.name, tb.proNumber from orderProjectList ta 
         left join project tb ON ta.projectId = tb.id
         where ta.orderId in (${data.map((r) => r.id + '').join()})
-      `);
+      `); // 每个订单id，下面附属的的产品
       data3 = await connection.query(
         `select * from orderPremium ta where ta.orderId in (${data.map((r) => r.id + '').join()})`
-      );
+      ); // 每个订单id，下面附属的的额外支出表
+      data4 = await connection.query(
+        `select * from orderoperation ta where ta.orderId in (${data.map((r) => r.id + '').join()})`
+      ); // 每个订单id，操作表
     }
     data.map((r) => {
       r.projectData = data2.filter((n) => n.orderId === r.id) || [];
       r.premiumData = data3.filter((n) => n.orderId === r.id) || [];
+      r.operation = data4.filter((n) => n.orderId === r.id) || [];
+      let arr = data4.filter((n) => n.orderId === r.id);
+      if (arr.length) {
+        r.operationType = arr.sort((a, b) => {
+          return b.operationType - a.operationType;
+        })[0].operationType;
+      } else {
+        r.operationType = 0;
+      }
     });
     ctx.body = Object.assign(global.createObj(), { item: data, str: str, totalCount: data1[0]['count(1)'] });
   },
@@ -281,6 +295,23 @@ let obj = {
       `INSERT INTO ordercollectmoney (orderId, num, remark, orderOperationId) values ('${param.id}', '${param.num}', '${param.remark}', '${data1.insertId}')`
     ); // 先更新order表，主表
     ctx.body = Object.assign(global.createObj(), { item: data });
+  },
+  'POST /addOrderOver': async (ctx, next) => {
+    // 首先都是往订单操作表里面塞入数据，主要是记录时间啊，什么类型啊。
+    let param = ctx.request.body;
+    let str = global.add(
+      [
+        { str: 'orderId', data: param.id },
+        { str: 'operationUser', data: param.currentId },
+        { str: 'operationDate', data: moment(new Date()).format('YYYY-MM-DD HH:mm:ss') },
+        { str: 'operationType', data: 5 }, // [0: 新增，1：修改，2：删除，3：发货，4：收款，5：完成]
+        { str: 'company' }
+      ],
+      'orderoperation',
+      param
+    );
+    let data1 = await connection.query(str);
+    ctx.body = Object.assign(global.createObj(), { item: data1 });
   }
 };
 module.exports = obj;
