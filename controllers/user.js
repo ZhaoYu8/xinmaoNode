@@ -104,6 +104,14 @@ let obj = {
     });
     data[0].orderInfo = data1;
     ctx.body = Object.assign(global.createObj(), { item: data, str: str });
+  },
+  'POST /weather': async (ctx, next) => {
+    let data = await global.commonGet('http://pv.sohu.com/cityjson', false);
+    let data1 = JSON.parse(`{${data.split('{')[1].split('}')[0]}}`).cid;
+    let data2 = await global.commonGet(
+      `http://www.tianqiapi.com/api/?version=v1&cityid=${data1 || 101220305}&appid=64432121&appsecret=n5ZcREXu`
+    );
+    ctx.body = Object.assign(global.createObj(), { item: data2 });
   }
 };
 module.exports = obj;
