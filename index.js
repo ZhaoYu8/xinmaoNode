@@ -42,7 +42,7 @@ app.use(async (ctx, next) => {
     ctx.request.body.currentId = data.id || '';
     ctx.request.body.company = data.company || '';
   } else if (
-    !['/login', '/register', '/uploadfiles'].includes(ctx.request.url) &&
+    !['/login', '/register', '/uploadfiles', '/weather'].includes(ctx.request.url) &&
     !ctx.request.url.includes('uploads')
   ) {
     ctx.response.status = 401;

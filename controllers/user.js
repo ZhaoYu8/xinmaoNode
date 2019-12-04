@@ -112,6 +112,24 @@ let obj = {
       `http://www.tianqiapi.com/api/?version=v1&cityid=${data1 || 101220305}&appid=64432121&appsecret=n5ZcREXu`
     );
     ctx.body = Object.assign(global.createObj(), { item: data2 });
+  },
+  'GET /weather': async (ctx, next) => {
+    let data = await global.commonGet('http://pv.sohu.com/cityjson', false);
+    let data1 = JSON.parse(`{${data.split('{')[1].split('}')[0]}}`).cid;
+    let data2 = await global.commonGet(
+      `http://www.tianqiapi.com/api/?version=v1&cityid=${data1 || 101220305}&appid=64432121&appsecret=n5ZcREXu`
+    );
+    ctx.body = Object.assign(global.createObj(), { item: data2 });
+  },
+  'POST /custSalesList': async (ctx, next) => {
+    let param = ctx.request.body;
+    param.startDate;
+    param.endDate;
+    let str = `select t2.name as custname, sum(t1.price * t1.count) as num from _order t -- 订单表
+    left join orderprojectlist t1 on t.id = t1.orderId -- 订单产品表
+    LEFT JOIN customer t2 on t.name = t2.id -- 客户表
+    where t.createDate > 20190104 and t.createDate < 20191210 GROUP BY t2.name`;
+    ctx.body = Object.assign(global.createObj(), { item: data2 });
   }
 };
 module.exports = obj;
