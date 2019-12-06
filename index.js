@@ -78,6 +78,9 @@ httpsServer.listen(8000, () => {
   console.log('启动成功 8000');
 });
 
+// app.listen(8000, () => {
+//   console.log('启动成功 8000');
+// });
 // http.createServer((req, res) => {
 //   res.setHeader('Access-Control-Allow-Origin', '*');
 //   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, token');

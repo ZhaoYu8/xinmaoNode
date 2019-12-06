@@ -1,5 +1,6 @@
 import connection from '../global/api';
 import global from '../global/global';
+import moment from 'moment';
 let obj = {
   'POST /addUser': async (ctx, next) => {
     let param = ctx.request.body;
@@ -123,13 +124,43 @@ let obj = {
   },
   'POST /custSalesList': async (ctx, next) => {
     let param = ctx.request.body;
-    param.startDate;
-    param.endDate;
     let str = `select t2.name as custname, sum(t1.price * t1.count) as num from _order t -- 订单表
     left join orderprojectlist t1 on t.id = t1.orderId -- 订单产品表
     LEFT JOIN customer t2 on t.name = t2.id -- 客户表
-    where t.createDate > 20190104 and t.createDate < 20191210 GROUP BY t2.name`;
-    ctx.body = Object.assign(global.createObj(), { item: data2 });
+    where 
+    t.orderDate > ${moment(param.startDate).format('YYYYMMDD')} and 
+    t.orderDate < ${moment(param.endDate).format(
+      'YYYYMMDD'
+    )} GROUP BY t2.name ORDER BY num desc limit 0,${param.pageSize || 7}`;
+    let data = await connection.query(str);
+    ctx.body = Object.assign(global.createObj(), { item: data });
+  },
+  'POST /custMonthList': async (ctx, next) => {
+    let param = ctx.request.body;
+    let date = [
+      param.startDate ||
+        moment()
+          .month(moment().month() - 11)
+          .format('YYYY-MM'),
+      param.endDate || moment().format('YYYY-MM')
+    ];
+    let str = `SELECT DATE_FORMAT(t.orderDate,'%Y%m') as month, sum(t1.price * t1.count) as num FROM _order t
+    LEFT JOIN orderprojectlist t1 on t.id = t1.orderId
+    WHERE DATE_FORMAT(t.orderDate,'%Y%m') >= ${moment(date[0]).format('YYYYMM')} and
+    DATE_FORMAT(t.orderDate,'%Y%m') <= ${moment(date[1]).format('YYYYMM')} GROUP BY DATE_FORMAT(t.orderDate,'%Y%m')`;
+    let data = await connection.query(str);
+
+    Object.keys(Array.apply(null, { length: moment(date[1]).diff(moment(date[0]), 'month') + 1 }))
+      .map((item) => +item)
+      .map((r, i) => {
+        let d = moment(date[0])
+          .add(i, 'month')
+          .format('YYYYMM');
+        let arr = data.filter((r) => r.month === d);
+        if (!arr.length) data.push({ month: d, num: 0 });
+      });
+    data.sort((a, b) => a.month - b.month);
+    ctx.body = Object.assign(global.createObj(), { item: data });
   }
 };
 module.exports = obj;
