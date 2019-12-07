@@ -127,7 +127,7 @@ let obj = {
     let str = `select t2.name as custname, sum(t1.price * t1.count) as num from _order t -- 订单表
     left join orderprojectlist t1 on t.id = t1.orderId -- 订单产品表
     LEFT JOIN customer t2 on t.name = t2.id -- 客户表
-    where 
+    where 1=1 and t.company = '${param.company}' and
     t.orderDate > ${moment(param.startDate).format('YYYYMMDD')} and 
     t.orderDate < ${moment(param.endDate).format(
       'YYYYMMDD'
@@ -144,10 +144,14 @@ let obj = {
           .format('YYYY-MM'),
       param.endDate || moment().format('YYYY-MM')
     ];
-    let str = `SELECT DATE_FORMAT(t.orderDate,'%Y%m') as month, sum(t1.price * t1.count) as num FROM _order t
+    let str = `SELECT DATE_FORMAT(t.orderDate,'%Y%m') as month, sum(t1.price * t1.count) as num, count(DISTINCT t.id) as listNum FROM _order t
     LEFT JOIN orderprojectlist t1 on t.id = t1.orderId
-    WHERE DATE_FORMAT(t.orderDate,'%Y%m') >= ${moment(date[0]).format('YYYYMM')} and
-    DATE_FORMAT(t.orderDate,'%Y%m') <= ${moment(date[1]).format('YYYYMM')} GROUP BY DATE_FORMAT(t.orderDate,'%Y%m')`;
+    WHERE 1=1 and t.company = '${param.company}' and DATE_FORMAT(t.orderDate,'%Y%m') >= ${moment(date[0]).format(
+      'YYYYMM'
+    )} and
+    DATE_FORMAT(t.orderDate,'%Y%m') <= ${moment(date[1]).format(
+      'YYYYMM'
+    )} GROUP BY DATE_FORMAT(t.orderDate,'%Y%m')  ORDER BY month`;
     let data = await connection.query(str);
 
     Object.keys(Array.apply(null, { length: moment(date[1]).diff(moment(date[0]), 'month') + 1 }))
@@ -157,7 +161,7 @@ let obj = {
           .add(i, 'month')
           .format('YYYYMM');
         let arr = data.filter((r) => r.month === d);
-        if (!arr.length) data.push({ month: d, num: 0 });
+        if (!arr.length) data.push({ month: d, num: 0, listNum: 0 });
       });
     data.sort((a, b) => a.month - b.month);
     ctx.body = Object.assign(global.createObj(), { item: data });
