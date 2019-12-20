@@ -65,22 +65,22 @@ app.use(async (ctx, next) => {
 });
 app.use(controller());
 
-// 根据项目的路径导入生成的证书文件
-const privateKey = fs.readFileSync(path.join(__dirname, './ssl.key'), 'utf8');
-const certificate = fs.readFileSync(path.join(__dirname, './ssl.crt'), 'utf8');
-const credentials = {
-  key: privateKey,
-  cert: certificate
-};
+// // 根据项目的路径导入生成的证书文件
+// const privateKey = fs.readFileSync(path.join(__dirname, './ssl.key'), 'utf8');
+// const certificate = fs.readFileSync(path.join(__dirname, './ssl.crt'), 'utf8');
+// const credentials = {
+//   key: privateKey,
+//   cert: certificate
+// };
 
-const httpsServer = https.createServer(credentials, app.callback());
-httpsServer.listen(8000, () => {
-  console.log('启动成功 8000');
-});
-
-// app.listen(8000, () => {
+// const httpsServer = https.createServer(credentials, app.callback());
+// httpsServer.listen(8000, () => {
 //   console.log('启动成功 8000');
 // });
+
+app.listen(8000, () => {
+  console.log('启动成功 8000');
+});
 // http.createServer((req, res) => {
 //   res.setHeader('Access-Control-Allow-Origin', '*');
 //   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, token');

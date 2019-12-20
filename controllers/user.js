@@ -107,16 +107,16 @@ let obj = {
     ctx.body = Object.assign(global.createObj(), { item: data, str: str });
   },
   'POST /weather': async (ctx, next) => {
-    let data = await global.commonGet('http://pv.sohu.com/cityjson', false);
-    let data1 = JSON.parse(`{${data.split('{')[1].split('}')[0]}}`).cid;
+    let data = await global.commonGet('http://restapi.amap.com/v3/ip?key=2e274b34f0284d295206dd1f8afca37c', false);
+    let data1 = JSON.parse(`{${data.split('{')[1].split('}')[0]}}`).adcode;
     let data2 = await global.commonGet(
       `http://www.tianqiapi.com/api/?version=v1&cityid=${data1 || 101220305}&appid=64432121&appsecret=n5ZcREXu`
     );
     ctx.body = Object.assign(global.createObj(), { item: data2 });
   },
   'GET /weather': async (ctx, next) => {
-    let data = await global.commonGet('http://pv.sohu.com/cityjson', false);
-    let data1 = JSON.parse(`{${data.split('{')[1].split('}')[0]}}`).cid;
+    let data = await global.commonGet('http://restapi.amap.com/v3/ip?key=2e274b34f0284d295206dd1f8afca37c', false);
+    let data1 = JSON.parse(`{${data.split('{')[1].split('}')[0]}}`).adcode;
     let data2 = await global.commonGet(
       `http://www.tianqiapi.com/api/?version=v1&cityid=${data1 || 101220305}&appid=64432121&appsecret=n5ZcREXu`
     );
@@ -164,6 +164,26 @@ let obj = {
         if (!arr.length) data.push({ month: d, num: 0, listNum: 0 });
       });
     data.sort((a, b) => a.month - b.month);
+    ctx.body = Object.assign(global.createObj(), { item: data });
+  },
+  'POST /qryList': async (ctx, next) => {
+    let param = ctx.request.body;
+    let str = 'select * from node';
+    let str1 = 'select * from edge';
+    let data = await connection.query(str);
+    let data1 = await connection.query(str1);
+    ctx.body = Object.assign(global.createObj(), { item: { nodes: data, edges: data1 } });
+  },
+  'POST /addNodes': async (ctx, next) => {
+    let param = ctx.request.body;
+    let str = global.add([{ str: 'name' }, { str: 'x' }, { str: 'y' }], 'node', param);
+    let data = await connection.query(str);
+    ctx.body = Object.assign(global.createObj(), { item: data });
+  },
+  'POST /addEdges': async (ctx, next) => {
+    let param = ctx.request.body;
+    let str = global.add([{ str: 'target' }, { str: 'source' }], 'edge', param);
+    let data = await connection.query(str);
     ctx.body = Object.assign(global.createObj(), { item: data });
   }
 };

@@ -34,7 +34,8 @@ let obj = {
         { str: 'price' },
         { str: 'createDate' },
         { str: 'createUser' },
-        { str: 'company' }
+        { str: 'company' },
+        { str: 'testUrl' }
       ],
       'project',
       param
@@ -85,7 +86,8 @@ let obj = {
         { str: 'sort', data: param.sort.join(',') },
         { str: 'units' },
         { str: 'cost' },
-        { str: 'price' }
+        { str: 'price' },
+        { str: 'testUrl' }
       ],
       'project',
       param
@@ -116,6 +118,28 @@ let obj = {
       }
     }
     ctx.body = Object.assign(global.createObj(), { item: data, photoItem: [data1, data2] });
+  },
+  'POST /queryProjectTest': async (ctx, next) => {
+    let param = ctx.request.body;
+    let str = `select ta.*, date_format(ta.createDate, '%Y-%m-%d %H:%i:%S') as createDate1, tb.name as createName from project ta left join user tb ON ta.createUser = tb.id where ta.company = '${
+      param.company
+    }' and (ta.name like '%${param.value || ''}%') `;
+
+    let data = await connection.query(str);
+    let data2 = [];
+    if (data.length) {
+      data2 = await connection.query(
+        `select * from projectPhoto ta where ta.projectId in (${data.map((r) => r.id + '').join()})`
+      );
+    }
+    data.map((r) => {
+      r.photo = [];
+      data2.map((n) => {
+        if (r.id !== n.projectId) return;
+        r.photo.push(n);
+      });
+    });
+    ctx.body = Object.assign(global.createObj(), { item: data, str: str });
   }
 };
 module.exports = obj;
