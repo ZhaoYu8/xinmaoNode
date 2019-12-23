@@ -1,6 +1,8 @@
 // add 新增 edit 修改 delete 删除 query 查询
 import moment from 'moment';
 import http from 'http';
+import fs from 'fs';
+import path from 'path';
 let obj = {
   add(arr = [], table = '', param = {}) {
     let [str, str1] = [`INSERT INTO ${table} (${arr.map((r) => r.str).join(',')}) value (`, ``];
@@ -55,6 +57,42 @@ let obj = {
         });
       });
     });
+  },
+  // 查询目录是否存在
+  getStat(path) {
+    return new Promise((resolve, reject) => {
+      fs.access(path, (err) => {
+        resolve(err);
+      });
+    });
+  },
+  // 创建文件夹
+  mkdir(dir) {
+    return new Promise((resolve, reject) => {
+      fs.mkdir(dir, fs.constants.F_OK, (err) => {
+        if (err) {
+          resolve(false);
+        } else {
+          resolve(true);
+        }
+      });
+    });
+  },
+  // 查询文件夹目录
+  async dirExists(date) {
+    let YY = await obj.getStat(date[0]);
+    let MM = await obj.getStat(date[1]);
+    //如果月份文件夹和日期文件夹都存在的话，就不用创建的了!
+    if (!YY && !MM) {
+      return true;
+    }
+    if (YY) {
+      await obj.mkdir(date[0]);
+    }
+    if (MM) {
+      await obj.mkdir(date[1]);
+    }
+    return true;
   }
 };
 export default obj;

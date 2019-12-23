@@ -2,9 +2,6 @@ import Koa from 'koa';
 import koaBody from 'koa-body';
 import controller from './controller';
 import token from './global/token';
-import fs from 'fs';
-import https from 'https';
-import path from 'path';
 
 const app = new Koa();
 // app.use(bodyParser());
@@ -27,31 +24,31 @@ app.use(async (ctx, next) => {
     ctx.body = 200;
     return;
   }
-  if (ctx.headers.token) {
-    // 如果token传过来了
-    let data = token.verifyToken(ctx.headers.token);
-    if (!data && !['/login', '/register'].includes(ctx.request.url)) {
-      // 如果返回flase证明过期了， 但是登陆注册不用管
+  if (!ctx.request.body.noToken) {
+    if (ctx.headers.token) {
+      // 如果token传过来了
+      let data = token.verifyToken(ctx.headers.token);
+      if (!data && !['/login', '/register'].includes(ctx.request.url)) {
+        // 如果返回flase证明过期了， 但是登陆注册不用管
+        ctx.response.status = 401;
+        ctx.body = Object.assign({
+          message: 'token 失效了，请重新登录!',
+          success: false
+        });
+        return;
+      }
+      ctx.request.body.currentId = data.id || '';
+      ctx.request.body.company = data.company || '';
+    } else if (!['/login', 'uploads', '/register', '/uploadfiles', '/weather'].includes(ctx.request.url)) {
       ctx.response.status = 401;
       ctx.body = Object.assign({
-        message: 'token 失效了，请重新登录!',
+        message: '你已退出，请重新登录!',
         success: false
       });
       return;
     }
-    ctx.request.body.currentId = data.id || '';
-    ctx.request.body.company = data.company || '';
-  } else if (
-    !['/login', '/register', '/uploadfiles', '/weather'].includes(ctx.request.url) &&
-    !ctx.request.url.includes('uploads')
-  ) {
-    ctx.response.status = 401;
-    ctx.body = Object.assign({
-      message: '你已退出，请重新登录!',
-      success: false
-    });
-    return;
   }
+
   try {
     await next();
   } catch (err) {
@@ -65,84 +62,6 @@ app.use(async (ctx, next) => {
 });
 app.use(controller());
 
-// // 根据项目的路径导入生成的证书文件
-// const privateKey = fs.readFileSync(path.join(__dirname, './ssl.key'), 'utf8');
-// const certificate = fs.readFileSync(path.join(__dirname, './ssl.crt'), 'utf8');
-// const credentials = {
-//   key: privateKey,
-//   cert: certificate
-// };
-
-// const httpsServer = https.createServer(credentials, app.callback());
-// httpsServer.listen(8000, () => {
-//   console.log('启动成功 8000');
-// });
-
 app.listen(8000, () => {
   console.log('启动成功 8000');
 });
-// http.createServer((req, res) => {
-//   res.setHeader('Access-Control-Allow-Origin', '*');
-//   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, token');
-//   res.setHeader('Content-Type', 'application/json;charset=utf-8');
-//   res.setHeader("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
-//   let pathName = url.parse(req.url).pathname
-//   if (req.method === 'OPTIONS') {
-//     res.statusCode = 200;
-//     res.end()
-//     return
-//   }
-//   if (pathName === "/") {
-//     pathName = "index.html"
-//   }
-//   let extName = path.extname(pathName)
-//   if (pathName != "/favicon.ico") {
-//     fs.readFile("./dist/" + pathName, (err, data) => {
-//       if (err) {
-//         console.log("404 Not Found!");
-//         fs.readFile(
-//           "./dist/404.html",
-//           (errorNotFound, dataNotFound) => {
-//             if (errorNotFound) {
-//               console.log(errorNotFound);
-//             } else {
-//               res.writeHead(200, {
-//                 "Content-Type": "text/html; charset='utf-8'"
-//               });
-//               res.write(dataNotFound);
-//               res.end();
-//             }
-//           }
-//         );
-//         return;
-//       }
-//       // 返回这个文件
-//       else {
-//         // 获取文件类型
-//         let ext = getExt(extName);
-
-//         // 设置请求头
-//         res.writeHead(200, {
-//           "Content-Type": ext + "; charset='utf-8'"
-//         });
-//         // 读取写入文件
-//         res.write(data);
-//         // 结束响应
-//         res.end();
-//       }
-//     });
-//   } else {
-//     res.end()
-//   }
-// }).listen(3000, () => {
-//   console.log('http://localhost:8000')
-// })
-// // 获取后缀名
-// function getExt(extName) {
-//   switch (extName) {
-//     case '.html': return 'text/html';
-//     case '.css': return 'text/css';
-//     case '.js': return 'text/js';
-//     default: return 'text/html';
-//   }
-// }

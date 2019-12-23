@@ -119,7 +119,7 @@ let obj = {
     }
     ctx.body = Object.assign(global.createObj(), { item: data, photoItem: [data1, data2] });
   },
-  'POST /queryProjectTest': async (ctx, next) => {
+  'POST /allProject': async (ctx, next) => {
     let param = ctx.request.body;
     let str = `select ta.*, date_format(ta.createDate, '%Y-%m-%d %H:%i:%S') as createDate1, tb.name as createName from project ta left join user tb ON ta.createUser = tb.id where ta.company = '${
       param.company
