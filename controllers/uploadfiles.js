@@ -5,12 +5,13 @@ import global from '../global/global';
 import moment from 'moment';
 let obj = {
   'POST /uploadfiles': async (ctx, next) => {
+    let param = ctx.request.body;
     const file = ctx.request.files.file; // 上传的文件在ctx.request.files.file
     // 创建可读流
     const reader = fs.createReadStream(file.path);
     // 修改文件的名称
     let myDate = new Date();
-    let newFilename = myDate.getTime() + '.' + file.name.split('.')[1];
+    let newFilename = param.company + '_' + param.currentId + '_' + myDate.getTime() + '.' + file.name.split('.')[1];
     let date = [moment(new Date()).format('YYYYMM'), moment(new Date()).format('YYYYMMDD')];
     let newDate = [`nginx/html/uploads/${date[0]}`, `nginx/html/uploads/${date[0]}/${date[1]}`];
     await global.dirExists(newDate);
