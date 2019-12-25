@@ -91,8 +91,8 @@ let obj = {
       data3 = '';
     if (data1.length) {
       data2 = await connection.query(`
-        select ta.*, tb.name from orderProjectList ta 
-        left join project tb ON ta.projectId = tb.id
+        select ta.*, tb.name from orderProductList ta 
+        left join product tb ON ta.productId = tb.id
         where ta.orderId in (${data1.map((r) => r.id + '').join()})
       `);
       data3 = await connection.query(
@@ -100,7 +100,7 @@ let obj = {
       );
     }
     data1.map((r) => {
-      r.projectData = data2.filter((n) => n.orderId === r.id) || [];
+      r.productData = data2.filter((n) => n.orderId === r.id) || [];
       r.premiumData = data3.filter((n) => n.orderId === r.id) || [];
     });
     data[0].orderInfo = data1;
@@ -125,7 +125,7 @@ let obj = {
   'POST /custSalesList': async (ctx, next) => {
     let param = ctx.request.body;
     let str = `select t2.name as custname, sum(t1.price * t1.count) as num from _order t -- 订单表
-    left join orderprojectlist t1 on t.id = t1.orderId -- 订单产品表
+    left join orderproductlist t1 on t.id = t1.orderId -- 订单产品表
     LEFT JOIN customer t2 on t.name = t2.id -- 客户表
     where 1=1 and t.company = '${param.company}' and
     t.orderDate > ${moment(param.startDate).format('YYYYMMDD')} and 
@@ -145,7 +145,7 @@ let obj = {
       param.endDate || moment().format('YYYY-MM')
     ];
     let str = `SELECT DATE_FORMAT(t.orderDate,'%Y%m') as month, sum(t1.price * t1.count) as num, count(DISTINCT t.id) as listNum FROM _order t
-    LEFT JOIN orderprojectlist t1 on t.id = t1.orderId
+    LEFT JOIN orderproductlist t1 on t.id = t1.orderId
     WHERE 1=1 and t.company = '${param.company}' and DATE_FORMAT(t.orderDate,'%Y%m') >= ${moment(date[0]).format(
       'YYYYMM'
     )} and

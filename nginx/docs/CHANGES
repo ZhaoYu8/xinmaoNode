@@ -5739,7 +5739,7 @@ Changes with nginx 0.5.23                                        04 Jun 2007
        extension.
 
     *) Feature: the "fastcgi_catch_stderr" directive.
-       Thanks to Nick S. Grechukh, OWOX project.
+       Thanks to Nick S. Grechukh, OWOX product.
 
     *) Bugfix: a segmentation fault occurred in master process if two
        virtual servers should bind() to the overlapping ports.

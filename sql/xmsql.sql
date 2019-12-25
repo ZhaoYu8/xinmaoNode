@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80017
 File Encoding         : 65001
 
-Date: 2019-12-14 15:52:55
+Date: 2019-12-25 17:15:54
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -42,7 +42,6 @@ PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=60
 
 ;
 
@@ -74,14 +73,14 @@ AUTO_INCREMENT=6
 -- Records of _orderid
 -- ----------------------------
 BEGIN;
-INSERT INTO `_orderid` VALUES ('2', '5', '2019-12-04', '20'), ('4', '1', '2019-10-21', '38'), ('5', '0', '2019-12-14', '39');
+INSERT INTO `_orderid` VALUES ('2', '5', '2019-12-04', '20'), ('4', '1', '2019-10-21', '38'), ('5', '0', '2019-12-14', '39'), ('6', '0', '2019-12-19', '40');
 COMMIT;
 
 -- ----------------------------
--- Table structure for _projectid
+-- Table structure for _productid
 -- ----------------------------
-DROP TABLE IF EXISTS `_projectid`;
-CREATE TABLE `_projectid` (
+DROP TABLE IF EXISTS `_productid`;
+CREATE TABLE `_productid` (
 `id`  int(25) NOT NULL AUTO_INCREMENT ,
 `currentIndex`  int(25) NOT NULL ,
 `company`  varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
@@ -89,15 +88,15 @@ PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=7
+AUTO_INCREMENT=6
 
 ;
 
 -- ----------------------------
--- Records of _projectid
+-- Records of _productid
 -- ----------------------------
 BEGIN;
-INSERT INTO `_projectid` VALUES ('5', '6', '20'), ('6', '35', '39');
+INSERT INTO `_productid` VALUES ('5', '6', '20'), ('6', '35', '39');
 COMMIT;
 
 -- ----------------------------
@@ -121,7 +120,7 @@ AUTO_INCREMENT=17
 -- Records of branch
 -- ----------------------------
 BEGIN;
-INSERT INTO `branch` VALUES ('1', '鑫茂杯业', '0', '20'), ('2', '销售部', '1', '20'), ('11', '客户部', '1', '20'), ('12', '生产部', '1', '20'), ('13', '售后部', '1', '20'), ('15', 'ceshi', '0', '38'), ('16', 'uni-app数据公司', '0', '39');
+INSERT INTO `branch` VALUES ('1', '鑫茂杯业', '0', '20'), ('2', '销售部', '1', '20'), ('11', '客户部', '1', '20'), ('12', '生产部', '1', '20'), ('13', '售后部', '1', '20'), ('15', 'ceshi', '0', '38'), ('16', 'uni-app数据公司', '0', '39'), ('17', '', '0', '40');
 COMMIT;
 
 -- ----------------------------
@@ -145,7 +144,7 @@ AUTO_INCREMENT=40
 -- Records of company
 -- ----------------------------
 BEGIN;
-INSERT INTO `company` VALUES ('20', '鑫茂杯业', '2019-09-03 11:01:23', '13370229059'), ('38', 'ceshi', '2019-10-21 17:13:00', '13370229052'), ('39', 'uni-app数据公司', '2019-12-14 13:49:23', '15821836343');
+INSERT INTO `company` VALUES ('20', '鑫茂杯业', '2019-09-03 11:01:23', '13370229059'), ('38', 'ceshi', '2019-10-21 17:13:00', '13370229052'), ('39', 'uni-app数据公司', '2019-12-14 13:49:23', '15821836343'), ('40', '', '2019-12-19 16:11:15', '');
 COMMIT;
 
 -- ----------------------------
@@ -178,6 +177,53 @@ INSERT INTO `customer` VALUES ('43', '赵宇', '13370229012', '340000,340200,340
 COMMIT;
 
 -- ----------------------------
+-- Table structure for edge
+-- ----------------------------
+DROP TABLE IF EXISTS `edge`;
+CREATE TABLE `edge` (
+`id`  int(11) NOT NULL AUTO_INCREMENT ,
+`target`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
+`source`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
+PRIMARY KEY (`id`)
+)
+ENGINE=InnoDB
+DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+AUTO_INCREMENT=97
+
+;
+
+-- ----------------------------
+-- Records of edge
+-- ----------------------------
+BEGIN;
+INSERT INTO `edge` VALUES ('91', 'node68', 'node67'), ('92', 'node69', 'node73'), ('93', 'node70', 'node69'), ('94', 'node71', 'node70'), ('95', 'node73', 'node72'), ('96', 'node71', 'node72'), ('97', 'node68', 'node70');
+COMMIT;
+
+-- ----------------------------
+-- Table structure for node
+-- ----------------------------
+DROP TABLE IF EXISTS `node`;
+CREATE TABLE `node` (
+`_id`  int(11) NOT NULL AUTO_INCREMENT ,
+`name`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
+`x`  int(255) NULL DEFAULT NULL ,
+`y`  int(255) NULL DEFAULT NULL ,
+PRIMARY KEY (`_id`)
+)
+ENGINE=InnoDB
+DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+AUTO_INCREMENT=73
+
+;
+
+-- ----------------------------
+-- Records of node
+-- ----------------------------
+BEGIN;
+INSERT INTO `node` VALUES ('67', '1576751430716', '697', '203'), ('68', '1576751431122', '948', '278'), ('69', '1576751437698', '553', '348'), ('70', '1576751438028', '821', '411'), ('71', '1576751438346', '989', '562'), ('72', '1576751438686', '430', '616'), ('73', '1576751439064', '314', '307');
+COMMIT;
+
+-- ----------------------------
 -- Table structure for ordercollectmoney
 -- ----------------------------
 DROP TABLE IF EXISTS `ordercollectmoney`;
@@ -191,7 +237,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=16
+AUTO_INCREMENT=15
 
 ;
 
@@ -209,7 +255,7 @@ DROP TABLE IF EXISTS `orderdelivery`;
 CREATE TABLE `orderdelivery` (
 `id`  int(255) NOT NULL AUTO_INCREMENT ,
 `orderId`  int(255) NULL DEFAULT NULL ,
-`projectId`  int(255) NULL DEFAULT NULL ,
+`productId`  int(255) NULL DEFAULT NULL ,
 `num`  int(255) NULL DEFAULT NULL ,
 `remark`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
 `orderOperationId`  int(255) NULL DEFAULT NULL ,
@@ -217,7 +263,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=52
+AUTO_INCREMENT=51
 
 ;
 
@@ -268,7 +314,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=52
+AUTO_INCREMENT=51
 
 ;
 
@@ -280,12 +326,12 @@ INSERT INTO `orderpremium` VALUES ('2', '支出', '-1', '', '47'), ('40', '支�
 COMMIT;
 
 -- ----------------------------
--- Table structure for orderprojectlist
+-- Table structure for orderproductlist
 -- ----------------------------
-DROP TABLE IF EXISTS `orderprojectlist`;
-CREATE TABLE `orderprojectlist` (
+DROP TABLE IF EXISTS `orderproductlist`;
+CREATE TABLE `orderproductlist` (
 `id`  int(25) NOT NULL AUTO_INCREMENT ,
-`projectId`  varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '产品id' ,
+`productId`  varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '产品id' ,
 `sort`  varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '产品分类' ,
 `units`  varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '单位' ,
 `cost`  varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '成本' ,
@@ -297,15 +343,15 @@ PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=128
+AUTO_INCREMENT=127
 
 ;
 
 -- ----------------------------
--- Records of orderprojectlist
+-- Records of orderproductlist
 -- ----------------------------
 BEGIN;
-INSERT INTO `orderprojectlist` VALUES ('84', '50', '34', '个', '23', '32', '12', '4*28', '45'), ('86', '50', '34', '个', '23', '32', '120', '', '44'), ('87', '51', '34,38', '个', '12', '32', '300', '12', '44'), ('89', '51', '34,38', '个', '12', '32', '32', '4*60', '45'), ('91', '50', '34', '个', '23', '32', '100', '12', '46'), ('92', '51', '34,38', '个', '12', '32', '30', '32', '46'), ('93', '51', '34,38', '个', '12', '123', '1', '4*23', '47'), ('94', '51', '34,38', '个', '12', '32', '1', '', '48'), ('95', '51', '34,38', '个', '12', '32', '1', '', '49'), ('96', '50', '34', '个', '23', '32', '300', '', '50'), ('97', '50', '34', '个', '23', '4.3', '60', '', '51'), ('99', '51', '34,38', '个', '12', '32', '32', '', '52'), ('100', '50', '34', '个', '23', '32', '60', '1', '52'), ('102', '51', '34,38', '个', '12', '32', '1', '', '53'), ('103', '51', '34,38', '个', '12', '32', '123', '', '54'), ('104', '52', '34,38,51', '个', '12', '32', '60', '', '55'), ('105', '53', '34,38,50', '个', '65', '120', '60', '', '55'), ('106', '54', '34,38,49', '个', '12', '32', '60', '', '55'), ('107', '54', '34,38,49', '个', '12', '32', '12', '', '56'), ('108', '53', '34,38,50', '个', '65', '120', '50', '', '56'), ('109', '55', '34,38,48', '个', '55', '88', '32', '', '56'), ('110', '50', '34', '个', '23', '32', '50', '', '57'), ('111', '51', '34,38', '个', '12', '32', '50', '', '57'), ('112', '52', '34,38,51', '个', '12', '32', '50', '', '57'), ('113', '53', '34,38,50', '个', '65', '120', '50', '', '57'), ('114', '54', '34,38,49', '个', '12', '32', '100', '', '57'), ('115', '55', '34,38,48', '个', '55', '88', '50', '', '57'), ('116', '50', '34', '个', '23', '32', '12', '', '58'), ('117', '51', '34,38', '个', '12', '32', '50', '', '58'), ('118', '52', '34,38,51', '个', '12', '32', '50', '', '58'), ('119', '53', '34,38,50', '个', '65', '120', '50', '', '58'), ('120', '54', '34,38,49', '个', '12', '32', '32', '', '58'), ('121', '55', '34,38,48', '个', '55', '88', '50', '', '58'), ('122', '50', '34', '个', '23', '32', '2', '', '59'), ('123', '51', '34,38', '个', '12', '32', '50', '', '59'), ('124', '52', '34,38,51', '个', '12', '32', '50', '', '59'), ('125', '53', '34,38,50', '个', '65', '120', '50', '', '59'), ('126', '54', '34,38,49', '个', '12', '32', '50', '', '59'), ('127', '55', '34,38,48', '个', '55', '88', '11', '', '59');
+INSERT INTO `orderproductlist` VALUES ('84', '50', '34', '个', '23', '32', '12', '4*28', '45'), ('86', '50', '34', '个', '23', '32', '120', '', '44'), ('87', '51', '34,38', '个', '12', '32', '300', '12', '44'), ('89', '51', '34,38', '个', '12', '32', '32', '4*60', '45'), ('91', '50', '34', '个', '23', '32', '100', '12', '46'), ('92', '51', '34,38', '个', '12', '32', '30', '32', '46'), ('93', '51', '34,38', '个', '12', '123', '1', '4*23', '47'), ('94', '51', '34,38', '个', '12', '32', '1', '', '48'), ('95', '51', '34,38', '个', '12', '32', '1', '', '49'), ('96', '50', '34', '个', '23', '32', '300', '', '50'), ('97', '50', '34', '个', '23', '4.3', '60', '', '51'), ('99', '51', '34,38', '个', '12', '32', '32', '', '52'), ('100', '50', '34', '个', '23', '32', '60', '1', '52'), ('102', '51', '34,38', '个', '12', '32', '1', '', '53'), ('103', '51', '34,38', '个', '12', '32', '123', '', '54'), ('104', '52', '34,38,51', '个', '12', '32', '60', '', '55'), ('105', '53', '34,38,50', '个', '65', '120', '60', '', '55'), ('106', '54', '34,38,49', '个', '12', '32', '60', '', '55'), ('107', '54', '34,38,49', '个', '12', '32', '12', '', '56'), ('108', '53', '34,38,50', '个', '65', '120', '50', '', '56'), ('109', '55', '34,38,48', '个', '55', '88', '32', '', '56'), ('110', '50', '34', '个', '23', '32', '50', '', '57'), ('111', '51', '34,38', '个', '12', '32', '50', '', '57'), ('112', '52', '34,38,51', '个', '12', '32', '50', '', '57'), ('113', '53', '34,38,50', '个', '65', '120', '50', '', '57'), ('114', '54', '34,38,49', '个', '12', '32', '100', '', '57'), ('115', '55', '34,38,48', '个', '55', '88', '50', '', '57'), ('116', '50', '34', '个', '23', '32', '12', '', '58'), ('117', '51', '34,38', '个', '12', '32', '50', '', '58'), ('118', '52', '34,38,51', '个', '12', '32', '50', '', '58'), ('119', '53', '34,38,50', '个', '65', '120', '50', '', '58'), ('120', '54', '34,38,49', '个', '12', '32', '32', '', '58'), ('121', '55', '34,38,48', '个', '55', '88', '50', '', '58'), ('122', '50', '34', '个', '23', '32', '2', '', '59'), ('123', '51', '34,38', '个', '12', '32', '50', '', '59'), ('124', '52', '34,38,51', '个', '12', '32', '50', '', '59'), ('125', '53', '34,38,50', '个', '65', '120', '50', '', '59'), ('126', '54', '34,38,49', '个', '12', '32', '50', '', '59'), ('127', '55', '34,38,48', '个', '55', '88', '11', '', '59');
 COMMIT;
 
 -- ----------------------------
@@ -338,10 +384,10 @@ INSERT INTO `print` VALUES ('2', '安徽省芜湖市无为县泥汊镇赵小自�
 COMMIT;
 
 -- ----------------------------
--- Table structure for project
+-- Table structure for product
 -- ----------------------------
-DROP TABLE IF EXISTS `project`;
-CREATE TABLE `project` (
+DROP TABLE IF EXISTS `product`;
+CREATE TABLE `product` (
 `id`  int(25) NOT NULL AUTO_INCREMENT ,
 `proNumber`  varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
 `name`  varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '产品名称' ,
@@ -357,26 +403,26 @@ PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=56
+AUTO_INCREMENT=91
 
 ;
 
 -- ----------------------------
--- Records of project
+-- Records of product
 -- ----------------------------
 BEGIN;
-INSERT INTO `project` VALUES ('50', '000001', '尚浩亚', '34', '个', '23', '32', '2019-10-24 17:27:13', '17', '20', null), ('51', '000002', '测试', '34,38', '个', '12', '32', '2019-10-25 14:22:10', '17', '20', null), ('52', '000003', '金陵系列001', '34,38,51', '个', '12', '32', '2019-12-04 17:00:44', '17', '20', null), ('53', '000004', '御赐系列001', '34,38,50', '个', '65', '120', '2019-12-04 17:01:03', '17', '20', null), ('54', '000005', '极品系列001', '34,38,49', '个', '12', '32', '2019-12-04 17:01:16', '17', '20', null), ('55', '000006', '二等精品001', '34,38,48', '个', '55', '88', '2019-12-04 17:01:33', '17', '20', null), ('56', '000001', '沁享便携泡茶师340ml', '52,56', '个', '0', '0', '2019-12-14 14:05:54', '30', '39', 'https://www.fuguangchina.com/Uploads/2019-03-07/5c8075588f9f4.png'), ('57', '000002', '经典.逸单层玻璃泡茶杯370ml', '52,56', '个', '0', '0', '2019-12-14 14:07:01', '30', '39', 'https://www.fuguangchina.com/Uploads/2018-05-10/5af3d85e81595.jpg'), ('58', '000003', '经典.逸单层玻璃杯410ml', '52,56', '个', '0', '0', '2019-12-14 14:07:23', '30', '39', 'https://www.fuguangchina.com/Uploads/2018-05-10/5af3d7aa4f0b5.jpg'), ('59', '000004', '经典.逸单层玻璃杯300ml', '52,56', '个', '0', '0', '2019-12-14 14:07:43', '30', '39', 'https://www.fuguangchina.com/Uploads/2018-05-10/5af3d72a1b453.jpg'), ('60', '000005', '经典.刚单层玻璃杯450ml', '52,56', '个', '0', '0', '2019-12-14 14:08:02', '30', '39', 'https://www.fuguangchina.com/Uploads/2018-05-10/5af3d51e1d369.jpg'), ('61', '000006', '经典.简单层玻璃杯玻片490ml', '52,56', '个', '0', '0', '2019-12-14 14:08:35', '30', '39', 'https://www.fuguangchina.com/Uploads/2018-05-10/5af3bc7b2c7a6.jpg'), ('62', '000007', '经典.简单层玻璃杯玻片430ml', '52,56', '个', '0', '0', '2019-12-14 14:08:56', '30', '39', 'https://www.fuguangchina.com/Uploads/2018-05-10/5af3bb90928e9.jpg'), ('63', '000008', '730ML富光健牌伯爵商务玻璃杯 ', '52,57', '个', '0', '0', '2019-12-14 14:09:20', '30', '39', 'https://www.fuguangchina.com/Uploads/2019-09-18/5d8187df40a03.jpg'), ('64', '000009', '480ML富光健牌伯爵商务玻璃杯', '52,57', '个', '0', '0', '2019-12-14 14:09:43', '30', '39', 'https://www.fuguangchina.com/Uploads/2019-09-18/5d8186c243f5d.jpg'), ('65', '000010', '380ML富光健牌伯爵商务玻璃杯', '52,57', '个', '0', '0', '2019-12-14 14:10:10', '30', '39', 'https://www.fuguangchina.com/Uploads/2019-09-17/5d8099c723d46.jpg'), ('66', '000011', '沁享便携泡茶师', '52,57', '个', '0', '0', '2019-12-14 14:10:28', '30', '39', 'https://www.fuguangchina.com/Uploads/2019-03-06/5c7f6539a5d93.jpg'), ('67', '000012', '富光点点太空杯350mL', '53,58', '个', '0', '0', '2019-12-14 14:11:00', '30', '39', 'https://www.fuguangchina.com/Uploads/2017-03-20/58cf6c7f7f9b3.jpg'), ('68', '000013', '富光昕动太空杯600ML', '53,58', '个', '0', '0', '2019-12-14 14:11:20', '30', '39', 'https://www.fuguangchina.com/Uploads/2018-02-02/5a742eb4d6454.jpg'), ('69', '000014', '富光磨砂太空杯500ml', '53,58', '个', '0', '0', '2019-12-14 14:11:38', '30', '39', 'https://www.fuguangchina.com/Uploads/2017-06-15/5941ec7a6f427.jpg'), ('70', '000015', '富光悠乐轻质水杯710ML（透明）', '53,58', '个', '0', '0', '2019-12-14 14:12:01', '30', '39', 'https://www.fuguangchina.com/Uploads/2019-09-26/5d8c376c79c16.jpg'), ('71', '000016', '富光咕泡水杯400ml', '53,59', '个', '0', '0', '2019-12-14 14:17:48', '30', '39', 'https://www.fuguangchina.com/Uploads/2017-02-17/58a66c389220d.jpg'), ('72', '000017', '快乐吸管杯420ml', '53,59', '个', '0', '0', '2019-12-14 14:18:04', '30', '39', 'https://www.fuguangchina.com/Uploads/2016-07-13/578614080a7d6.jpg'), ('73', '000018', '学生壶600ml', '53,59', '个', '0', '0', '2019-12-14 14:18:21', '30', '39', 'https://www.fuguangchina.com/Uploads/2016-07-01/577613621b19d.jpg'), ('74', '000019', '富光儿童水杯（大眼仔）260ML', '53,59', '个', '0', '0', '2019-12-14 14:18:39', '30', '39', 'https://www.fuguangchina.com/Uploads/2017-03-21/58d0ba96ab220.jpg'), ('75', '000020', '茶马仕睿智塑玻泡茶师240ml', '53,60', '个', '0', '0', '2019-12-14 14:19:38', '30', '39', 'https://www.fuguangchina.com/Uploads/2016-08-10/57aab5db20cb3.jpg'), ('76', '000021', '健牌新潮5号380ml', '53,60', '个', '0', '0', '2019-12-14 14:19:59', '30', '39', 'https://www.fuguangchina.com/Uploads/2016-07-01/57763f7c1430a.jpg'), ('77', '000022', '健牌旋风杯1型460ML', '53,60', '个', '0', '0', '2019-12-14 14:20:18', '30', '39', 'https://www.fuguangchina.com/Uploads/2016-07-14/5787255b0fdb1.jpg'), ('78', '000023', '茶马仕316不锈钢真空子弹头350mL', '54,61', '个', '0', '0', '2019-12-14 14:20:57', '30', '39', 'https://www.fuguangchina.com/Uploads/2019-12-11/5df043de819b4.jpg'), ('79', '000024', '超炫真空杯2型420ml', '54,63', '个', '0', '0', '2019-12-14 14:21:16', '30', '39', 'https://www.fuguangchina.com/Uploads/2016-07-14/5787498273fc5.jpg'), ('80', '000025', 'FGA迈迪316不锈钢真空杯350mL', '54,61', '个', '0', '0', '2019-12-14 14:21:33', '30', '39', 'https://www.fuguangchina.com/Uploads/2019-10-15/5da56f769f71f.jpg'), ('81', '000026', 'FGA迈迪316不锈钢真空杯500mL', '54,61', '个', '0', '0', '2019-12-14 14:21:48', '30', '39', 'https://www.fuguangchina.com/Uploads/2019-10-15/5da56e3874ad0.jpg'), ('82', '000027', '富光牌智饮控温杯180ml', '54,61', '个', '0', '0', '2019-12-14 14:22:03', '30', '39', 'https://www.fuguangchina.com/Uploads/2016-09-09/57d2163e48582.jpg'), ('83', '000028', 'FGA富光真空办公杯480ML', '54,62', '个', '0', '0', '2019-12-14 14:22:22', '30', '39', 'https://www.fuguangchina.com/Uploads/2016-07-14/57874a030aa0e.jpg'), ('84', '000029', '健牌雅臻真空办公杯2型480ml', '54,62', '个', '0', '0', '2019-12-14 14:22:40', '30', '39', 'https://www.fuguangchina.com/Uploads/2016-07-14/5787593123474.jpg'), ('85', '000030', 'FGA迈欧真空杯330', '54,62', '个', '0', '0', '2019-12-14 14:22:57', '30', '39', 'https://www.fuguangchina.com/Uploads/2018-11-06/5be1321c8ac9f.jpg'), ('86', '000031', 'FGA哒梨真空焖烧罐', '54,62', '个', '0', '0', '2019-12-14 14:23:49', '30', '39', 'https://www.fuguangchina.com/Uploads/2017-09-07/59b0adb4ed8f6.jpg'), ('87', '000032', '吉象儿童壶480', '54,63', '个', '0', '0', '2019-12-14 14:24:27', '30', '39', 'https://www.fuguangchina.com/Uploads/2016-08-18/57b52a6a95dab.jpg'), ('88', '000033', '富光牌金贝贝儿童壶600ml', '54,63', '个', '0', '0', '2019-12-14 14:24:44', '30', '39', 'https://www.fuguangchina.com/Uploads/2017-02-20/58aa8a45afecd.jpg'), ('89', '000034', 'FGA怡悦真空儿童杯', '54,63', '个', '0', '0', '2019-12-14 14:25:02', '30', '39', 'https://www.fuguangchina.com/Uploads/2017-08-07/5987d804a5ccf.jpg'), ('90', '000035', '富光嘟萌保温壶500ml', '54,63', '个', '0', '0', '2019-12-14 14:25:24', '30', '39', 'https://www.fuguangchina.com/Uploads/2018-08-13/5b7141a9c7b04.jpg');
+INSERT INTO `product` VALUES ('50', '000001', '尚浩亚', '34', '个', '23', '32', '2019-10-24 17:27:13', '17', '20', null), ('51', '000002', '测试', '34,38', '个', '12', '32', '2019-10-25 14:22:10', '17', '20', null), ('52', '000003', '金陵系列001', '34,38,51', '个', '12', '32', '2019-12-04 17:00:44', '17', '20', null), ('53', '000004', '御赐系列001', '34,38,50', '个', '65', '120', '2019-12-04 17:01:03', '17', '20', null), ('54', '000005', '极品系列001', '34,38,49', '个', '12', '32', '2019-12-04 17:01:16', '17', '20', null), ('55', '000006', '二等精品001', '34,38,48', '个', '55', '88', '2019-12-04 17:01:33', '17', '20', null), ('56', '000001', '沁享便携泡茶师340ml', '52,56', '个', '0', '0', '2019-12-14 14:05:54', '30', '39', 'https://www.fuguangchina.com/Uploads/2019-03-07/5c8075588f9f4.png'), ('57', '000002', '经典.逸单层玻璃泡茶杯370ml', '52,56', '个', '0', '0', '2019-12-14 14:07:01', '30', '39', 'https://www.fuguangchina.com/Uploads/2018-05-10/5af3d85e81595.jpg'), ('58', '000003', '经典.逸单层玻璃杯410ml', '52,56', '个', '0', '0', '2019-12-14 14:07:23', '30', '39', 'https://www.fuguangchina.com/Uploads/2018-05-10/5af3d7aa4f0b5.jpg'), ('59', '000004', '经典.逸单层玻璃杯300ml', '52,56', '个', '0', '0', '2019-12-14 14:07:43', '30', '39', 'https://www.fuguangchina.com/Uploads/2018-05-10/5af3d72a1b453.jpg'), ('60', '000005', '经典.刚单层玻璃杯450ml', '52,56', '个', '0', '0', '2019-12-14 14:08:02', '30', '39', 'https://www.fuguangchina.com/Uploads/2018-05-10/5af3d51e1d369.jpg'), ('61', '000006', '经典.简单层玻璃杯玻片490ml', '52,56', '个', '0', '0', '2019-12-14 14:08:35', '30', '39', 'https://www.fuguangchina.com/Uploads/2018-05-10/5af3bc7b2c7a6.jpg'), ('62', '000007', '经典.简单层玻璃杯玻片430ml', '52,56', '个', '0', '0', '2019-12-14 14:08:56', '30', '39', 'https://www.fuguangchina.com/Uploads/2018-05-10/5af3bb90928e9.jpg'), ('63', '000008', '730ML富光健牌伯爵商务玻璃杯 ', '52,57', '个', '0', '0', '2019-12-14 14:09:20', '30', '39', 'https://www.fuguangchina.com/Uploads/2019-09-18/5d8187df40a03.jpg'), ('64', '000009', '480ML富光健牌伯爵商务玻璃杯', '52,57', '个', '0', '0', '2019-12-14 14:09:43', '30', '39', 'https://www.fuguangchina.com/Uploads/2019-09-18/5d8186c243f5d.jpg'), ('65', '000010', '380ML富光健牌伯爵商务玻璃杯', '52,57', '个', '0', '0', '2019-12-14 14:10:10', '30', '39', 'https://www.fuguangchina.com/Uploads/2019-09-17/5d8099c723d46.jpg'), ('66', '000011', '沁享便携泡茶师', '52,57', '个', '0', '0', '2019-12-14 14:10:28', '30', '39', 'https://www.fuguangchina.com/Uploads/2019-03-06/5c7f6539a5d93.jpg'), ('67', '000012', '富光点点太空杯350mL', '53,58', '个', '0', '0', '2019-12-14 14:11:00', '30', '39', 'https://www.fuguangchina.com/Uploads/2017-03-20/58cf6c7f7f9b3.jpg'), ('68', '000013', '富光昕动太空杯600ML', '53,58', '个', '0', '0', '2019-12-14 14:11:20', '30', '39', 'https://www.fuguangchina.com/Uploads/2018-02-02/5a742eb4d6454.jpg'), ('69', '000014', '富光磨砂太空杯500ml', '53,58', '个', '0', '0', '2019-12-14 14:11:38', '30', '39', 'https://www.fuguangchina.com/Uploads/2017-06-15/5941ec7a6f427.jpg'), ('70', '000015', '富光悠乐轻质水杯710ML（透明）', '53,58', '个', '0', '0', '2019-12-14 14:12:01', '30', '39', 'https://www.fuguangchina.com/Uploads/2019-09-26/5d8c376c79c16.jpg'), ('71', '000016', '富光咕泡水杯400ml', '53,59', '个', '0', '0', '2019-12-14 14:17:48', '30', '39', 'https://www.fuguangchina.com/Uploads/2017-02-17/58a66c389220d.jpg'), ('72', '000017', '快乐吸管杯420ml', '53,59', '个', '0', '0', '2019-12-14 14:18:04', '30', '39', 'https://www.fuguangchina.com/Uploads/2016-07-13/578614080a7d6.jpg'), ('73', '000018', '学生壶600ml', '53,59', '个', '0', '0', '2019-12-14 14:18:21', '30', '39', 'https://www.fuguangchina.com/Uploads/2016-07-01/577613621b19d.jpg'), ('74', '000019', '富光儿童水杯（大眼仔）260ML', '53,59', '个', '0', '0', '2019-12-14 14:18:39', '30', '39', 'https://www.fuguangchina.com/Uploads/2017-03-21/58d0ba96ab220.jpg'), ('75', '000020', '茶马仕睿智塑玻泡茶师240ml', '53,60', '个', '0', '0', '2019-12-14 14:19:38', '30', '39', 'https://www.fuguangchina.com/Uploads/2016-08-10/57aab5db20cb3.jpg'), ('76', '000021', '健牌新潮5号380ml', '53,60', '个', '0', '0', '2019-12-14 14:19:59', '30', '39', 'https://www.fuguangchina.com/Uploads/2016-07-01/57763f7c1430a.jpg'), ('77', '000022', '健牌旋风杯1型460ML', '53,60', '个', '0', '0', '2019-12-14 14:20:18', '30', '39', 'https://www.fuguangchina.com/Uploads/2016-07-14/5787255b0fdb1.jpg'), ('78', '000023', '茶马仕316不锈钢真空子弹头350mL', '54,61', '个', '0', '0', '2019-12-14 14:20:57', '30', '39', 'https://www.fuguangchina.com/Uploads/2019-12-11/5df043de819b4.jpg'), ('79', '000024', '超炫真空杯2型420ml', '54,63', '个', '0', '0', '2019-12-14 14:21:16', '30', '39', 'https://www.fuguangchina.com/Uploads/2016-07-14/5787498273fc5.jpg'), ('80', '000025', 'FGA迈迪316不锈钢真空杯350mL', '54,61', '个', '0', '0', '2019-12-14 14:21:33', '30', '39', 'https://www.fuguangchina.com/Uploads/2019-10-15/5da56f769f71f.jpg'), ('81', '000026', 'FGA迈迪316不锈钢真空杯500mL', '54,61', '个', '0', '0', '2019-12-14 14:21:48', '30', '39', 'https://www.fuguangchina.com/Uploads/2019-10-15/5da56e3874ad0.jpg'), ('82', '000027', '富光牌智饮控温杯180ml', '54,61', '个', '0', '0', '2019-12-14 14:22:03', '30', '39', 'https://www.fuguangchina.com/Uploads/2016-09-09/57d2163e48582.jpg'), ('83', '000028', 'FGA富光真空办公杯480ML', '54,62', '个', '0', '0', '2019-12-14 14:22:22', '30', '39', 'https://www.fuguangchina.com/Uploads/2016-07-14/57874a030aa0e.jpg'), ('84', '000029', '健牌雅臻真空办公杯2型480ml', '54,62', '个', '0', '0', '2019-12-14 14:22:40', '30', '39', 'https://www.fuguangchina.com/Uploads/2016-07-14/5787593123474.jpg'), ('85', '000030', 'FGA迈欧真空杯330', '54,62', '个', '0', '0', '2019-12-14 14:22:57', '30', '39', 'https://www.fuguangchina.com/Uploads/2018-11-06/5be1321c8ac9f.jpg'), ('86', '000031', 'FGA哒梨真空焖烧罐', '54,62', '个', '0', '0', '2019-12-14 14:23:49', '30', '39', 'https://www.fuguangchina.com/Uploads/2017-09-07/59b0adb4ed8f6.jpg'), ('87', '000032', '吉象儿童壶480', '54,63', '个', '0', '0', '2019-12-14 14:24:27', '30', '39', 'https://www.fuguangchina.com/Uploads/2016-08-18/57b52a6a95dab.jpg'), ('88', '000033', '富光牌金贝贝儿童壶600ml', '54,63', '个', '0', '0', '2019-12-14 14:24:44', '30', '39', 'https://www.fuguangchina.com/Uploads/2017-02-20/58aa8a45afecd.jpg'), ('89', '000034', 'FGA怡悦真空儿童杯', '54,63', '个', '0', '0', '2019-12-14 14:25:02', '30', '39', 'https://www.fuguangchina.com/Uploads/2017-08-07/5987d804a5ccf.jpg'), ('90', '000035', '富光嘟萌保温壶500ml', '54,63', '个', '0', '0', '2019-12-14 14:25:24', '30', '39', 'https://www.fuguangchina.com/Uploads/2018-08-13/5b7141a9c7b04.jpg');
 COMMIT;
 
 -- ----------------------------
--- Table structure for projectphoto
+-- Table structure for productphoto
 -- ----------------------------
-DROP TABLE IF EXISTS `projectphoto`;
-CREATE TABLE `projectphoto` (
+DROP TABLE IF EXISTS `productphoto`;
+CREATE TABLE `productphoto` (
 `id`  int(25) NOT NULL AUTO_INCREMENT ,
 `name`  varchar(888) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
 `url`  varchar(888) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
-`projectId`  int(25) NULL DEFAULT NULL ,
+`productId`  int(25) NULL DEFAULT NULL ,
 PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
@@ -386,17 +432,17 @@ AUTO_INCREMENT=53
 ;
 
 -- ----------------------------
--- Records of projectphoto
+-- Records of productphoto
 -- ----------------------------
 BEGIN;
-INSERT INTO `projectphoto` VALUES ('52', 'a73a589928890aa3d9a702a4b31f692.jpg', 'http://122.152.212.105//uploads/1575602586180.jpg', '51');
+INSERT INTO `productphoto` VALUES ('52', 'a73a589928890aa3d9a702a4b31f692.jpg', 'http://122.152.212.105//uploads/1575602586180.jpg', '51');
 COMMIT;
 
 -- ----------------------------
--- Table structure for projectsort
+-- Table structure for productsort
 -- ----------------------------
-DROP TABLE IF EXISTS `projectsort`;
-CREATE TABLE `projectsort` (
+DROP TABLE IF EXISTS `productsort`;
+CREATE TABLE `productsort` (
 `id`  int(25) NOT NULL AUTO_INCREMENT ,
 `name`  varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
 `parent`  int(25) NULL DEFAULT NULL ,
@@ -405,15 +451,15 @@ PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=64
+AUTO_INCREMENT=63
 
 ;
 
 -- ----------------------------
--- Records of projectsort
+-- Records of productsort
 -- ----------------------------
 BEGIN;
-INSERT INTO `projectsort` VALUES ('34', '杯子', '0', '20'), ('38', '尚浩亚', '34', '20'), ('39', '精品', '38', '20'), ('40', '123', '39', '20'), ('48', '二等精品', '38', '20'), ('49', '极品', '38', '20'), ('50', '御赐', '38', '20'), ('51', '金陵', '38', '20'), ('52', '玻璃杯', '0', '39'), ('53', '塑料杯', '0', '39'), ('54', '保温杯', '0', '39'), ('56', '单层玻璃口杯', '52', '39'), ('57', '双层玻璃口杯', '52', '39'), ('58', '太空杯', '53', '39'), ('59', '儿童杯', '53', '39'), ('60', '塑料口杯', '53', '39'), ('61', '长效保温杯', '54', '39'), ('62', '保温办公杯', '54', '39'), ('63', '儿童保温杯', '54', '39');
+INSERT INTO `productsort` VALUES ('34', '杯子', '0', '20'), ('38', '尚浩亚', '34', '20'), ('39', '精品', '38', '20'), ('40', '123', '39', '20'), ('48', '二等精品', '38', '20'), ('49', '极品', '38', '20'), ('50', '御赐', '38', '20'), ('51', '金陵', '38', '20'), ('52', '玻璃杯', '0', '39'), ('53', '塑料杯', '0', '39'), ('54', '保温杯', '0', '39'), ('56', '单层玻璃口杯', '52', '39'), ('57', '双层玻璃口杯', '52', '39'), ('58', '太空杯', '53', '39'), ('59', '儿童杯', '53', '39'), ('60', '塑料口杯', '53', '39'), ('61', '长效保温杯', '54', '39'), ('62', '保温办公杯', '54', '39'), ('63', '儿童保温杯', '54', '39');
 COMMIT;
 
 -- ----------------------------
@@ -437,7 +483,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=31
+AUTO_INCREMENT=32
 
 ;
 
@@ -449,19 +495,14 @@ INSERT INTO `user` VALUES ('17', '赵宇', '13370229059', null, '1', '1', '34000
 COMMIT;
 
 -- ----------------------------
--- Auto increment value for _order
--- ----------------------------
-ALTER TABLE `_order` AUTO_INCREMENT=60;
-
--- ----------------------------
 -- Auto increment value for _orderid
 -- ----------------------------
 ALTER TABLE `_orderid` AUTO_INCREMENT=6;
 
 -- ----------------------------
--- Auto increment value for _projectid
+-- Auto increment value for _productid
 -- ----------------------------
-ALTER TABLE `_projectid` AUTO_INCREMENT=7;
+ALTER TABLE `_productid` AUTO_INCREMENT=6;
 
 -- ----------------------------
 -- Auto increment value for branch
@@ -479,14 +520,24 @@ ALTER TABLE `company` AUTO_INCREMENT=40;
 ALTER TABLE `customer` AUTO_INCREMENT=54;
 
 -- ----------------------------
+-- Auto increment value for edge
+-- ----------------------------
+ALTER TABLE `edge` AUTO_INCREMENT=97;
+
+-- ----------------------------
+-- Auto increment value for node
+-- ----------------------------
+ALTER TABLE `node` AUTO_INCREMENT=73;
+
+-- ----------------------------
 -- Auto increment value for ordercollectmoney
 -- ----------------------------
-ALTER TABLE `ordercollectmoney` AUTO_INCREMENT=16;
+ALTER TABLE `ordercollectmoney` AUTO_INCREMENT=15;
 
 -- ----------------------------
 -- Auto increment value for orderdelivery
 -- ----------------------------
-ALTER TABLE `orderdelivery` AUTO_INCREMENT=52;
+ALTER TABLE `orderdelivery` AUTO_INCREMENT=51;
 
 -- ----------------------------
 -- Auto increment value for orderoperation
@@ -496,12 +547,12 @@ ALTER TABLE `orderoperation` AUTO_INCREMENT=96;
 -- ----------------------------
 -- Auto increment value for orderpremium
 -- ----------------------------
-ALTER TABLE `orderpremium` AUTO_INCREMENT=52;
+ALTER TABLE `orderpremium` AUTO_INCREMENT=51;
 
 -- ----------------------------
--- Auto increment value for orderprojectlist
+-- Auto increment value for orderproductlist
 -- ----------------------------
-ALTER TABLE `orderprojectlist` AUTO_INCREMENT=128;
+ALTER TABLE `orderproductlist` AUTO_INCREMENT=127;
 
 -- ----------------------------
 -- Auto increment value for print
@@ -509,21 +560,21 @@ ALTER TABLE `orderprojectlist` AUTO_INCREMENT=128;
 ALTER TABLE `print` AUTO_INCREMENT=3;
 
 -- ----------------------------
--- Auto increment value for project
+-- Auto increment value for product
 -- ----------------------------
-ALTER TABLE `project` AUTO_INCREMENT=56;
+ALTER TABLE `product` AUTO_INCREMENT=91;
 
 -- ----------------------------
--- Auto increment value for projectphoto
+-- Auto increment value for productphoto
 -- ----------------------------
-ALTER TABLE `projectphoto` AUTO_INCREMENT=53;
+ALTER TABLE `productphoto` AUTO_INCREMENT=53;
 
 -- ----------------------------
--- Auto increment value for projectsort
+-- Auto increment value for productsort
 -- ----------------------------
-ALTER TABLE `projectsort` AUTO_INCREMENT=64;
+ALTER TABLE `productsort` AUTO_INCREMENT=63;
 
 -- ----------------------------
 -- Auto increment value for user
 -- ----------------------------
-ALTER TABLE `user` AUTO_INCREMENT=31;
+ALTER TABLE `user` AUTO_INCREMENT=32;

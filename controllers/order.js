@@ -44,8 +44,8 @@ let obj = {
     let orderAwait = await connection.query(
       `update _orderId set currentIndex = "${num + 1}" where company = "${param.company}"`
     ); // 再更新订单id表
-    // orderProjectList 订单产品表
-    let str1 = param.projectData
+    // orderProductList 订单产品表
+    let str1 = param.productData
       .map(
         (r) =>
           `('${r.id}', '${r.sort}', '${r.units}', '${r.cost}', '${r.price}', '${r.count}', '${r.proRemark || ''}', '${
@@ -54,7 +54,7 @@ let obj = {
       )
       .join(',');
     let data1 = await connection.query(
-      `INSERT INTO orderProjectList (projectId, sort, units, cost, price, count, proRemark, orderId) values ${str1}`
+      `INSERT INTO orderProductList (productId, sort, units, cost, price, count, proRemark, orderId) values ${str1}`
     );
     // orderPremium 订单额外费用表
     let str2 = '',
@@ -110,8 +110,8 @@ let obj = {
     if (data.length) {
       // 如果主表查出数据了
       data2 = await connection.query(`
-        select ta.*, tb.name, tb.proNumber from orderProjectList ta 
-        left join project tb ON ta.projectId = tb.id
+        select ta.*, tb.name, tb.proNumber from orderProductList ta 
+        left join product tb ON ta.productId = tb.id
         where ta.orderId in (${data.map((r) => r.id + '').join()})
       `); // 每个订单id，下面附属的的产品
       data3 = await connection.query(
@@ -122,7 +122,7 @@ let obj = {
       ); // 每个订单id，操作表
     }
     data.map((r) => {
-      r.projectData = data2.filter((n) => n.orderId === r.id) || [];
+      r.productData = data2.filter((n) => n.orderId === r.id) || [];
       r.premiumData = data3.filter((n) => n.orderId === r.id) || [];
       r.operation = data4.filter((n) => n.orderId === r.id) || [];
       let arr = data4.filter((n) => n.orderId === r.id);
@@ -160,16 +160,16 @@ let obj = {
     );
     let data = await connection.query(str); // 先更新order表，主表
     let data1 = await connection.query(
-      `delete from orderProjectList where id not in(${param.projectData
+      `delete from orderProductList where id not in(${param.productData
         .filter((r) => r.id)
         .map((r) => r.id)
         .join(',') || 0}) and orderId = '${param.id}'`
     );
     let data2 = await connection.query(`
-      INSERT INTO orderProjectList (id, projectId, sort, units, cost, price, count, proRemark, orderId) VALUES 
-      ${param.projectData
+      INSERT INTO orderProductList (id, productId, sort, units, cost, price, count, proRemark, orderId) VALUES 
+      ${param.productData
         .map((r) => {
-          return `(${r.projectId ? r.id : 0}, '${r.projectId || r.id}', '${r.sort}', '${r.units}', '${r.cost}', '${
+          return `(${r.productId ? r.id : 0}, '${r.productId || r.id}', '${r.sort}', '${r.units}', '${r.cost}', '${
             r.price
           }', '${r.count}', '${r.proRemark || ''}', '${param.id}')`;
         })
@@ -237,18 +237,18 @@ let obj = {
     let str = `select 
     date_format(t.operationDate, '%Y-%m-%d %H:%i:%S') as operationDate,
     t.operationType, t.id, t.orderId, t.operationUser, tb.name as operationUserName,
-    tc.num, tc.remark, td.num as moneyNum,tc.projectId, td.remark as moneyRemark, te.name
+    tc.num, tc.remark, td.num as moneyNum,tc.productId, td.remark as moneyRemark, te.name
     from orderoperation t 
     left join user tb ON t.operationUser = tb.id
     left join orderdelivery tc ON tc.orderOperationId = t.id
     left join ordercollectmoney td ON td.orderOperationId = t.id
-    left join project te on tc.projectId = te.id
+    left join product te on tc.productId = te.id
     where 1= 1 and t.orderId ='${param.id}' and t.company = '${param.company}' order by t.operationDate desc`;
     let data = await connection.query(str);
     // let data1 = await connection.query(
     //   `select t.*,tb.operationType, tc.name from orderdelivery t
     //   left join orderoperation tb on t.orderOperationId = tb.id
-    //   left join project tc on t.projectId = tc.id
+    //   left join product tc on t.productId = tc.id
     //   where t.orderId = '${param.id}' ORDER BY tb.operationDate desc`
     // );
     ctx.body = Object.assign(global.createObj(), { item: data, str: str });
@@ -269,10 +269,10 @@ let obj = {
     let data1 = await connection.query(str1);
 
     let str = param.data
-      .map((r) => `('${param.id}', '${r.projectId}', '${r.num}', '${r.remark}', '${data1.insertId}')`)
+      .map((r) => `('${param.id}', '${r.productId}', '${r.num}', '${r.remark}', '${data1.insertId}')`)
       .join(',');
     let data = await connection.query(
-      `INSERT INTO orderdelivery (orderId, projectId, num, remark, orderOperationId) values ${str}`
+      `INSERT INTO orderdelivery (orderId, productId, num, remark, orderOperationId) values ${str}`
     ); // 先更新order表，主表
     ctx.body = Object.assign(global.createObj(), { item: data });
   },
