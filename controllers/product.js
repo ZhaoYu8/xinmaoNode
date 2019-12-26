@@ -35,20 +35,36 @@ let obj = {
         { str: 'createDate' },
         { str: 'createUser' },
         { str: 'company' },
-        { str: 'testUrl' }
+        { str: 'sortNum' },
+        { str: 'detailNum' },
+        { str: 'detailNumB' }
       ],
       'product',
       param
     );
     let data = await connection.query(str);
-    let data1 = {};
+    // productList 产品list表
+    let str1 = param.list
+      .map(
+        (r) =>
+          `('${r.capacity}', '${r.money}', '${r.suttle}', '${r.size}', '${r.color}', '${r.remark || ''}', '${
+            data.insertId
+          }')`
+      )
+      .join(',');
+    let data1 = await connection.query(
+      `INSERT INTO productList (capacity, money, suttle, size, color, remark, productId) values ${str1}`
+    );
+    // 添加图片
+    let data2 = {};
     if (param.photo && param.photo.length) {
-      let str1 = param.photo
+      let str2 = param.photo
         .map((r) => `('${r.name}', '${r.url.replace(/\\/g, '\\\\')}', '${data.insertId}')`)
         .join(',');
-      data1 = await connection.query(`INSERT INTO productPhoto (name, url, productId) values ${str1}`);
+      data2 = await connection.query(`INSERT INTO productPhoto (name, url, productId) values ${str2}`);
     }
-    ctx.body = Object.assign(global.createObj(), { item: data, item1: data1 });
+    ctx.body = Object.assign(global.createObj(), { item: data, item1: data1, item2: data2 });
+    F;
   },
   'POST /queryProduct': async (ctx, next) => {
     let param = ctx.request.body;
@@ -87,7 +103,9 @@ let obj = {
         { str: 'units' },
         { str: 'cost' },
         { str: 'price' },
-        { str: 'testUrl' }
+        { str: 'sortNum' },
+        { str: 'detailNum' },
+        { str: 'detailNumB' }
       ],
       'product',
       param
