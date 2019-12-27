@@ -2,7 +2,6 @@
 import moment from 'moment';
 import http from 'http';
 import fs from 'fs';
-import path from 'path';
 let obj = {
   add(arr = [], table = '', param = {}) {
     let [str, str1] = [`INSERT INTO ${table} (${arr.map((r) => r.str).join(',')}) value (`, ``];
@@ -93,6 +92,64 @@ let obj = {
       await obj.mkdir(date[1]);
     }
     return true;
+  },
+  update(data, table, filter = ['id']) {
+    // data 数据源, table 那张表, filter 筛选出不需要修改的数据合集
+    let [arr, count] = [[], 0];
+    data.map((r, i) => {
+      count = 0;
+      obj.each(r, (key, value) => {
+        if (filter.includes(key)) return;
+        if (!i) {
+          arr[count] = `${key} = case id`;
+        }
+        arr[count] = arr[count] + ` when ${data[i].id} then '${value}'`;
+        if (i === data.length - 1) {
+          arr[count] = arr[count] + ' end';
+        }
+        count++;
+      });
+    });
+    return `UPDATE ${table} t SET ${arr.join(', ')} where id in (${data.map((r) => r.id).join(',')})`;
+  },
+  each(obj, callback, args) {
+    // obj是需要遍历的数组或者对象
+    // callback是处理数组/对象的每个元素的回调函数，它的返回值会中断循环的过程
+    var value,
+      i = 0,
+      length = obj.length,
+      isArray = Array.isArray(obj); //判断是不是数组
+    if (args) {
+      if (isArray) {
+        // 数组
+        for (; i < length; i++) {
+          value = callback.apply(obj[i], args); // 若args = [arg1, arg2, arg3]，则相当于:callback(args1, args2, args3)，callback里边的this指向了obj[i]
+          if (value === false)
+            // 当callback函数返回值会false的时候，注意是全等！循环结束
+            break;
+        }
+      } else {
+        // 非数组
+        for (i in obj) {
+          // 遍历对象
+          value = callback.apply(obj[i], args);
+          if (value === false) break;
+        }
+      }
+    } else {
+      if (isArray) {
+        for (; i < length; i++) {
+          value = callback.call(obj[i], i, obj[i]); // 相当于callback(i, obj[i])。然后callback里边的this指向了obj[i]
+          if (value === false) break;
+        }
+      } else {
+        for (i in obj) {
+          value = callback.call(obj[i], i, obj[i]);
+          if (value === false) break;
+        }
+      }
+    }
+    return obj;
   }
 };
 export default obj;
