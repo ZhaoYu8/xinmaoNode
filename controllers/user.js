@@ -185,6 +185,11 @@ let obj = {
     let str = global.add([{ str: 'target' }, { str: 'source' }], 'edge', param);
     let data = await connection.query(str);
     ctx.body = Object.assign(global.createObj(), { item: data });
+  },
+  'POST /saveG6': async (ctx, next) => {
+    let param = ctx.request.body;
+    let data = await connection.query(global.update(param.node, 'node', ['id', '_id'], '_id'));
+    ctx.body = Object.assign(global.createObj(), { item: data });
   }
 };
 module.exports = obj;

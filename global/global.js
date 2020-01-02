@@ -93,7 +93,7 @@ let obj = {
     }
     return true;
   },
-  update(data, table, filter = ['id']) {
+  update(data, table, filter = ['id'], ID = 'id') {
     // data 数据源, table 那张表, filter 筛选出不需要修改的数据合集
     let [arr, count] = [[], 0];
     data.map((r, i) => {
@@ -101,16 +101,16 @@ let obj = {
       obj.each(r, (key, value) => {
         if (filter.includes(key)) return;
         if (!i) {
-          arr[count] = `${key} = case id`;
+          arr[count] = `${key} = case ${ID}`;
         }
-        arr[count] = arr[count] + ` when ${data[i].id} then '${value}'`;
+        arr[count] = arr[count] + ` when ${data[i][ID]} then '${value}'`;
         if (i === data.length - 1) {
           arr[count] = arr[count] + ' end';
         }
         count++;
       });
     });
-    return `UPDATE ${table} t SET ${arr.join(', ')} where id in (${data.map((r) => r.id).join(',')})`;
+    return `UPDATE ${table} t SET ${arr.join(', ')} where ${ID} in (${data.map((r) => r[ID]).join(',')})`;
   },
   each(obj, callback, args) {
     // obj是需要遍历的数组或者对象

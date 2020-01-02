@@ -44,10 +44,10 @@ let obj = {
     );
     let data2 = await connection.query(str);
     // productList 产品list表
-    let str1 = param.list
-      .map((r) => `('${r.capacity}', '${r.money}', '${r.suttle}', '${r.size}', '${r.color}', '${r.remark || ''}', '${data2.insertId}')`)
-      .join(',');
-    await connection.query(`INSERT INTO productList (capacity, money, suttle, size, color, remark, productId) values ${str1}`);
+    // let str1 = param.list
+    //   .map((r) => `('${r.capacity}', '${r.money}', '${r.suttle}', '${r.size}', '${r.color}', '${r.remark || ''}', '${data2.insertId}')`)
+    //   .join(',');
+    // await connection.query(`INSERT INTO productList (capacity, money, suttle, size, color, remark, productId) values ${str1}`);
     // 添加图片
     if (param.photo && param.photo.length) {
       let str2 = param.photo.map((r) => `('${r.name}', '${r.url.replace(/\\/g, '\\\\')}', '${data2.insertId}')`).join(',');
@@ -66,11 +66,9 @@ let obj = {
     if (data.length) {
       data2 = await connection.query(`select * from productPhoto ta where ta.productId in (${data.map((r) => r.id + '').join()})`);
     }
-    let data3 = await connection.query(`select * from productList ta where ta.productId in (${data.map((r) => r.id + '').join()})`);
     data.map((r) => {
       r.photo = [];
       r.photo = data2.filter(n => r.id === n.productId)
-      r.list = data3.filter(n => r.id === n.productId)
     });
     ctx.body = Object.assign(global.createObj(), { item: data, str: str, totalCount: data1[0]['count(1)'] });
   },
@@ -106,7 +104,6 @@ let obj = {
       param
     );
     let data = await connection.query(str);
-    let [data1, data2] = [{}, {}];
     if (!param.photo.length) {
       // 如果为空了，去删除图片库的产品图片数据 或者photo的老数据带id的都空了。那也全部删除
       data1 = await connection.query(`delete from productphoto where productId = '${param.id}'`);
@@ -128,26 +125,26 @@ let obj = {
         );
       }
     }
-    // 处理产品详情多条的数据
-    let [arr, arr1] = [param.list.filter((r) => r.id), param.list.filter((r) => !r.id)]; // 筛选出id不为空的数据， id为空的就是修改的时候新增的
-    if (arr.length) {
-      // 如果带id的还有，就not in删除，修改带id的数据
-      data1 = await connection.query(`delete from productList where id not in(${arr.map((r) => r.id).join(',')}) and productId = '${param.id}'`);
-      // 修改带id的数据
-      await connection.query(global.update(param.list, 'productList'));
-    } else {
-      // 如果一个都没了。直接全部删除
-      data1 = await connection.query(`delete from productList where productId = '${param.id}'`);
-    }
-    // 有新增的就插入新的
-    if (arr1.length) {
-      data2 = await connection.query(
-        `INSERT INTO productList (capacity, money, suttle, size, color, remark, productId) values ${param.list
-          .map((r) => `('${r.capacity}', '${r.money}', '${r.suttle}', '${r.size}', '${r.color}', '${r.remark || ''}', '${param.id}')`)
-          .join(',')}`
-      );
-    }
-    ctx.body = Object.assign(global.createObj(), { item: data, photoItem: [data1, data2] });
+    // // 处理产品详情多条的数据
+    // let [arr, arr1] = [param.list.filter((r) => r.id), param.list.filter((r) => !r.id)]; // 筛选出id不为空的数据， id为空的就是修改的时候新增的
+    // if (arr.length) {
+    //   // 如果带id的还有，就not in删除，修改带id的数据
+    //   data1 = await connection.query(`delete from productList where id not in(${arr.map((r) => r.id).join(',')}) and productId = '${param.id}'`);
+    //   // 修改带id的数据
+    //   await connection.query(global.update(param.list, 'productList'));
+    // } else {
+    //   // 如果一个都没了。直接全部删除
+    //   data1 = await connection.query(`delete from productList where productId = '${param.id}'`);
+    // }
+    // // 有新增的就插入新的
+    // if (arr1.length) {
+    //   data2 = await connection.query(
+    //     `INSERT INTO productList (capacity, money, suttle, size, color, remark, productId) values ${param.list
+    //       .map((r) => `('${r.capacity}', '${r.money}', '${r.suttle}', '${r.size}', '${r.color}', '${r.remark || ''}', '${param.id}')`)
+    //       .join(',')}`
+    //   );
+    // }
+    ctx.body = Object.assign(global.createObj(), { item: data });
   },
   'POST /allProduct': async (ctx, next) => {
     let param = ctx.request.body;
