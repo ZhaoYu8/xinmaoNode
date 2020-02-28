@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost
-Source Server Version : 80017
+Source Server         : localhost_3306
+Source Server Version : 80016
 Source Host           : localhost:3306
 Source Database       : xinmao
 
 Target Server Type    : MYSQL
-Target Server Version : 80017
+Target Server Version : 80016
 File Encoding         : 65001
 
-Date: 2019-12-25 17:15:54
+Date: 2020-01-02 11:28:42
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -42,6 +42,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+AUTO_INCREMENT=60
 
 ;
 
@@ -65,7 +66,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=6
+AUTO_INCREMENT=8
 
 ;
 
@@ -73,7 +74,7 @@ AUTO_INCREMENT=6
 -- Records of _orderid
 -- ----------------------------
 BEGIN;
-INSERT INTO `_orderid` VALUES ('2', '5', '2019-12-04', '20'), ('4', '1', '2019-10-21', '38'), ('5', '0', '2019-12-14', '39'), ('6', '0', '2019-12-19', '40');
+INSERT INTO `_orderid` VALUES ('2', '5', '2019-12-04', '20'), ('4', '1', '2019-10-21', '38'), ('5', '0', '2019-12-14', '39'), ('6', '0', '2019-12-19', '40'), ('7', '0', '2019-12-26', '41');
 COMMIT;
 
 -- ----------------------------
@@ -88,7 +89,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=6
+AUTO_INCREMENT=7
 
 ;
 
@@ -112,7 +113,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=17
+AUTO_INCREMENT=19
 
 ;
 
@@ -120,7 +121,7 @@ AUTO_INCREMENT=17
 -- Records of branch
 -- ----------------------------
 BEGIN;
-INSERT INTO `branch` VALUES ('1', '鑫茂杯业', '0', '20'), ('2', '销售部', '1', '20'), ('11', '客户部', '1', '20'), ('12', '生产部', '1', '20'), ('13', '售后部', '1', '20'), ('15', 'ceshi', '0', '38'), ('16', 'uni-app数据公司', '0', '39'), ('17', '', '0', '40');
+INSERT INTO `branch` VALUES ('1', '鑫茂杯业', '0', '20'), ('2', '销售部', '1', '20'), ('11', '客户部', '1', '20'), ('12', '生产部', '1', '20'), ('13', '售后部', '1', '20'), ('15', 'ceshi', '0', '38'), ('16', 'uni-app数据公司', '0', '39'), ('17', '', '0', '40'), ('18', 'aaa123', '0', '41');
 COMMIT;
 
 -- ----------------------------
@@ -136,7 +137,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=40
+AUTO_INCREMENT=42
 
 ;
 
@@ -144,7 +145,7 @@ AUTO_INCREMENT=40
 -- Records of company
 -- ----------------------------
 BEGIN;
-INSERT INTO `company` VALUES ('20', '鑫茂杯业', '2019-09-03 11:01:23', '13370229059'), ('38', 'ceshi', '2019-10-21 17:13:00', '13370229052'), ('39', 'uni-app数据公司', '2019-12-14 13:49:23', '15821836343'), ('40', '', '2019-12-19 16:11:15', '');
+INSERT INTO `company` VALUES ('20', '鑫茂杯业', '2019-09-03 11:01:23', '13370229059'), ('38', 'ceshi', '2019-10-21 17:13:00', '13370229052'), ('39', 'uni-app数据公司', '2019-12-14 13:49:23', '15821836343'), ('40', '', '2019-12-19 16:11:15', ''), ('41', 'aaa123', '2019-12-26 14:19:41', '13777777777');
 COMMIT;
 
 -- ----------------------------
@@ -188,7 +189,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=97
+AUTO_INCREMENT=98
 
 ;
 
@@ -212,7 +213,7 @@ PRIMARY KEY (`_id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=73
+AUTO_INCREMENT=74
 
 ;
 
@@ -237,7 +238,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=15
+AUTO_INCREMENT=16
 
 ;
 
@@ -263,7 +264,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=51
+AUTO_INCREMENT=52
 
 ;
 
@@ -314,7 +315,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=51
+AUTO_INCREMENT=52
 
 ;
 
@@ -343,7 +344,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=127
+AUTO_INCREMENT=128
 
 ;
 
@@ -411,7 +412,7 @@ AUTO_INCREMENT=91
 -- Records of product
 -- ----------------------------
 BEGIN;
-INSERT INTO `product` VALUES ('50', '000001', '尚浩亚', '34', '个', '23', '32', '2019-10-24 17:27:13', '17', '20', null), ('51', '000002', '测试', '34,38', '个', '12', '32', '2019-10-25 14:22:10', '17', '20', null), ('52', '000003', '金陵系列001', '34,38,51', '个', '12', '32', '2019-12-04 17:00:44', '17', '20', null), ('53', '000004', '御赐系列001', '34,38,50', '个', '65', '120', '2019-12-04 17:01:03', '17', '20', null), ('54', '000005', '极品系列001', '34,38,49', '个', '12', '32', '2019-12-04 17:01:16', '17', '20', null), ('55', '000006', '二等精品001', '34,38,48', '个', '55', '88', '2019-12-04 17:01:33', '17', '20', null), ('56', '000001', '沁享便携泡茶师340ml', '52,56', '个', '0', '0', '2019-12-14 14:05:54', '30', '39', 'https://www.fuguangchina.com/Uploads/2019-03-07/5c8075588f9f4.png'), ('57', '000002', '经典.逸单层玻璃泡茶杯370ml', '52,56', '个', '0', '0', '2019-12-14 14:07:01', '30', '39', 'https://www.fuguangchina.com/Uploads/2018-05-10/5af3d85e81595.jpg'), ('58', '000003', '经典.逸单层玻璃杯410ml', '52,56', '个', '0', '0', '2019-12-14 14:07:23', '30', '39', 'https://www.fuguangchina.com/Uploads/2018-05-10/5af3d7aa4f0b5.jpg'), ('59', '000004', '经典.逸单层玻璃杯300ml', '52,56', '个', '0', '0', '2019-12-14 14:07:43', '30', '39', 'https://www.fuguangchina.com/Uploads/2018-05-10/5af3d72a1b453.jpg'), ('60', '000005', '经典.刚单层玻璃杯450ml', '52,56', '个', '0', '0', '2019-12-14 14:08:02', '30', '39', 'https://www.fuguangchina.com/Uploads/2018-05-10/5af3d51e1d369.jpg'), ('61', '000006', '经典.简单层玻璃杯玻片490ml', '52,56', '个', '0', '0', '2019-12-14 14:08:35', '30', '39', 'https://www.fuguangchina.com/Uploads/2018-05-10/5af3bc7b2c7a6.jpg'), ('62', '000007', '经典.简单层玻璃杯玻片430ml', '52,56', '个', '0', '0', '2019-12-14 14:08:56', '30', '39', 'https://www.fuguangchina.com/Uploads/2018-05-10/5af3bb90928e9.jpg'), ('63', '000008', '730ML富光健牌伯爵商务玻璃杯 ', '52,57', '个', '0', '0', '2019-12-14 14:09:20', '30', '39', 'https://www.fuguangchina.com/Uploads/2019-09-18/5d8187df40a03.jpg'), ('64', '000009', '480ML富光健牌伯爵商务玻璃杯', '52,57', '个', '0', '0', '2019-12-14 14:09:43', '30', '39', 'https://www.fuguangchina.com/Uploads/2019-09-18/5d8186c243f5d.jpg'), ('65', '000010', '380ML富光健牌伯爵商务玻璃杯', '52,57', '个', '0', '0', '2019-12-14 14:10:10', '30', '39', 'https://www.fuguangchina.com/Uploads/2019-09-17/5d8099c723d46.jpg'), ('66', '000011', '沁享便携泡茶师', '52,57', '个', '0', '0', '2019-12-14 14:10:28', '30', '39', 'https://www.fuguangchina.com/Uploads/2019-03-06/5c7f6539a5d93.jpg'), ('67', '000012', '富光点点太空杯350mL', '53,58', '个', '0', '0', '2019-12-14 14:11:00', '30', '39', 'https://www.fuguangchina.com/Uploads/2017-03-20/58cf6c7f7f9b3.jpg'), ('68', '000013', '富光昕动太空杯600ML', '53,58', '个', '0', '0', '2019-12-14 14:11:20', '30', '39', 'https://www.fuguangchina.com/Uploads/2018-02-02/5a742eb4d6454.jpg'), ('69', '000014', '富光磨砂太空杯500ml', '53,58', '个', '0', '0', '2019-12-14 14:11:38', '30', '39', 'https://www.fuguangchina.com/Uploads/2017-06-15/5941ec7a6f427.jpg'), ('70', '000015', '富光悠乐轻质水杯710ML（透明）', '53,58', '个', '0', '0', '2019-12-14 14:12:01', '30', '39', 'https://www.fuguangchina.com/Uploads/2019-09-26/5d8c376c79c16.jpg'), ('71', '000016', '富光咕泡水杯400ml', '53,59', '个', '0', '0', '2019-12-14 14:17:48', '30', '39', 'https://www.fuguangchina.com/Uploads/2017-02-17/58a66c389220d.jpg'), ('72', '000017', '快乐吸管杯420ml', '53,59', '个', '0', '0', '2019-12-14 14:18:04', '30', '39', 'https://www.fuguangchina.com/Uploads/2016-07-13/578614080a7d6.jpg'), ('73', '000018', '学生壶600ml', '53,59', '个', '0', '0', '2019-12-14 14:18:21', '30', '39', 'https://www.fuguangchina.com/Uploads/2016-07-01/577613621b19d.jpg'), ('74', '000019', '富光儿童水杯（大眼仔）260ML', '53,59', '个', '0', '0', '2019-12-14 14:18:39', '30', '39', 'https://www.fuguangchina.com/Uploads/2017-03-21/58d0ba96ab220.jpg'), ('75', '000020', '茶马仕睿智塑玻泡茶师240ml', '53,60', '个', '0', '0', '2019-12-14 14:19:38', '30', '39', 'https://www.fuguangchina.com/Uploads/2016-08-10/57aab5db20cb3.jpg'), ('76', '000021', '健牌新潮5号380ml', '53,60', '个', '0', '0', '2019-12-14 14:19:59', '30', '39', 'https://www.fuguangchina.com/Uploads/2016-07-01/57763f7c1430a.jpg'), ('77', '000022', '健牌旋风杯1型460ML', '53,60', '个', '0', '0', '2019-12-14 14:20:18', '30', '39', 'https://www.fuguangchina.com/Uploads/2016-07-14/5787255b0fdb1.jpg'), ('78', '000023', '茶马仕316不锈钢真空子弹头350mL', '54,61', '个', '0', '0', '2019-12-14 14:20:57', '30', '39', 'https://www.fuguangchina.com/Uploads/2019-12-11/5df043de819b4.jpg'), ('79', '000024', '超炫真空杯2型420ml', '54,63', '个', '0', '0', '2019-12-14 14:21:16', '30', '39', 'https://www.fuguangchina.com/Uploads/2016-07-14/5787498273fc5.jpg'), ('80', '000025', 'FGA迈迪316不锈钢真空杯350mL', '54,61', '个', '0', '0', '2019-12-14 14:21:33', '30', '39', 'https://www.fuguangchina.com/Uploads/2019-10-15/5da56f769f71f.jpg'), ('81', '000026', 'FGA迈迪316不锈钢真空杯500mL', '54,61', '个', '0', '0', '2019-12-14 14:21:48', '30', '39', 'https://www.fuguangchina.com/Uploads/2019-10-15/5da56e3874ad0.jpg'), ('82', '000027', '富光牌智饮控温杯180ml', '54,61', '个', '0', '0', '2019-12-14 14:22:03', '30', '39', 'https://www.fuguangchina.com/Uploads/2016-09-09/57d2163e48582.jpg'), ('83', '000028', 'FGA富光真空办公杯480ML', '54,62', '个', '0', '0', '2019-12-14 14:22:22', '30', '39', 'https://www.fuguangchina.com/Uploads/2016-07-14/57874a030aa0e.jpg'), ('84', '000029', '健牌雅臻真空办公杯2型480ml', '54,62', '个', '0', '0', '2019-12-14 14:22:40', '30', '39', 'https://www.fuguangchina.com/Uploads/2016-07-14/5787593123474.jpg'), ('85', '000030', 'FGA迈欧真空杯330', '54,62', '个', '0', '0', '2019-12-14 14:22:57', '30', '39', 'https://www.fuguangchina.com/Uploads/2018-11-06/5be1321c8ac9f.jpg'), ('86', '000031', 'FGA哒梨真空焖烧罐', '54,62', '个', '0', '0', '2019-12-14 14:23:49', '30', '39', 'https://www.fuguangchina.com/Uploads/2017-09-07/59b0adb4ed8f6.jpg'), ('87', '000032', '吉象儿童壶480', '54,63', '个', '0', '0', '2019-12-14 14:24:27', '30', '39', 'https://www.fuguangchina.com/Uploads/2016-08-18/57b52a6a95dab.jpg'), ('88', '000033', '富光牌金贝贝儿童壶600ml', '54,63', '个', '0', '0', '2019-12-14 14:24:44', '30', '39', 'https://www.fuguangchina.com/Uploads/2017-02-20/58aa8a45afecd.jpg'), ('89', '000034', 'FGA怡悦真空儿童杯', '54,63', '个', '0', '0', '2019-12-14 14:25:02', '30', '39', 'https://www.fuguangchina.com/Uploads/2017-08-07/5987d804a5ccf.jpg'), ('90', '000035', '富光嘟萌保温壶500ml', '54,63', '个', '0', '0', '2019-12-14 14:25:24', '30', '39', 'https://www.fuguangchina.com/Uploads/2018-08-13/5b7141a9c7b04.jpg');
+INSERT INTO `product` VALUES ('50', '000001', '尚浩亚', '34', '个', '23', '32', '2019-10-24 17:27:13', '17', '20', null), ('51', '000002', '测试', '34,38', '个', '12', '32', '2019-10-25 14:22:10', '17', '20', ''), ('52', '000003', '金陵系列001', '34,38,51', '个', '12', '32', '2019-12-04 17:00:44', '17', '20', null), ('53', '000004', '御赐系列001', '34,38,50', '个', '65', '120', '2019-12-04 17:01:03', '17', '20', null), ('54', '000005', '极品系列001', '34,38,49', '个', '12', '32', '2019-12-04 17:01:16', '17', '20', null), ('55', '000006', '二等精品001', '34,38,48', '个', '55', '88', '2019-12-04 17:01:33', '17', '20', null), ('56', '000001', '沁享便携泡茶师', '52,56', '个', '0', '0', '2019-12-14 14:05:54', '30', '39', ''), ('57', '000002', '经典.逸单层玻璃泡茶杯370ml', '52,56', '个', '0', '0', '2019-12-14 14:07:01', '30', '39', 'https://www.fuguangchina.com/Uploads/2018-05-10/5af3d85e81595.jpg'), ('58', '000003', '经典.逸单层玻璃杯410ml', '52,56', '个', '0', '0', '2019-12-14 14:07:23', '30', '39', 'https://www.fuguangchina.com/Uploads/2018-05-10/5af3d7aa4f0b5.jpg'), ('59', '000004', '经典.逸单层玻璃杯300ml', '52,56', '个', '0', '0', '2019-12-14 14:07:43', '30', '39', 'https://www.fuguangchina.com/Uploads/2018-05-10/5af3d72a1b453.jpg'), ('60', '000005', '经典.刚单层玻璃杯450ml', '52,56', '个', '0', '0', '2019-12-14 14:08:02', '30', '39', 'https://www.fuguangchina.com/Uploads/2018-05-10/5af3d51e1d369.jpg'), ('61', '000006', '经典.简单层玻璃杯玻片490ml', '52,56', '个', '0', '0', '2019-12-14 14:08:35', '30', '39', 'https://www.fuguangchina.com/Uploads/2018-05-10/5af3bc7b2c7a6.jpg'), ('62', '000007', '经典.简单层玻璃杯玻片430ml', '52,56', '个', '0', '0', '2019-12-14 14:08:56', '30', '39', 'https://www.fuguangchina.com/Uploads/2018-05-10/5af3bb90928e9.jpg'), ('63', '000008', '730ML富光健牌伯爵商务玻璃杯 ', '52,57', '个', '0', '0', '2019-12-14 14:09:20', '30', '39', 'https://www.fuguangchina.com/Uploads/2019-09-18/5d8187df40a03.jpg'), ('64', '000009', '480ML富光健牌伯爵商务玻璃杯', '52,57', '个', '0', '0', '2019-12-14 14:09:43', '30', '39', 'https://www.fuguangchina.com/Uploads/2019-09-18/5d8186c243f5d.jpg'), ('65', '000010', '380ML富光健牌伯爵商务玻璃杯', '52,57', '个', '0', '0', '2019-12-14 14:10:10', '30', '39', 'https://www.fuguangchina.com/Uploads/2019-09-17/5d8099c723d46.jpg'), ('66', '000011', '沁享便携泡茶师', '52,57', '个', '0', '0', '2019-12-14 14:10:28', '30', '39', 'https://www.fuguangchina.com/Uploads/2019-03-06/5c7f6539a5d93.jpg'), ('67', '000012', '富光点点太空杯350mL', '53,58', '个', '0', '0', '2019-12-14 14:11:00', '30', '39', 'https://www.fuguangchina.com/Uploads/2017-03-20/58cf6c7f7f9b3.jpg'), ('68', '000013', '富光昕动太空杯600ML', '53,58', '个', '0', '0', '2019-12-14 14:11:20', '30', '39', 'https://www.fuguangchina.com/Uploads/2018-02-02/5a742eb4d6454.jpg'), ('69', '000014', '富光磨砂太空杯500ml', '53,58', '个', '0', '0', '2019-12-14 14:11:38', '30', '39', 'https://www.fuguangchina.com/Uploads/2017-06-15/5941ec7a6f427.jpg'), ('70', '000015', '富光悠乐轻质水杯710ML（透明）', '53,58', '个', '0', '0', '2019-12-14 14:12:01', '30', '39', 'https://www.fuguangchina.com/Uploads/2019-09-26/5d8c376c79c16.jpg'), ('71', '000016', '富光咕泡水杯400ml', '53,59', '个', '0', '0', '2019-12-14 14:17:48', '30', '39', 'https://www.fuguangchina.com/Uploads/2017-02-17/58a66c389220d.jpg'), ('72', '000017', '快乐吸管杯420ml', '53,59', '个', '0', '0', '2019-12-14 14:18:04', '30', '39', 'https://www.fuguangchina.com/Uploads/2016-07-13/578614080a7d6.jpg'), ('73', '000018', '学生壶600ml', '53,59', '个', '0', '0', '2019-12-14 14:18:21', '30', '39', 'https://www.fuguangchina.com/Uploads/2016-07-01/577613621b19d.jpg'), ('74', '000019', '富光儿童水杯（大眼仔）260ML', '53,59', '个', '0', '0', '2019-12-14 14:18:39', '30', '39', 'https://www.fuguangchina.com/Uploads/2017-03-21/58d0ba96ab220.jpg'), ('75', '000020', '茶马仕睿智塑玻泡茶师240ml', '53,60', '个', '0', '0', '2019-12-14 14:19:38', '30', '39', 'https://www.fuguangchina.com/Uploads/2016-08-10/57aab5db20cb3.jpg'), ('76', '000021', '健牌新潮5号380ml', '53,60', '个', '0', '0', '2019-12-14 14:19:59', '30', '39', 'https://www.fuguangchina.com/Uploads/2016-07-01/57763f7c1430a.jpg'), ('77', '000022', '健牌旋风杯1型460ML', '53,60', '个', '0', '0', '2019-12-14 14:20:18', '30', '39', 'https://www.fuguangchina.com/Uploads/2016-07-14/5787255b0fdb1.jpg'), ('78', '000023', '茶马仕316不锈钢真空子弹头350mL', '54,61', '个', '0', '0', '2019-12-14 14:20:57', '30', '39', 'https://www.fuguangchina.com/Uploads/2019-12-11/5df043de819b4.jpg'), ('79', '000024', '超炫真空杯2型420ml', '54,63', '个', '0', '0', '2019-12-14 14:21:16', '30', '39', 'https://www.fuguangchina.com/Uploads/2016-07-14/5787498273fc5.jpg'), ('80', '000025', 'FGA迈迪316不锈钢真空杯350mL', '54,61', '个', '0', '0', '2019-12-14 14:21:33', '30', '39', 'https://www.fuguangchina.com/Uploads/2019-10-15/5da56f769f71f.jpg'), ('81', '000026', 'FGA迈迪316不锈钢真空杯500mL', '54,61', '个', '0', '0', '2019-12-14 14:21:48', '30', '39', 'https://www.fuguangchina.com/Uploads/2019-10-15/5da56e3874ad0.jpg'), ('82', '000027', '富光牌智饮控温杯180ml', '54,61', '个', '0', '0', '2019-12-14 14:22:03', '30', '39', 'https://www.fuguangchina.com/Uploads/2016-09-09/57d2163e48582.jpg'), ('83', '000028', 'FGA富光真空办公杯480ML', '54,62', '个', '0', '0', '2019-12-14 14:22:22', '30', '39', 'https://www.fuguangchina.com/Uploads/2016-07-14/57874a030aa0e.jpg'), ('84', '000029', '健牌雅臻真空办公杯2型480ml', '54,62', '个', '0', '0', '2019-12-14 14:22:40', '30', '39', 'https://www.fuguangchina.com/Uploads/2016-07-14/5787593123474.jpg'), ('85', '000030', 'FGA迈欧真空杯330', '54,62', '个', '0', '0', '2019-12-14 14:22:57', '30', '39', 'https://www.fuguangchina.com/Uploads/2018-11-06/5be1321c8ac9f.jpg'), ('86', '000031', 'FGA哒梨真空焖烧罐', '54,62', '个', '0', '0', '2019-12-14 14:23:49', '30', '39', 'https://www.fuguangchina.com/Uploads/2017-09-07/59b0adb4ed8f6.jpg'), ('87', '000032', '吉象儿童壶480', '54,63', '个', '0', '0', '2019-12-14 14:24:27', '30', '39', 'https://www.fuguangchina.com/Uploads/2016-08-18/57b52a6a95dab.jpg'), ('88', '000033', '富光牌金贝贝儿童壶600ml', '54,63', '个', '0', '0', '2019-12-14 14:24:44', '30', '39', 'https://www.fuguangchina.com/Uploads/2017-02-20/58aa8a45afecd.jpg'), ('89', '000034', 'FGA怡悦真空儿童杯', '54,63', '个', '0', '0', '2019-12-14 14:25:02', '30', '39', 'https://www.fuguangchina.com/Uploads/2017-08-07/5987d804a5ccf.jpg'), ('90', '000035', '富光嘟萌保温壶500ml', '54,63', '个', '0', '0', '2019-12-14 14:25:24', '30', '39', 'https://www.fuguangchina.com/Uploads/2018-08-13/5b7141a9c7b04.jpg');
 COMMIT;
 
 -- ----------------------------
@@ -427,7 +428,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=53
+AUTO_INCREMENT=64
 
 ;
 
@@ -435,7 +436,7 @@ AUTO_INCREMENT=53
 -- Records of productphoto
 -- ----------------------------
 BEGIN;
-INSERT INTO `productphoto` VALUES ('52', 'a73a589928890aa3d9a702a4b31f692.jpg', 'http://122.152.212.105//uploads/1575602586180.jpg', '51');
+INSERT INTO `productphoto` VALUES ('53', '3.png', 'https://wwxinmao.top/uploads/201912/20191225/39_30_1577265872825.png', '56'), ('59', '1.png', 'https://wwxinmao.top/uploads/201912/20191228/20_17_1577524377448.png', '51'), ('60', '4.png', 'https://wwxinmao.top/uploads/201912/20191228/20_17_1577524377453.png', '51'), ('61', '2.png', 'https://wwxinmao.top/uploads/201912/20191228/20_17_1577524377456.png', '51'), ('62', '5.png', 'https://wwxinmao.top/uploads/201912/20191228/20_17_1577524377456.png', '51'), ('63', '3.png', 'https://wwxinmao.top/uploads/201912/20191228/20_17_1577524377454.png', '51');
 COMMIT;
 
 -- ----------------------------
@@ -451,7 +452,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=63
+AUTO_INCREMENT=64
 
 ;
 
@@ -483,7 +484,7 @@ PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
-AUTO_INCREMENT=32
+AUTO_INCREMENT=33
 
 ;
 
@@ -491,28 +492,33 @@ AUTO_INCREMENT=32
 -- Records of user
 -- ----------------------------
 BEGIN;
-INSERT INTO `user` VALUES ('17', '赵宇', '13370229059', null, '1', '1', '340000,340200,340225', '测试', '123456', '1', '1', '20'), ('23', '小绿叶', '13370229052', null, '1,2', '0', '340000,340200,340225', '泥汊镇赵小自然村', '654321', '1', '1', '20'), ('25', '13370229052', '13370229052', null, '15', '1', null, null, '123456', '1', '1', '38'), ('26', '小王', '13343021602', null, '1,2', '1', '340000,340200,340225', '无', '654321', '1', '1', '20'), ('27', '小路', '13375623221', null, '1,2', '1', '340000,340200,340225', '221122', '654321', '1', '1', '20'), ('28', '小潘', '13123213123', null, '1,2', '1', '340000,340200,340225', '004551515', '654321', '1', '1', '20'), ('29', '小深', '13386424121', null, '1,2', '1', '340000,340200,340225', '321', '654321', '1', '1', '20'), ('30', '15821836343', '15821836343', null, '16', '1', null, null, '123456', '1', '1', '39');
+INSERT INTO `user` VALUES ('17', '赵宇', '13370229059', null, '1', '1', '340000,340200,340225', '测试', '123456', '1', '1', '20'), ('23', '小绿叶', '13370229052', null, '1,2', '0', '340000,340200,340225', '泥汊镇赵小自然村', '654321', '1', '1', '20'), ('25', '13370229052', '13370229052', null, '15', '1', null, null, '123456', '1', '1', '38'), ('26', '小王', '13343021602', null, '1,2', '1', '340000,340200,340225', '无', '654321', '1', '1', '20'), ('27', '小路', '13375623221', null, '1,2', '1', '340000,340200,340225', '221122', '654321', '1', '1', '20'), ('28', '小潘', '13123213123', null, '1,2', '1', '340000,340200,340225', '004551515', '654321', '1', '1', '20'), ('29', '小深', '13386424121', null, '1,2', '1', '340000,340200,340225', '321', '654321', '1', '1', '20'), ('30', '胡绿叶', '15821836343', null, '16', '1', '110000,110000,110101', '123', '123456', '1', '1', '39'), ('32', '13777777777', '13777777777', null, '18', '1', null, null, '132456', '1', '1', '41');
 COMMIT;
+
+-- ----------------------------
+-- Auto increment value for _order
+-- ----------------------------
+ALTER TABLE `_order` AUTO_INCREMENT=60;
 
 -- ----------------------------
 -- Auto increment value for _orderid
 -- ----------------------------
-ALTER TABLE `_orderid` AUTO_INCREMENT=6;
+ALTER TABLE `_orderid` AUTO_INCREMENT=8;
 
 -- ----------------------------
 -- Auto increment value for _productid
 -- ----------------------------
-ALTER TABLE `_productid` AUTO_INCREMENT=6;
+ALTER TABLE `_productid` AUTO_INCREMENT=7;
 
 -- ----------------------------
 -- Auto increment value for branch
 -- ----------------------------
-ALTER TABLE `branch` AUTO_INCREMENT=17;
+ALTER TABLE `branch` AUTO_INCREMENT=19;
 
 -- ----------------------------
 -- Auto increment value for company
 -- ----------------------------
-ALTER TABLE `company` AUTO_INCREMENT=40;
+ALTER TABLE `company` AUTO_INCREMENT=42;
 
 -- ----------------------------
 -- Auto increment value for customer
@@ -522,22 +528,22 @@ ALTER TABLE `customer` AUTO_INCREMENT=54;
 -- ----------------------------
 -- Auto increment value for edge
 -- ----------------------------
-ALTER TABLE `edge` AUTO_INCREMENT=97;
+ALTER TABLE `edge` AUTO_INCREMENT=98;
 
 -- ----------------------------
 -- Auto increment value for node
 -- ----------------------------
-ALTER TABLE `node` AUTO_INCREMENT=73;
+ALTER TABLE `node` AUTO_INCREMENT=74;
 
 -- ----------------------------
 -- Auto increment value for ordercollectmoney
 -- ----------------------------
-ALTER TABLE `ordercollectmoney` AUTO_INCREMENT=15;
+ALTER TABLE `ordercollectmoney` AUTO_INCREMENT=16;
 
 -- ----------------------------
 -- Auto increment value for orderdelivery
 -- ----------------------------
-ALTER TABLE `orderdelivery` AUTO_INCREMENT=51;
+ALTER TABLE `orderdelivery` AUTO_INCREMENT=52;
 
 -- ----------------------------
 -- Auto increment value for orderoperation
@@ -547,12 +553,12 @@ ALTER TABLE `orderoperation` AUTO_INCREMENT=96;
 -- ----------------------------
 -- Auto increment value for orderpremium
 -- ----------------------------
-ALTER TABLE `orderpremium` AUTO_INCREMENT=51;
+ALTER TABLE `orderpremium` AUTO_INCREMENT=52;
 
 -- ----------------------------
 -- Auto increment value for orderproductlist
 -- ----------------------------
-ALTER TABLE `orderproductlist` AUTO_INCREMENT=127;
+ALTER TABLE `orderproductlist` AUTO_INCREMENT=128;
 
 -- ----------------------------
 -- Auto increment value for print
@@ -567,14 +573,14 @@ ALTER TABLE `product` AUTO_INCREMENT=91;
 -- ----------------------------
 -- Auto increment value for productphoto
 -- ----------------------------
-ALTER TABLE `productphoto` AUTO_INCREMENT=53;
+ALTER TABLE `productphoto` AUTO_INCREMENT=64;
 
 -- ----------------------------
 -- Auto increment value for productsort
 -- ----------------------------
-ALTER TABLE `productsort` AUTO_INCREMENT=63;
+ALTER TABLE `productsort` AUTO_INCREMENT=64;
 
 -- ----------------------------
 -- Auto increment value for user
 -- ----------------------------
-ALTER TABLE `user` AUTO_INCREMENT=32;
+ALTER TABLE `user` AUTO_INCREMENT=33;

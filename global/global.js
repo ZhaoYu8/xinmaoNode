@@ -1,6 +1,6 @@
 // add 新增 edit 修改 delete 删除 query 查询
 import moment from 'moment';
-import http from 'http';
+import request from 'request';
 import fs from 'fs';
 let obj = {
   add(arr = [], table = '', param = {}) {
@@ -38,22 +38,15 @@ let obj = {
       ? Object.assign(obj, { message: '成功', success: true })
       : Object.assign(obj, { message: '失败了，请重试。如果依然失败请联系管理员！', success: false }));
   },
-  commonGet(url, jsonParse = true) {
+  commonGet(url) {
     // 天气接口，单独领到这
     return new Promise((resolve, reject) => {
-      http.get(url, (res) => {
-        res.setEncoding('utf8');
-        let rawData = '';
-        res.on('data', (chunk) => {
-          rawData += chunk;
-        });
-        res.on('end', () => {
-          if (jsonParse) {
-            resolve(JSON.parse(rawData));
-          } else {
-            resolve(rawData);
-          }
-        });
+      request(url, function(err, response, body) {
+        let res;
+        if (!err && response.statusCode == 200) {
+          res = JSON.parse(body);
+        }
+        resolve(res);
       });
     });
   },
@@ -93,12 +86,13 @@ let obj = {
     }
     return true;
   },
-  update(data, table, filter = ['id'], ID = 'id') {
+  update(data, table, filter = ['id'], ID = 'id', need = []) {
     // data 数据源, table 那张表, filter 筛选出不需要修改的数据合集
     let [arr, count] = [[], 0];
     data.map((r, i) => {
       count = 0;
       obj.each(r, (key, value) => {
+        if (need.length && !need.includes(key)) return;
         if (filter.includes(key)) return;
         if (!i) {
           arr[count] = `${key} = case ${ID}`;

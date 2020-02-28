@@ -45,12 +45,12 @@ let obj = {
     let param = ctx.request.body;
     let arr = [(param.pageIndex - 1) * param.pageSize, param.pageSize];
     let special = '1 = 1';
-    let str = `select ta.* from user ta where ${special} and ta.dr = '${param.dr || 1}' and ta.company = '${
-      param.company
-    }' and (ta.name like '%${param.value}%' or ta.phone like '%${param.value}%') limit ${arr[0]},${arr[1]}`;
-    let str1 = `select count(1) from user ta where ta.dr = '${param.dr || 1}' and ta.company = '${
-      param.company
-    }' and (ta.name like '%${param.value}%' or ta.phone like '%${param.value}%')`;
+    let str = `select ta.* from user ta where ${special} and ta.dr = '${param.dr || 1}' and ta.company = '${param.company}' and (ta.name like '%${
+      param.value
+    }%' or ta.phone like '%${param.value}%') limit ${arr[0]},${arr[1]}`;
+    let str1 = `select count(1) from user ta where ta.dr = '${param.dr || 1}' and ta.company = '${param.company}' and (ta.name like '%${
+      param.value
+    }%' or ta.phone like '%${param.value}%')`;
     let data = await connection.query(str);
     let data1 = await connection.query(str1);
     ctx.body = Object.assign(global.createObj(), { item: data, str: str, totalCount: data1[0]['count(1)'] });
@@ -63,9 +63,7 @@ let obj = {
   },
   'POST /querySalesUser': async (ctx, next) => {
     let param = ctx.request.body;
-    let str = `select ta.* from user ta where ta.dr = '${param.dr || 1}' and ta.company = '${
-      param.company
-    }' and ta.sales = 1 `;
+    let str = `select ta.* from user ta where ta.dr = '${param.dr || 1}' and ta.company = '${param.company}' and ta.sales = 1 `;
     let data = await connection.query(str);
     ctx.body = Object.assign(global.createObj(), { item: data, str: str });
   },
@@ -95,32 +93,76 @@ let obj = {
         left join product tb ON ta.productId = tb.id
         where ta.orderId in (${data1.map((r) => r.id + '').join()})
       `);
-      data3 = await connection.query(
-        `select * from orderPremium ta where ta.orderId in (${data1.map((r) => r.id + '').join()})`
-      );
+      data3 = await connection.query(`select * from orderPremium ta where ta.orderId in (${data1.map((r) => r.id + '').join()})`);
     }
     data1.map((r) => {
       r.productData = data2.filter((n) => n.orderId === r.id) || [];
       r.premiumData = data3.filter((n) => n.orderId === r.id) || [];
     });
     data[0].orderInfo = data1;
-    ctx.body = Object.assign(global.createObj(), { item: data, str: str });
+    ctx.body = Object.assign(global.createObj(), { item: Object.assign({ loc: params }, data) });
   },
+  // 'POST /weather2': async (ctx, next) => {
+  //   let data = await global.commonGet('http://restapi.amap.com/v3/ip?key=2e274b34f0284d295206dd1f8afca37c', false);
+  //   let data1 = JSON.parse(`{${data.split('{')[1].split('}')[0]}}`).adcode;
+  //   let data2 = await global.commonGet(`http://www.tianqiapi.com/api/?version=v1&cityid=${data1 || 101220305}&appid=64432121&appsecret=n5ZcREXu`);
+  //   ctx.body = Object.assign(global.createObj(), { item: data2 });
+  // },
   'POST /weather': async (ctx, next) => {
-    let data = await global.commonGet('http://restapi.amap.com/v3/ip?key=2e274b34f0284d295206dd1f8afca37c', false);
-    let data1 = JSON.parse(`{${data.split('{')[1].split('}')[0]}}`).adcode;
-    let data2 = await global.commonGet(
-      `http://www.tianqiapi.com/api/?version=v1&cityid=${data1 || 101220305}&appid=64432121&appsecret=n5ZcREXu`
-    );
-    ctx.body = Object.assign(global.createObj(), { item: data2 });
+    let arr = ['province', 'city', 'county'];
+    let params = ['安徽', '芜湖', '无为'];
+    const strParams = (o) => {
+      let str = '';
+      if (o === 1) {
+        str = params.map((r, i) => {
+          return `&${arr[i]}=${i !== 2 ? encodeURIComponent(r) : ''}`;
+        });
+      } else {
+        str = params.map((r, i) => {
+          return `&${arr[i]}=${encodeURIComponent(r)}`;
+        });
+      }
+      return str.join('');
+    };
+    let [str, str1] = [
+      'https://wis.qq.com/weather/common?source=xw&weather_type=observe|rise|forecast_1h|forecast_24h|index|alarm|limit|tips', // 实时天气
+      'https://wis.qq.com/weather/common?source=xw&weather_type=air' // pm 取值，这里有个逻辑，如果要找县或者区级，PM county 要传空值
+    ];
+    let data = await global.commonGet(`${str}${strParams()}`, false);
+    let data1 = await global.commonGet(`${str1}${strParams(1)}`, false);
+    console.log(1, data1);
+    ctx.body = Object.assign(global.createObj(), { item: Object.assign(data.data, { air: data1.data && data1.data.air, loc: params }) });
   },
+  // 'GET /weather2': async (ctx, next) => {
+  //   let data = await global.commonGet('http://restapi.amap.com/v3/ip?key=2e274b34f0284d295206dd1f8afca37c', false);
+  //   let data1 = JSON.parse(`{${data.split('{')[1].split('}')[0]}}`).adcode;
+  //   let data2 = await global.commonGet(`http://www.tianqiapi.com/api/?version=v1&cityid=${data1 || 101220305}&appid=64432121&appsecret=n5ZcREXu`);
+  //   ctx.body = Object.assign(global.createObj(), { item: data2 });
+  // },
   'GET /weather': async (ctx, next) => {
-    let data = await global.commonGet('http://restapi.amap.com/v3/ip?key=2e274b34f0284d295206dd1f8afca37c', false);
-    let data1 = JSON.parse(`{${data.split('{')[1].split('}')[0]}}`).adcode;
-    let data2 = await global.commonGet(
-      `http://www.tianqiapi.com/api/?version=v1&cityid=${data1 || 101220305}&appid=64432121&appsecret=n5ZcREXu`
-    );
-    ctx.body = Object.assign(global.createObj(), { item: data2 });
+    let arr = ['province', 'city', 'county'];
+    let params = ['安徽', '芜湖', '无为'];
+    const strParams = (o) => {
+      let str = '';
+      if (o === 1) {
+        str = params.map((r, i) => {
+          return `&${arr[i]}=${i !== 2 ? encodeURIComponent(r) : ''}`;
+        });
+      } else {
+        str = params.map((r, i) => {
+          return `&${arr[i]}=${encodeURIComponent(r)}`;
+        });
+      }
+      return str.join('');
+    };
+    let [str, str1] = [
+      'https://wis.qq.com/weather/common?source=xw&weather_type=observe|rise|forecast_1h|forecast_24h|index|alarm|limit|tips', // 实时天气
+      'https://wis.qq.com/weather/common?source=xw&weather_type=air' // pm 取值，这里有个逻辑，如果要找县或者区级，PM county 要传空值
+    ];
+    let data = await global.commonGet(`${str}${strParams()}`, false);
+    let data1 = await global.commonGet(`${str1}${strParams(1)}`, false);
+    console.log(1, data1);
+    ctx.body = Object.assign(global.createObj(), { item: Object.assign(data.data, { air: data1.data && data1.data.air, loc: params }) });
   },
   'POST /custSalesList': async (ctx, next) => {
     let param = ctx.request.body;
@@ -129,9 +171,7 @@ let obj = {
     LEFT JOIN customer t2 on t.name = t2.id -- 客户表
     where 1=1 and t.company = '${param.company}' and
     t.orderDate > ${moment(param.startDate).format('YYYYMMDD')} and 
-    t.orderDate < ${moment(param.endDate).format(
-      'YYYYMMDD'
-    )} GROUP BY t2.name ORDER BY num desc limit 0,${param.pageSize || 7}`;
+    t.orderDate < ${moment(param.endDate).format('YYYYMMDD')} GROUP BY t2.name ORDER BY num desc limit 0,${param.pageSize || 7}`;
     let data = await connection.query(str);
     ctx.body = Object.assign(global.createObj(), { item: data });
   },
@@ -146,12 +186,8 @@ let obj = {
     ];
     let str = `SELECT DATE_FORMAT(t.orderDate,'%Y%m') as month, sum(t1.price * t1.count) as num, count(DISTINCT t.id) as listNum FROM _order t
     LEFT JOIN orderproductlist t1 on t.id = t1.orderId
-    WHERE 1=1 and t.company = '${param.company}' and DATE_FORMAT(t.orderDate,'%Y%m') >= ${moment(date[0]).format(
-      'YYYYMM'
-    )} and
-    DATE_FORMAT(t.orderDate,'%Y%m') <= ${moment(date[1]).format(
-      'YYYYMM'
-    )} GROUP BY DATE_FORMAT(t.orderDate,'%Y%m')  ORDER BY month`;
+    WHERE 1=1 and t.company = '${param.company}' and DATE_FORMAT(t.orderDate,'%Y%m') >= ${moment(date[0]).format('YYYYMM')} and
+    DATE_FORMAT(t.orderDate,'%Y%m') <= ${moment(date[1]).format('YYYYMM')} GROUP BY DATE_FORMAT(t.orderDate,'%Y%m')  ORDER BY month`;
     let data = await connection.query(str);
 
     Object.keys(Array.apply(null, { length: moment(date[1]).diff(moment(date[0]), 'month') + 1 }))
@@ -188,7 +224,7 @@ let obj = {
   },
   'POST /saveG6': async (ctx, next) => {
     let param = ctx.request.body;
-    let data = await connection.query(global.update(param.node, 'node', ['id', '_id'], '_id'));
+    let data = await connection.query(global.update(param.node, 'node', ['id', '_id'], '_id', ['x', 'y']));
     ctx.body = Object.assign(global.createObj(), { item: data });
   }
 };
