@@ -102,68 +102,7 @@ let obj = {
     data[0].orderInfo = data1;
     ctx.body = Object.assign(global.createObj(), { item: Object.assign({ loc: params }, data) });
   },
-  // 'POST /weather2': async (ctx, next) => {
-  //   let data = await global.commonGet('http://restapi.amap.com/v3/ip?key=2e274b34f0284d295206dd1f8afca37c', false);
-  //   let data1 = JSON.parse(`{${data.split('{')[1].split('}')[0]}}`).adcode;
-  //   let data2 = await global.commonGet(`http://www.tianqiapi.com/api/?version=v1&cityid=${data1 || 101220305}&appid=64432121&appsecret=n5ZcREXu`);
-  //   ctx.body = Object.assign(global.createObj(), { item: data2 });
-  // },
-  'POST /weather': async (ctx, next) => {
-    let arr = ['province', 'city', 'county'];
-    let params = ['安徽', '芜湖', '无为'];
-    const strParams = (o) => {
-      let str = '';
-      if (o === 1) {
-        str = params.map((r, i) => {
-          return `&${arr[i]}=${i !== 2 ? encodeURIComponent(r) : ''}`;
-        });
-      } else {
-        str = params.map((r, i) => {
-          return `&${arr[i]}=${encodeURIComponent(r)}`;
-        });
-      }
-      return str.join('');
-    };
-    let [str, str1] = [
-      'https://wis.qq.com/weather/common?source=xw&weather_type=observe|rise|forecast_1h|forecast_24h|index|alarm|limit|tips', // 实时天气
-      'https://wis.qq.com/weather/common?source=xw&weather_type=air' // pm 取值，这里有个逻辑，如果要找县或者区级，PM county 要传空值
-    ];
-    let data = await global.commonGet(`${str}${strParams()}`, false);
-    let data1 = await global.commonGet(`${str1}${strParams(1)}`, false);
-    console.log(1, data1);
-    ctx.body = Object.assign(global.createObj(), { item: Object.assign(data.data, { air: data1.data && data1.data.air, loc: params }) });
-  },
-  // 'GET /weather2': async (ctx, next) => {
-  //   let data = await global.commonGet('http://restapi.amap.com/v3/ip?key=2e274b34f0284d295206dd1f8afca37c', false);
-  //   let data1 = JSON.parse(`{${data.split('{')[1].split('}')[0]}}`).adcode;
-  //   let data2 = await global.commonGet(`http://www.tianqiapi.com/api/?version=v1&cityid=${data1 || 101220305}&appid=64432121&appsecret=n5ZcREXu`);
-  //   ctx.body = Object.assign(global.createObj(), { item: data2 });
-  // },
-  'GET /weather': async (ctx, next) => {
-    let arr = ['province', 'city', 'county'];
-    let params = ['安徽', '芜湖', '无为'];
-    const strParams = (o) => {
-      let str = '';
-      if (o === 1) {
-        str = params.map((r, i) => {
-          return `&${arr[i]}=${i !== 2 ? encodeURIComponent(r) : ''}`;
-        });
-      } else {
-        str = params.map((r, i) => {
-          return `&${arr[i]}=${encodeURIComponent(r)}`;
-        });
-      }
-      return str.join('');
-    };
-    let [str, str1] = [
-      'https://wis.qq.com/weather/common?source=xw&weather_type=observe|rise|forecast_1h|forecast_24h|index|alarm|limit|tips', // 实时天气
-      'https://wis.qq.com/weather/common?source=xw&weather_type=air' // pm 取值，这里有个逻辑，如果要找县或者区级，PM county 要传空值
-    ];
-    let data = await global.commonGet(`${str}${strParams()}`, false);
-    let data1 = await global.commonGet(`${str1}${strParams(1)}`, false);
-    console.log(1, data1);
-    ctx.body = Object.assign(global.createObj(), { item: Object.assign(data.data, { air: data1.data && data1.data.air, loc: params }) });
-  },
+ 
   'POST /custSalesList': async (ctx, next) => {
     let param = ctx.request.body;
     let str = `select t2.name as custname, sum(t1.price * t1.count) as num from _order t -- 订单表

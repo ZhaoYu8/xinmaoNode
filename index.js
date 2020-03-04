@@ -39,7 +39,7 @@ app.use(async (ctx, next) => {
       }
       ctx.request.body.currentId = data.id || '';
       ctx.request.body.company = data.company || '';
-    } else if (!['/login', 'uploads', '/register', '/uploadfiles', '/weather'].includes(ctx.request.url)) {
+    } else if (!['/login', 'uploads', '/register', '/uploadfiles', '/weather', '/selWeather'].includes(ctx.request.url)) {
       ctx.response.status = 401;
       ctx.body = Object.assign({
         message: '你已退出，请重新登录!',

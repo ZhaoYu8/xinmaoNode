@@ -41,7 +41,7 @@ let obj = {
   commonGet(url) {
     // 天气接口，单独领到这
     return new Promise((resolve, reject) => {
-      request(url, function(err, response, body) {
+      request({ url: url, timeout: 500 }, function(err, response, body) {
         let res;
         if (!err && response.statusCode == 200) {
           res = JSON.parse(body);
