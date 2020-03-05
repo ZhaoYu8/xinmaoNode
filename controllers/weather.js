@@ -1,18 +1,13 @@
 import connection from '../global/api';
 import global from '../global/global';
 import moment from 'moment';
-// 'POST /weather2': async (ctx, next) => {
-//   let data = await global.commonGet('http://restapi.amap.com/v3/ip?key=2e274b34f0284d295206dd1f8afca37c');
-//   let data1 = JSON.parse(`{${data.split('{')[1].split('}')[0]}}`).adcode;
-//   let data2 = await global.commonGet(`http://www.tianqiapi.com/api/?version=v1&cityid=${data1 || 101220305}&appid=64432121&appsecret=n5ZcREXu`);
-//   ctx.body = Object.assign(global.createObj(), { item: data2 });
-// },
 let obj = {
+  // 根据地址查询天气
   'POST /weather': async (ctx, next) => {
     let arr = ['province', 'city', 'county'];
     let param = ctx.request.body;
     let params = ['上海', '上海', '宝山'];
-    if (param.city.length) params = param.city;
+    if (param.city && param.city.length) params = param.city;
     const strParams = (o) => {
       let str = '';
       if (o === 1) {
@@ -56,11 +51,12 @@ let obj = {
   //   let data2 = await global.commonGet(`http://www.tianqiapi.com/api/?version=v1&cityid=${data1 || 101220305}&appid=64432121&appsecret=n5ZcREXu`);
   //   ctx.body = Object.assign(global.createObj(), { item: data2 });
   // },
+  // 根据地址查询天气
   'GET /weather': async (ctx, next) => {
     let arr = ['province', 'city', 'county'];
     let param = ctx.request.body;
     let params = ['上海', '上海', '宝山'];
-    if (param.city.length) params = param.city;
+    if (param.city && param.city.length) params = param.city;
     const strParams = (o) => {
       let str = '';
       if (o === 1) {
@@ -100,11 +96,19 @@ let obj = {
   },
   'POST /selWeather': async (ctx, next) => {
     let param = ctx.request.body;
+    let data = {};
+    if (param.city.trim()) {
+      data = await global.commonGet(`https://wis.qq.com/city/matching?source=xw&city=${encodeURIComponent(param.city)}`);
+    }
     // let arr = ['province', 'city', 'county'];
-    let data = await global.commonGet(`https://wis.qq.com/city/matching?source=xw&city=${encodeURIComponent(param.city)}`);
-    console.log();
-
     ctx.body = Object.assign(global.createObj(), { item: data.data });
-  }
+  },
+  // 适用于h5页面进行ip定位
+  // 'POST /ipAddress': async (ctx, next) => {
+  //   let data = await global.commonGet('http://restapi.amap.com/v3/ip?key=2e274b34f0284d295206dd1f8afca37c');
+  //   let data1 = JSON.parse(`{${data.split('{')[1].split('}')[0]}}`).adcode;
+  //   let data2 = await global.commonGet(`http://www.tianqiapi.com/api/?version=v1&cityid=${data1 || 101220305}&appid=64432121&appsecret=n5ZcREXu`);
+  //   ctx.body = Object.assign(global.createObj(), { item: data2 });
+  // }
 };
 module.exports = obj;
