@@ -8,6 +8,13 @@ let obj = {
     let param = ctx.request.body;
     let params = ['上海', '上海', '宝山'];
     if (param.city && param.city.length) params = param.city;
+    // 解决直辖市的问题, 数据为 ['湖北省', '湖北省', '仙桃市']
+    if (params[0] === params[1] && params[0].includes('省')) {
+      params[0] = params[0].slice(0, params[0].length - 1);
+      params[1] = params[2];
+      params.length--;
+    }
+    console.log(params);
     const strParams = (o) => {
       let str = '';
       if (o === 1) {
@@ -102,7 +109,7 @@ let obj = {
     }
     // let arr = ['province', 'city', 'county'];
     ctx.body = Object.assign(global.createObj(), { item: data.data });
-  },
+  }
   // 适用于h5页面进行ip定位
   // 'POST /ipAddress': async (ctx, next) => {
   //   let data = await global.commonGet('http://restapi.amap.com/v3/ip?key=2e274b34f0284d295206dd1f8afca37c');
