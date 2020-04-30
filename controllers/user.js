@@ -100,7 +100,7 @@ let obj = {
       r.premiumData = data3.filter((n) => n.orderId === r.id) || [];
     });
     data[0].orderInfo = data1;
-    ctx.body = Object.assign(global.createObj(), { item: Object.assign({ loc: params }, data) });
+    ctx.body = Object.assign(global.createObj(), { item: Object.assign({ loc: param }, data) });
   },
  
   'POST /custSalesList': async (ctx, next) => {

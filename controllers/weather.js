@@ -14,7 +14,7 @@ let obj = {
       params[1] = params[2];
       params.length--;
     }
-    console.log(params);
+    console.log(moment(new Date()).format('YYYY-MM-DD HH:mm:ss'), params);
     const strParams = (o) => {
       let str = '';
       if (o === 1) {

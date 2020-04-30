@@ -16,7 +16,7 @@ app.use(
   })
 );
 app.use(async (ctx, next) => {
-  ctx.set('Access-Control-Allow-Origin', '*');
+  ctx.set('Access-Control-Allow-Origin', ctx.headers.origin);
   ctx.set('Access-Control-Allow-Headers', 'Content-Type, token');
   ctx.set('Content-Type', 'application/json;charset=utf-8');
   ctx.set('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,OPTIONS');
