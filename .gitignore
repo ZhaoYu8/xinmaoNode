@@ -3,6 +3,9 @@ node_modules
 /dist
 example.html
 favicon.ico
+ssl.crt
+ssl.key
+.nginx
 # local env files
 .env.local
 .env.*.local
