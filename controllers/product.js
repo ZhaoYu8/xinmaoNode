@@ -165,6 +165,13 @@ let obj = {
       });
     });
     ctx.body = Object.assign(global.createObj(), { item: data, str: str });
+  },
+  'POST /allProductB': async (ctx, next) => {
+    let param = ctx.request.body;
+    let str = `select ta.*, date_format(ta.createDate, '%Y-%m-%d %H:%i:%S') as createDate1, tb.name as createName from product ta left join user tb ON ta.createUser = tb.id `;
+
+    let data = await connection.query(str);
+    ctx.body = Object.assign(global.createObj(), { item: data, str: str });
   }
 };
 module.exports = obj;
