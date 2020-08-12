@@ -50,6 +50,7 @@ let obj = {
       }
     }
     let data1 = await global.commonGet(`${str1}${strParams(1)}`);
+    console.log(moment(new Date()).format('YYYY-MM-DD HH:mm:ss'), 2, params);
     ctx.body = Object.assign(global.createObj(), { item: Object.assign(data.data, { air: data1.data && data1.data.air, loc: params }) });
   },
   // 'GET /weather2': async (ctx, next) => {
